@@ -10,7 +10,7 @@ Todo sale del guion.json de la pieza; cada beat puede traer una «tarjeta»:
   {"tipo": "medidor", …}  ← mediciones en vivo estilo garrafón (ver Capa.medidor)
 Fijo en todo el video: encabezado «EXPEDIENTE NN · TEMA» + barra de avance, logo AVIL·ES, subtítulos
 karaoke (palabras de la voz verificada) y la FUENTE del dato en pantalla (regla: todo dato es trazable).
-Sin cuadrícula (el operador, 14-oct).
+Sin cuadrícula (operador, 14-oct).
 
 Se usa como módulo desde componer.py: Capa(dir).cuadro(t_fuente, avance_0a1) -> Image RGBA.
 Prueba suelta: python capa_expediente3d.py <dir> 3.5 20.0 …  → <dir>/prueba/capa_<t>.png
@@ -247,7 +247,7 @@ class Capa:
             texto(img, (W / 2, 1835), "@avil.es", fnt(MONO, 60), CIAN, a, sombra=False)
 
     def medidor(self, img, t, b, tj, fin):
-        """Mediciones EN VIVO al estilo del garrafón (22-oct-2026, aprobado por el operador en la muestra de Mars):
+        """Mediciones EN VIVO al estilo del garrafón (22-oct-2026, aprobado por operador en la muestra de Mars):
         {"tipo": "medidor", "titulo": "ALTURA AL PASAR POR MARTE", "unidad": "km", "max": 250,
          "pasos": [{"valor": 226, "etiqueta": "plan de la NASA", "palabra": "plan", "color": "cian"}, …],
          "limite": {"valor": 80, "etiqueta": "mínimo para sobrevivir", "palabra": "mínimo"},

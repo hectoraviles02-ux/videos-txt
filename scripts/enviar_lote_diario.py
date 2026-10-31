@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Manda a Telegram el lote del día: 6 reels de Python ya hechos, con botón APROBAR para TikTok y para YouTube
-(29-oct-2026, decisión de el operador: «frenar la fábrica» y «6 al día a Telegram», porque hay ~257 reels sin
+(29-oct-2026, decisión de operador: «frenar la fábrica» y «6 al día a Telegram», porque hay ~257 reels sin
 publicar y TikTok castiga la 7.ª publicación en 24 h).
 
 Elige reels que:

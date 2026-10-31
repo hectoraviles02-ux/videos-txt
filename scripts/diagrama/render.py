@@ -2,7 +2,7 @@
 """Motor «diagrama» — armador genérico (23-oct-2026). Dibuja un plan.json (escenas con piezas: insignias, número,
 cuadrícula, frase, flujo, línea de tiempo, lista) sincronizado con la voz (tiempos.json), en el estilo de la
 derivada: fondo azul noche, paneles redondeados, piezas que se ven tenues antes de su momento y se encienden cuando
-la voz las nombra. Generaliza laboratorio/diagrama_url_20261023/video_completo.py (video de PHP aprobado por el operador
+la voz las nombra. Generaliza laboratorio/diagrama_url_20261023/video_completo.py (video de PHP aprobado por operador
 para enviar con botón). Reutiliza scripts/pizarra/componentes.py SIN modificarlo.
 
 Regla de texto en pantalla: todo texto con un dato está LITERAL en la narración verificada (lo garantiza

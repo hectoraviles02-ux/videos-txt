@@ -9,7 +9,7 @@ Encadena piezas YA PROBADAS (no reimplementa):
   5) Telegram: resumen de tendencias del día + cada reel con botones [YouTube][Facebook][Ambos][No].
 
 NO PUBLICA SOLO. Calibración del juez (15-oct-2026): 5/8 aciertos, dejó pasar 2 de 4 narraciones
-falsas → la publicación la decide el operador con un toque en Telegram. El veredicto viaja como aviso.
+falsas → la publicación la decide operador con un toque en Telegram. El veredicto viaja como aviso.
 
 Candado `logs/_fabrica.lock`: si el bot u otra corrida está produciendo, este ciclo no arranca
 (GPU y Ollama compartidos; el 14b se cae por tiempo cuando compiten).

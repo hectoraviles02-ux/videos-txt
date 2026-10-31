@@ -1,8 +1,8 @@
 """Ruta automatica creada por Codex el 21-oct-2026 (evidencia en
 docs/operations/evidencia/codex_autopublicacion_20261021/).
 
-Etapa 1 (21-oct-2026): YA NO aprueba en nombre de el operador. Antes, `publicar` creaba una
-aprobacion con la frase guardada en `palabras_operador`; ahora solo envia lo que el operador
+Etapa 1 (21-oct-2026): YA NO aprueba en nombre de operador. Antes, `publicar` creaba una
+aprobacion con la frase guardada en `palabras_operador`; ahora solo envia lo que operador
 ya aprobo con el boton de Telegram, y la compuerta de `distribucion` rechaza lo demas.
 La politica (`activa`) sigue apagada."""
 from __future__ import annotations
@@ -56,7 +56,7 @@ def publicar(conn, pid, publicador, *, canal, fecha, evidencia, ledger, config=C
         raise ValueError("video distinto del verificado")
     if evidencia.get("tecnica", {}).get("audio") is not True:
         raise ValueError("falta verificacion tecnica")
-    # Etapa 1: aqui NO se crea ninguna aprobacion. Sin la de el operador (boton de Telegram),
+    # Etapa 1: aqui NO se crea ninguna aprobacion. Sin la de operador (boton de Telegram),
     # `publicar_pieza` lanza SinAprobacionValida antes de llamar a la plataforma.
     return distribucion.publicar_pieza(conn, pid, publicador=publicador, canal=canal,
                                        fecha=fecha, ledger=ledger)

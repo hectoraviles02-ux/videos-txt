@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Manda a Telegram reels de Python que nunca salieron en Facebook, con botón APROBAR solo para Facebook
-(31-oct-2026, el operador: «los de python súbelos en cascada a Facebook»).
+(31-oct-2026, operador: «los de python súbelos en cascada a Facebook»).
 
 Elige reels con publicacion.json en guiones/reels_revision/, que no están en _publicados.json de Facebook,
 que el juez de la fábrica marcó OK y que no se mandaron ya por este script (_enviados_fb.json).
-NO aprueba ni publica nada: cada reel sale solo cuando el operador aprieta su botón (R27).
+NO aprueba ni publica nada: cada reel sale solo cuando operador aprieta su botón (R27).
 Uso: python scripts/enviar_lote_facebook.py [--n 20] [--solo-mostrar]
 """
 from __future__ import annotations

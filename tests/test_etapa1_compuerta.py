@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Etapa 1 (21-oct-2026): ninguna ruta aprueba ni publica sin la aprobacion individual de el operador.
+"""Etapa 1 (21-oct-2026): ninguna ruta aprueba ni publica sin la aprobacion individual de operador.
 
 Todo con plataformas SIMULADAS: no hay red, no se publica nada y no se toca content.db real.
 """

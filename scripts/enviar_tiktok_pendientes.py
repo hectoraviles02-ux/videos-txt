@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Manda a Telegram, con botón «APROBAR y publicar en TikTok», cada reel que todavía no está en TikTok
-(22-oct-2026, pedido de el operador: «sube todos los videos que están pendientes de la fábrica a TikTok»).
+(22-oct-2026, pedido de operador: «sube todos los videos que están pendientes de la fábrica a TikTok»).
 
 Pendiente = tiene versión sin música en reels_v2_yt/ y no aparece en _tiktok_publicados.json ni en
-_tiktok_programados.json. NO sube nada: sube el botón, cuando el operador lo aprieta (R27).
+_tiktok_programados.json. NO sube nada: sube el botón, cuando operador lo aprieta (R27).
 Uso: python scripts/enviar_tiktok_pendientes.py [e108 e109 ...]   (sin ids: todos los pendientes)
 """
 from __future__ import annotations

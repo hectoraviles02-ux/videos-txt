@@ -47,7 +47,7 @@ def test_aviso_numerico_viaja_en_el_motivo(modelo):
     r = v.verificar(CODE, OUT, "Salen unos cuatro, seis y ocho amperes: por debajo de un fusible de quince.")
     assert r["matematica"]["veredicto"] == "AVISO"
     assert "AVISO numeros" in r["motivo"]
-    # Revision de el operador (21-oct): un AVISO nunca se presenta como OK, aunque el modelo diga OK.
+    # Revision de operador (21-oct): un AVISO nunca se presenta como OK, aunque el modelo diga OK.
     assert r["veredicto"] == "REVISAR"
     assert r["matematica_completa"] is False
 

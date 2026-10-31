@@ -51,7 +51,7 @@ PROHIBIDAS = "Bash Edit Write NotebookEdit MultiEdit Agent Task"
 _NS = uuid.UUID("6f1d2c34-5a6b-4c7d-8e9f-0a1b2c3d4e5f")
 
 CONTEXTO = (
-    "Estas respondiendo por Telegram a el operador, dueño del proyecto VIDEOS-TXT "
+    "Estas respondiendo por Telegram a operador, dueño del proyecto VIDEOS-TXT "
     "(C:\\VIDEOS-TXT): un extractor de contenido URL -> Markdown/JSON con bot de "
     "Telegram y pipeline de video. "
     "Reglas del proyecto que debes respetar: nada inventado (todo dato sale de la "

@@ -35,7 +35,7 @@ def leer_cuadros(path, w=480, gray=True):
 
 
 def c_movimiento_pizarra(video, fps=30, umbral_px=8, umbral_frac=0.001, max_quieto_s=3.0):
-    """Movimiento para estilo pizarra (autorizado por el operador 19-oct): un cuadro «se mueve» si cambia al menos el 0.1 % de
+    """Movimiento para estilo pizarra (autorizado por operador 19-oct): un cuadro «se mueve» si cambia al menos el 0.1 % de
     sus píxeles en más de 8 niveles (a 480 px de ancho). El límite sigue siendo < 3 s quieto; solo cambia CÓMO se mide.
     Motivo: c_movimiento promedia el cuadro entero y no ve cambios locales (línea que se traza, auto que avanza), MF-011.
     Calibración (19-oct, fijada antes de corregir el video): congelado Knight 20 s, congelado pizarra 10 s y un punto de

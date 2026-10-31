@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Etapa 2: las respuestas de el operador se leen aunque Excel haya guardado la plantilla a su modo."""
+"""Etapa 2: las respuestas de operador se leen aunque Excel haya guardado la plantilla a su modo."""
 from __future__ import annotations
 
 import sys

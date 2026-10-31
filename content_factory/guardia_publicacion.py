@@ -3,7 +3,7 @@
 
 Etapa 1 (21-oct-2026): los scripts manuales, los botones viejos de Telegram y el panel de
 TikTok llaman a la API de la plataforma por su cuenta. Antes de subir, cada uno llama a
-`exigir`: si en `content.db` no hay una aprobacion VIGENTE de el operador para ESTE archivo
+`exigir`: si en `content.db` no hay una aprobacion VIGENTE de operador para ESTE archivo
 (por su SHA-256), ESTE texto, ESTE canal y ESTE horario, se lanza `PublicacionBloqueada`
 y no se sube nada.
 
@@ -17,7 +17,7 @@ from content_factory import db
 
 
 class PublicacionBloqueada(RuntimeError):
-    """No hay aprobacion vigente de el operador que cubra esta subida."""
+    """No hay aprobacion vigente de operador que cubra esta subida."""
 
 
 def exigir(ruta_mp4, texto: str, canal: str, *, en: str, programada_para: str | None = None,
@@ -46,7 +46,7 @@ def exigir(ruta_mp4, texto: str, canal: str, *, en: str, programada_para: str | 
         db.registrar_evento(conn, en, "subida BLOQUEADA por la compuerta (%s, sha256=%s): %s"
                             % (canal, sha, "; ".join(motivos) or "sin aprobacion vigente para este archivo"))
         raise PublicacionBloqueada(
-            "BLOQUEADO: %s no tiene aprobacion vigente de el operador para %s (sha256 %s...). %s"
+            "BLOQUEADO: %s no tiene aprobacion vigente de operador para %s (sha256 %s...). %s"
             % (ruta.name, canal, sha[:12], "; ".join(motivos)))
     finally:
         conn.close()

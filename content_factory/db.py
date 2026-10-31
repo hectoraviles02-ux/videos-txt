@@ -39,10 +39,10 @@ ESQUEMA_VERSION = 6   # v2: `piezas.pilar_decision`, el pilar que consumio la de
                       # v3: `senales.publicada_canonica`; fuera `ix_senales_ventana` (D-18 sustituida)
                       # v4: `publicaciones` +identificador_remoto/estado/detalle_error (distribucion
                       #     trazable). Migracion v3->v4 real (ALTER TABLE) preservando datos.
-                      # v5: tabla `aprobaciones` (aprobacion individual de el operador atada al
+                      # v5: tabla `aprobaciones` (aprobacion individual de operador atada al
                       #     SHA-256 del MP4 y del texto) + `publicaciones.programada_para` y
                       #     estado PROGRAMADA. Migracion v4->v5 aditiva (no inventa datos).
-                      # v6: la aprobacion solo nace de un CODIGO de un solo uso enviado a el operador
+                      # v6: la aprobacion solo nace de un CODIGO de un solo uso enviado a operador
                       #     por Telegram (tabla `codigos_aprobacion`) + `aprobaciones.origen` y
                       #     `comprobante_json`. Etapa 1: se acaba la aprobacion por frase guardada.
 
@@ -266,9 +266,9 @@ CREATE TABLE IF NOT EXISTS publicaciones (
   PRIMARY KEY (pieza_id, canal)
 );
 
--- v5: aprobacion INDIVIDUAL de el operador. Atada a la huella del MP4 y del texto: si
+-- v5: aprobacion INDIVIDUAL de operador. Atada a la huella del MP4 y del texto: si
 -- cualquiera cambia, la aprobacion se invalida (no se "actualiza"). Una sola
--- VIGENTE por pieza. `palabras` son las de el operador, textuales; sin ellas no hay fila.
+-- VIGENTE por pieza. `palabras` son las de operador, textuales; sin ellas no hay fila.
 CREATE TABLE IF NOT EXISTS aprobaciones (
   id                 INTEGER PRIMARY KEY,
   pieza_id           INTEGER NOT NULL REFERENCES piezas(id) ON DELETE CASCADE,
@@ -289,7 +289,7 @@ CREATE TABLE IF NOT EXISTS aprobaciones (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS ux_aprobacion_vigente ON aprobaciones(pieza_id) WHERE estado = 'VIGENTE';
 
--- v6: codigos de un solo uso. Se envian a el operador junto al video; se guarda solo la
+-- v6: codigos de un solo uso. Se envian a operador junto al video; se guarda solo la
 -- huella del codigo. Atado a pieza + SHA-256 del MP4 + usuario destinatario; caduca.
 CREATE TABLE IF NOT EXISTS codigos_aprobacion (
   id                    INTEGER PRIMARY KEY,
@@ -1026,7 +1026,7 @@ def actualizar_estado_publicacion(
         )
 
 
-# ─── v5 · Aprobacion individual de el operador (Fase A de la fabrica editorial) ──────────
+# ─── v5 · Aprobacion individual de operador (Fase A de la fabrica editorial) ──────────
 #
 # APROBADO no es un estado de `piezas` (el enum D-12 no se toca): es un HECHO en
 # `aprobaciones`, atado a la huella del MP4 y del texto. PROGRAMADO y PUBLICADO son
@@ -1036,7 +1036,7 @@ ESTADOS_APROBABLES = ("PRODUCIDA", "LISTA", "PUBLICADA")   # PUBLICADA: un canal
 
 
 class AprobacionInvalida(ValueError):
-    """Una aprobacion sin palabras de el operador, sin canales, sin texto o sin archivo."""
+    """Una aprobacion sin palabras de operador, sin canales, sin texto o sin archivo."""
 
 
 def sha256_archivo(ruta: Path | str) -> str:
@@ -1115,7 +1115,7 @@ def aprobar_pieza(
     comprobante: dict,
     programada_para: str | None = None,
 ) -> int:
-    """Registra la aprobacion de el operador. SOLO con el comprobante de un boton de Telegram.
+    """Registra la aprobacion de operador. SOLO con el comprobante de un boton de Telegram.
 
     `comprobante` = {'origen': 'telegram', 'codigo', 'user_id', 'chat_id', 'message_id'}.
     El codigo tiene que existir, ser de esta pieza, no estar usado ni caducado, haber
@@ -1184,7 +1184,7 @@ def aprobar_pieza(
              prog, palabras, otorgada_en, json.dumps(recibo, sort_keys=True)))
         conn.execute(
             "INSERT INTO eventos (pieza_id, de_estado, a_estado, en, detalle) VALUES (?, NULL, NULL, ?, ?)",
-            (pieza_id, otorgada_en, "aprobacion de el operador :: sha256_mp4=%s canales=%s "
+            (pieza_id, otorgada_en, "aprobacion de operador :: sha256_mp4=%s canales=%s "
              "programada_para=%s %s" % (sha, canales, prog, palabras)))
     return int(cur.lastrowid)
 
@@ -1220,7 +1220,7 @@ def verificar_aprobacion(
     ap = aprobacion_vigente(conn, pieza_id)
     if ap is None:
         return {"ok": False, "aprobacion": None,
-                "motivo": "la pieza %d no tiene aprobacion vigente de el operador" % pieza_id}
+                "motivo": "la pieza %d no tiene aprobacion vigente de operador" % pieza_id}
     aprobado = Path(ap["ruta_mp4"])
     actual = sha256_archivo(aprobado) if aprobado.is_file() else None
     if actual != ap["sha256_mp4"]:

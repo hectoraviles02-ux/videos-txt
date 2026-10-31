@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Guion de URL escrito por Claude (CLI `claude -p`), con el modelo local como respaldo — 22-oct-2026.
 
-Pedido de el operador: que el flujo de URL de Telegram tenga guiones de la calidad de los expedientes, y «si tú no
+Pedido de operador: que el flujo de URL de Telegram tenga guiones de la calidad de los expedientes, y «si tú no
 estás, que use el local». Medido el 22-oct: con el modelo local, 3 URL seguidas dieron 0 videos; en dos el gate
 de fidelidad encontró 0 frases respaldadas (el guion dramatiza e inventa: «un director técnico notó…»).
 

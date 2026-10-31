@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Vuelve a autorizar el canal de YouTube cuando el token caducó o fue revocado (22-oct-2026).
 
-Abre el navegador para que el operador inicie sesión con la cuenta del canal y acepte el MISMO permiso de siempre
-(solo subir videos). Respalda el token viejo antes de escribir el nuevo. Lo corre el operador, no un agente:
+Abre el navegador para que operador inicie sesión con la cuenta del canal y acepte el MISMO permiso de siempre
+(solo subir videos). Respalda el token viejo antes de escribir el nuevo. Lo corre operador, no un agente:
 requiere su contraseña. No imprime el token.
 
 Uso:  python scripts/reautorizar_youtube.py

@@ -22,7 +22,7 @@ no se republica.
 
 v5 (Fase A de la fabrica editorial):
   - COMPUERTA DE APROBACION: antes de llamar al canal se exige una aprobacion VIGENTE
-    de el operador que cubra el archivo, el texto, el canal y el horario QUE EL PUBLICADOR
+    de operador que cubra el archivo, el texto, el canal y el horario QUE EL PUBLICADOR
     DECLARA (atributos `ruta_mp4`, `texto`, `programada_para` del callable). Un
     publicador que no los declara se rechaza: no se puede verificar que sube.
   - PROGRAMADA != PUBLICADA: si el publicador programa, la fila queda PROGRAMADA y la
@@ -50,7 +50,7 @@ class PublicacionError(RuntimeError):
 
 
 class SinAprobacionValida(PublicacionError):
-    """No hay aprobacion vigente de el operador que cubra lo que el publicador va a subir."""
+    """No hay aprobacion vigente de operador que cubra lo que el publicador va a subir."""
 
 
 class RechazoDelCanal(RuntimeError):
@@ -195,7 +195,7 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
 
     `publicador`: callable sin argumentos que publica y devuelve {'video_id': ...}
     (o lanza). DEBE declarar `ruta_mp4` y `texto` (y `programada_para` si programa):
-    contra eso se verifica la aprobacion de el operador. Resultado: `ya_publicada |
+    contra eso se verifica la aprobacion de operador. Resultado: `ya_publicada |
     ya_programada | intento_sin_confirmar | reconciliada | programada_reconciliada |
     error_api | resultado_incierto | publicada | programada | publicado_pendiente_bd`.
     Sin aprobacion valida lanza `SinAprobacionValida` y NO llama al canal.
@@ -229,7 +229,7 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
                            identificador_remoto=reg.get("identificador_remoto"),
                            url=reg.get("url"), programada_para=reg.get("programada_para"))
 
-    # 2) COMPUERTA: aprobacion vigente de el operador para lo que el publicador va a subir.
+    # 2) COMPUERTA: aprobacion vigente de operador para lo que el publicador va a subir.
     _exigir_aprobacion(conn, pieza_id, publicador, canal, fecha)
 
     # 3) estado publicable (PUBLICADA: ya salio en otro canal; este es uno mas)

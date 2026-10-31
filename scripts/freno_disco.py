@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Freno de disco para la fábrica (el operador, 24-oct-2026: «sigue con freno»).
+"""Freno de disco para la fábrica (operador, 24-oct-2026: «sigue con freno»).
 
 El NVMe de C: (Harddisk0) registró 110 avisos «bloque defectuoso» el 24-oct a las 12:32. Este vigilante cuenta los
 avisos del disco 0 POSTERIORES a ese momento; si aparece uno solo, crea logs/DETENER_FABRICA (la fábrica termina la
@@ -44,7 +44,7 @@ def main() -> int:
         if n > 0:
             DETENER.write_text(f"freno_disco {datetime.now():%Y-%m-%d %H:%M:%S}: {n} avisos nuevos del disco 0\n",
                                encoding="utf-8")
-            # el operador, 24-oct 23:00: «detén la fábrica cuanto antes, sin esperar a terminar el render» → se termina el
+            # operador, 24-oct 23:00: «detén la fábrica cuanto antes, sin esperar a terminar el render» → se termina el
             # árbol de procesos de la fábrica (render y voz incluidos). El rescate y el bot no se tocan.
             subprocess.run(["powershell", "-NoProfile", "-Command",
                             "Get-CimInstance Win32_Process -Filter \"name='python.exe'\" | ? { $_.CommandLine -match "

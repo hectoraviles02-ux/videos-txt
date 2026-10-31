@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Manda a el operador por Telegram cada video de una pieza con su botón APROBAR (Etapa 4, 22-oct-2026).
+"""Manda a operador por Telegram cada video de una pieza con su botón APROBAR (Etapa 4, 22-oct-2026).
 
 Registra los videos de <carpeta>/publicacion.json en la cola real (content.db) y, por cada uno, envía el MP4
 tal cual y el texto completo que se publicaría, con [✅ APROBAR y publicar] y [🗑 No publicar].
-NO aprueba ni publica nada: eso solo pasa cuando el operador aprieta el botón (R27). El bot debe estar corriendo
+NO aprueba ni publica nada: eso solo pasa cuando operador aprieta el botón (R27). El bot debe estar corriendo
 (scripts/arrancar_bot.cmd) para atender el botón.
 
 Uso: python scripts/enviar_para_aprobar.py <carpeta_pieza> [formato ...]   (formato: largo_YT, corto_FB, ...)

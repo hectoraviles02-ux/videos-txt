@@ -11,7 +11,7 @@ NO es un motor nuevo: solo ENCADENA lo que ya existe.
   -> cronologia (solo fechas que aparecen literales en la cita) -> sondas falsas (tasa de aceptacion
   falsa) -> expediente/<caso>/expediente.json + EXPEDIENTE.md (10 secciones) + criterios A1-A9.
 
-Reglas (texto de Codex pegado por el operador el 22-oct):
+Reglas (texto de Codex pegado por operador el 22-oct):
 - Fidelidad y veracidad son DOS revisiones distintas: pasar la primera no sube la certeza.
 - Una cita textual del modelo no hace verdadera la afirmacion; una coincidencia textual no corrobora.
 - Wikipedia y blogs son PISTAS: nunca cuentan como fuente.

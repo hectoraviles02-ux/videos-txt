@@ -13,3 +13,16 @@ Ninguna credencial vive en el código. Todo se lee de variables de entorno (arch
 ## Qué no está aquí
 
 Este repositorio publica solo código y pruebas. No incluye originales descargados, extracciones de terceros, guiones, voces, videos, bases de datos ni registros de uso. Algunos módulos internos que mencionan casos o instituciones específicas se omitieron a propósito, así que ciertas importaciones pueden faltar.
+
+## Estado (31-oct-2026)
+
+Es una publicación parcial de un proyecto personal. Medido en esta copia: 650 pruebas pasan, 51 fallan y 35 dan error,
+casi todas porque faltan módulos internos omitidos (por ejemplo `telegram_bot/handlers.py`, `synthesis/gate_fidelidad.py`,
+`content_factory/topics/scorer.py`) o archivos de datos locales que no se publican. Lo que sí funciona solo:
+`scripts/foto_real/` (medios con licencia y motor de render), los extractores de `scripts/procesar_*.py` y la mayor parte de
+`content_factory/`. Algunos motores necesitan entornos aparte (Chatterbox para la voz, Blender para el expediente 3D).
+
+## Licencia
+
+MIT. Ver `LICENSE`. Las fotos y videos que el motor descarga conservan su propia licencia (Wikimedia Commons) y su crédito
+se muestra en pantalla.

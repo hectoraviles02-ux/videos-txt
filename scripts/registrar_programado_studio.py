@@ -5,7 +5,7 @@ Uso (después de ver la publicación con el reloj azul en Studio > Publicaciones
     python scripts/registrar_programado_studio.py <pieza_id> "AAAA-MM-DD HH:MM"
 
 No sube nada. Pasa por la misma compuerta que cualquier publicación: exige la aprobación VIGENTE
-de el operador (botón APROBAR de Telegram) para ese mismo MP4 y texto. Deja la fila PROGRAMADA en la BD y
+de operador (botón APROBAR de Telegram) para ese mismo MP4 y texto. Deja la fila PROGRAMADA en la BD y
 en el ledger, y después invalida la aprobación para que ningún script la vuelva a usar.
 """
 import sys

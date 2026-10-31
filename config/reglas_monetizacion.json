@@ -507,7 +507,7 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         },
         {
           "id": "tt_crp_seguidores",
@@ -522,7 +522,7 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         },
         {
           "id": "tt_crp_pais",
@@ -535,8 +535,8 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "nota": "Inclusión de México NO CONFIRMADA hasta que el operador revise TikTok Studio > Monetización.",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "nota": "Inclusión de México NO CONFIRMADA hasta que operador revise TikTok Studio > Monetización.",
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         },
         {
           "id": "tt_crp_cuenta_personal",
@@ -549,7 +549,7 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         },
         {
           "id": "tt_crp_sin_retroactivo",
@@ -562,7 +562,7 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         },
         {
           "id": "tt_crp_vistas_calificadas",
@@ -578,7 +578,7 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         }
       ],
       "reglas": [
@@ -850,7 +850,7 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         },
         {
           "id": "fb_presencia_30_dias",
@@ -867,7 +867,7 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         },
         {
           "id": "fb_pais_admitido",
@@ -880,8 +880,8 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "nota": "NO CONFIRMADO hasta que el operador revise el panel profesional > Monetización.",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "nota": "NO CONFIRMADO hasta que operador revise el panel profesional > Monetización.",
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         },
         {
           "id": "fb_umbrales_por_programa",
@@ -894,7 +894,7 @@
           },
           "fecha_revision": "2026-10-17",
           "vigencia": "actual",
-          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+          "estado_cuenta": "NO CONFIRMADO — operador revisa su panel"
         }
       ],
       "reglas": [

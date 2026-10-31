@@ -17,7 +17,7 @@ import pytest
 
 from content_factory import db, distribucion
 
-el operador = "0"
+operador = "0"
 EN = "2026-10-22T17:00:00-06:00"
 
 
@@ -87,9 +87,9 @@ class Plataforma:
         return self.publica, "lectura simulada"
 
 
-def _apretar(ab, conn, pid, data, plataforma, usuario=el operador, **kw):
+def _apretar(ab, conn, pid, data, plataforma, usuario=operador, **kw):
     _, p, codigo, t8 = data.split("|")
-    comp = {"origen": "telegram", "user_id": usuario, "chat_id": el operador, "message_id": "900"}
+    comp = {"origen": "telegram", "user_id": usuario, "chat_id": operador, "message_id": "900"}
     return ab.aprobar_y_publicar(conn, int(p), codigo=codigo, t8=t8, comprobante=comp, en=EN,
                                  construir=plataforma.construir, verificar=plataforma.verificar,
                                  legado=lambda *a: None, **kw)
@@ -97,7 +97,7 @@ def _apretar(ab, conn, pid, data, plataforma, usuario=el operador, **kw):
 
 def _enviar(ab, conn, pid):
     tg = Telegram()
-    r = ab.enviar_para_aprobar(conn, pid, destinatario=el operador, en=EN, telegram=tg)
+    r = ab.enviar_para_aprobar(conn, pid, destinatario=operador, en=EN, telegram=tg)
     assert r["ok"]
     return tg
 
@@ -135,7 +135,7 @@ def test_apretar_aprueba_publica_confirma_y_no_deja_aprobacion_reutilizable(ab, 
     assert db.obtener_publicacion(conn, pid, "youtube")["estado"] == db.PUB_CONFIRMADA
     assert db.aprobacion_vigente(conn, pid) is None                      # ya cumplió: no sirve para otra subida
     ap = conn.execute("SELECT * FROM aprobaciones WHERE pieza_id = ?", (pid,)).fetchone()
-    assert json.loads(ap["canales_json"]) == ["youtube"] and json.loads(ap["comprobante_json"])["user_id"] == el operador
+    assert json.loads(ap["canales_json"]) == ["youtube"] and json.loads(ap["comprobante_json"])["user_id"] == operador
 
 
 def test_el_mismo_boton_dos_veces_no_publica_dos_veces(ab, pieza):
@@ -203,7 +203,7 @@ def test_plataforma_desconectada_no_sube_y_permite_reintentar_sin_otra_aprobacio
     def caida(*a):
         raise ab.Desconectado("YouTube desconectado")
     r = ab.aprobar_y_publicar(conn, pid, codigo=tg.boton("✅").split("|")[2], t8=tg.boton("✅").split("|")[3],
-                              comprobante={"origen": "telegram", "user_id": el operador, "chat_id": el operador,
+                              comprobante={"origen": "telegram", "user_id": operador, "chat_id": operador,
                                            "message_id": "1"}, en=EN, construir=caida, legado=lambda *a: None)
     assert r["linea"].startswith("⛔ NO SE PUBLICÓ") and r["botones"] == "reintentar"
     assert db.obtener_publicacion(conn, pid, "youtube") is None
@@ -253,7 +253,7 @@ def _update(data, usuario, chat):
     q = _Q(data, usuario)
     up = types.SimpleNamespace(callback_query=q, effective_chat=types.SimpleNamespace(id=chat),
                                effective_user=types.SimpleNamespace(id=usuario))
-    ctx = types.SimpleNamespace(bot_data={"config": types.SimpleNamespace(allowed_chat_ids=[int(el operador)])})
+    ctx = types.SimpleNamespace(bot_data={"config": types.SimpleNamespace(allowed_chat_ids=[int(operador)])})
     return up, ctx, q
 
 
@@ -266,25 +266,25 @@ def test_manejador_rechaza_chat_no_autorizado_sin_tocar_nada(ab, monkeypatch):
 
 
 def test_manejador_quita_los_botones_antes_de_publicar_y_muestra_el_resultado(ab, monkeypatch):
-    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", el operador)
+    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", operador)
     monkeypatch.setattr(ab, "_en_hilo", lambda f, *a, **k: None if f is ab.aprobar else
                         {"linea": "✅ PUBLICADO Y CONFIRMADO en YouTube: x", "botones": None})
-    up, ctx, q = _update("ap|1|%s|abcdef12" % ("0" * 32), int(el operador), int(el operador))
+    up, ctx, q = _update("ap|1|%s|abcdef12" % ("0" * 32), int(operador), int(operador))
     asyncio.run(ab.on_callback(up, ctx))
     assert "APROBADO por ti (guardado)" in q.ediciones[0] and "Pendiente de publicación" in q.ediciones[0]
     assert "PUBLICADO Y CONFIRMADO" in q.ediciones[-1]
 
 
 def test_no_publicar_descarta(ab, monkeypatch):
-    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", el operador)
-    up, ctx, q = _update("an|1", int(el operador), int(el operador))
+    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", operador)
+    up, ctx, q = _update("an|1", int(operador), int(operador))
     asyncio.run(ab.on_callback(up, ctx))
     assert "DESCARTADO" in q.ediciones[-1]
 
 
 def test_callback_en_video_edita_caption_sin_publicar_al_rechazar(ab, monkeypatch):
-    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", el operador)
-    up, ctx, q = _update("an|1", int(el operador), int(el operador))
+    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", operador)
+    up, ctx, q = _update("an|1", int(operador), int(operador))
     q.message.text = None
     q.message.video = True
     q.message.caption = "Video pendiente"
@@ -303,7 +303,7 @@ def test_texto_largo_no_se_trunca_ni_envia_boton(ab, pieza):
     pub["descripcion"] = "x" * 4100
     p.write_text(json.dumps(pub), encoding="utf-8")
     tg = Telegram()
-    r = ab.enviar_para_aprobar(conn, ids["largo_YT"], destinatario=el operador, en=EN, telegram=tg)
+    r = ab.enviar_para_aprobar(conn, ids["largo_YT"], destinatario=operador, en=EN, telegram=tg)
     assert not r["ok"] and tg.envios == []
 
 
@@ -315,7 +315,7 @@ def test_entrada_del_ciclo_y_asistente_entrega_variantes_con_compuerta(ab, tmp_p
     monkeypatch.setattr(rr, "REELS_V2", tmp_path / "fb")
     monkeypatch.setattr(rr, "REELS_V2_YT", tmp_path / "yt")
     monkeypatch.setattr(db, "RUTA_PRODUCCION", tmp_path / "cola.db")
-    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", el operador)
+    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", operador)
     monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_BOT_TOKEN", "simulado")
     (tmp_path / "_banco.json").write_text(json.dumps([
         {"id": "e1", "titulo": "Prueba", "narracion": "Explicación"}]), encoding="utf-8")
@@ -405,11 +405,11 @@ def test_tiktok_sin_compuerta_no_sube(tmp_path, monkeypatch):
 
 def test_respuesta_vencida_no_pierde_la_aprobacion(ab, monkeypatch):
     """Caso real 08:01: Telegram contestó «Query is too old» y la aprobación se perdía."""
-    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", el operador)
+    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", operador)
     hechas = []
     monkeypatch.setattr(ab, "_en_hilo", lambda f, *a, **k: None if f is ab.aprobar else
                         hechas.append(a) or {"linea": "✅ PUBLICADO", "botones": None})
-    up, ctx, q = _update("ap|188|%s|abcdef12" % ("0" * 32), int(el operador), int(el operador))
+    up, ctx, q = _update("ap|188|%s|abcdef12" % ("0" * 32), int(operador), int(operador))
 
     async def vencida(*a, **k):
         raise RuntimeError("Query is too old and response timeout expired or query id is invalid")
@@ -419,7 +419,7 @@ def test_respuesta_vencida_no_pierde_la_aprobacion(ab, monkeypatch):
 
 
 def test_doble_toque_simultaneo_procesa_una_sola_vez(ab, monkeypatch):
-    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", el operador)
+    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", operador)
     hechas = []
 
     def lento(f, *a, **k):
@@ -430,8 +430,8 @@ def test_doble_toque_simultaneo_procesa_una_sola_vez(ab, monkeypatch):
         hechas.append(a)
         return {"linea": "✅ PUBLICADO", "botones": None}
     monkeypatch.setattr(ab, "_en_hilo", lento)
-    up1, ctx, q1 = _update("ap|5|%s|abcdef12" % ("0" * 32), int(el operador), int(el operador))
-    up2, _, q2 = _update("ap|5|%s|abcdef12" % ("0" * 32), int(el operador), int(el operador))
+    up1, ctx, q1 = _update("ap|5|%s|abcdef12" % ("0" * 32), int(operador), int(operador))
+    up2, _, q2 = _update("ap|5|%s|abcdef12" % ("0" * 32), int(operador), int(operador))
 
     async def ambos():
         await asyncio.gather(ab.on_callback(up1, ctx), ab.on_callback(up2, ctx))
@@ -440,7 +440,7 @@ def test_doble_toque_simultaneo_procesa_una_sola_vez(ab, monkeypatch):
 
 
 def test_botones_de_piezas_distintas_contestan_al_instante_y_publican_de_una_en_una(ab, monkeypatch):
-    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", el operador)
+    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", operador)
     import threading
     import time as _t
     activos, maximo, contestado = [0], [0], {}
@@ -457,7 +457,7 @@ def test_botones_de_piezas_distintas_contestan_al_instante_y_publican_de_una_en_
             activos[0] -= 1
         return {"linea": "✅ PUBLICADO", "botones": None}
     monkeypatch.setattr(ab, "_en_hilo", publica)
-    ups = [_update("ap|%d|%s|abcdef12" % (p, "0" * 32), int(el operador), int(el operador)) for p in (11, 12, 13)]
+    ups = [_update("ap|%d|%s|abcdef12" % (p, "0" * 32), int(operador), int(operador)) for p in (11, 12, 13)]
     for p, (_, _, q) in zip((11, 12, 13), ups):
         async def ans(*a, _p=p, **k):
             contestado[_p] = _t.perf_counter()
@@ -501,11 +501,11 @@ def test_el_mismo_codigo_en_dos_hilos_a_la_vez_publica_una_sola_vez(ab, pieza, t
 # ── 23-oct-2026 (2.ª revisión de Codex): la decisión se guarda ANTES de tocar el mensaje ──
 
 def test_la_decision_se_guarda_aunque_falle_editar_el_mensaje(ab, monkeypatch):
-    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", el operador)
+    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", operador)
     orden = []
     monkeypatch.setattr(ab, "_en_hilo", lambda f, *a, **k: orden.append(f.__name__) or (
         None if f is ab.aprobar else {"linea": "✅ PUBLICADO", "botones": None}))
-    up, ctx, q = _update("ap|9|%s|abcdef12" % ("0" * 32), int(el operador), int(el operador))
+    up, ctx, q = _update("ap|9|%s|abcdef12" % ("0" * 32), int(operador), int(operador))
 
     async def falla(*a, **k):
         raise RuntimeError("Message is not modified / red caída")
@@ -515,8 +515,8 @@ def test_la_decision_se_guarda_aunque_falle_editar_el_mensaje(ab, monkeypatch):
 
 
 def test_aprobado_se_muestra_solo_despues_de_guardar(ab, monkeypatch):
-    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", el operador)
-    up, ctx, q = _update("ap|9|%s|abcdef12" % ("0" * 32), int(el operador), int(el operador))
+    monkeypatch.setenv("VIDEOS_TXT_TELEGRAM_CHAT_ID", operador)
+    up, ctx, q = _update("ap|9|%s|abcdef12" % ("0" * 32), int(operador), int(operador))
     visto = []
 
     def en_hilo(f, *a, **k):
@@ -537,7 +537,7 @@ def test_reinicio_esperando_turno_deja_la_aprobacion_guardada_y_el_boton_de_rein
     pid = ids["largo_YT"]
     data = _enviar(ab, conn, pid).boton("✅")
     _, p, codigo, t8 = data.split("|")
-    comp = {"origen": "telegram", "user_id": el operador, "chat_id": el operador, "message_id": "900"}
+    comp = {"origen": "telegram", "user_id": operador, "chat_id": operador, "message_id": "900"}
     assert ab.aprobar(conn, pid, codigo=codigo, t8=t8, comprobante=comp, en=EN) is None
     # aquí «se reinicia» el bot: no hubo publicación
     assert db.aprobacion_vigente(conn, pid) is not None and db.obtener_publicacion(conn, pid, "youtube") is None

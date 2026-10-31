@@ -159,7 +159,7 @@ def preparar_para_locucion(texto: str) -> str:
     return t
 
 
-# ── LÉXICO DE PRONUNCIACIÓN (el operador, 15-oct-2026: «sigue diciendo pitón, no páiton») ──────────
+# ── LÉXICO DE PRONUNCIACIÓN (operador, 15-oct-2026: «sigue diciendo pitón, no páiton») ──────────
 # La voz en español lee las palabras en inglés como si fueran españolas. Aquí se escribe CÓMO DEBE
 # SONAR; el texto en pantalla (subtítulos, tarjetas) no pasa por aquí y sigue diciendo «Python».
 LEXICO = {
@@ -169,7 +169,7 @@ LEXICO = {
     "knight capital": "Náit Cápital",
     "knight": "Náit",
     "sec": "ese e ce",
-    "hackeo": "jakeo",  # Knight b1: la voz leyó «aqueo» (h muda), el operador 15-oct
+    "hackeo": "jakeo",  # Knight b1: la voz leyó «aqueo» (h muda), operador 15-oct
     # Expediente 03 (GitLab, 15-oct-2026)
     "pg_dump": "pe ge dump",
     "gitlab": "Guit Lab",

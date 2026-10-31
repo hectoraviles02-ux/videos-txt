@@ -32,7 +32,7 @@ def caso(tmp_path):
     conn.close()
 
 
-def test_sin_aprobacion_de_el operador_la_ruta_automatica_no_publica(caso):
+def test_sin_aprobacion_de_operador_la_ruta_automatica_no_publica(caso):
     # Etapa 1: antes esta prueba demostraba que la frase guardada autorizaba publicar.
     conn, pid, *_, llamadas, run = caso
     with pytest.raises(dist.SinAprobacionValida):
@@ -41,7 +41,7 @@ def test_sin_aprobacion_de_el operador_la_ruta_automatica_no_publica(caso):
     assert conn.execute("SELECT COUNT(*) FROM aprobaciones").fetchone()[0] == 0
 
 
-def test_con_aprobacion_de_el operador_publica_una_vez(caso):
+def test_con_aprobacion_de_operador_publica_una_vez(caso):
     conn, pid, video, pub, *_, llamadas, run = caso
     aprobar_como_telegram(conn, pid, ruta_mp4=video, texto=pub.texto, canales=["facebook"])
     assert run()["resultado"] == "publicada"

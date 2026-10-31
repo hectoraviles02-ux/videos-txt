@@ -41,7 +41,7 @@ def construir_publicador(*, mp4_path, caption, page_id, token, publicar_uno=None
     publicador existente, sin duplicar su logica.
 
     v5: el callable DECLARA `ruta_mp4`, `texto` y `programada_para` (ISO con zona).
-    `distribucion.publicar_pieza` verifica la aprobacion de el operador contra ESOS valores,
+    `distribucion.publicar_pieza` verifica la aprobacion de operador contra ESOS valores,
     que son los mismos que el callable sube.
     """
     pu = publicar_uno if publicar_uno is not None else cargar_publicar_uno()

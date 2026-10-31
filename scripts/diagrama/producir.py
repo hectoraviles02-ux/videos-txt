@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Motor «diagrama» — orquestador (23-oct-2026). el operador pidió que sus enlaces de Telegram salgan con el estilo del
+"""Motor «diagrama» — orquestador (23-oct-2026). operador pidió que sus enlaces de Telegram salgan con el estilo del
 video de PHP (diagramas que explican + voz Chatterbox), no con tomas de banco: «ya lo hubieras terminado».
 
 producir(storyboard, fuente, carpeta) — storyboard YA aprobado por la revisión de hechos del bot:

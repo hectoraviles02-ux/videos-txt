@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Escritor de guiones de pizarra (tipo garrafón) — el operador, 24-oct-2026: «no estamos solo en Python, también los tipo
+"""Escritor de guiones de pizarra (tipo garrafón) — operador, 24-oct-2026: «no estamos solo en Python, también los tipo
 garrafón». Precedente: docs/operations/PARRILLA_LINEAS_CALIDAD_DISTRIBUCION_20261023.md, paso 1 («llenar la cola de
 pizarra con un escritor automático»).
 
@@ -46,7 +46,7 @@ HUECO_MAX_S = 3.2              # con tiempos SIMULADOS: el garrafón aprobado da
 ESCENAS, CENTROS = {"precio", "taza", "tanque"}, {"grafica", "barras"}
 
 TEMAS = [
-    # 24-oct, más simples y de bolsillo (el operador: «más simples para la raza»); van primero
+    # 24-oct, más simples y de bolsillo (operador: «más simples para la raza»); van primero
     ("cargador-conectado", "¿Cuánto te cuesta dejar el cargador conectado todo el día? (escena precio; potencia y tarifa SUPUESTAS)"),
     ("garrafon-o-filtro", "¿Te conviene comprar garrafones o un filtro? (escena precio; barras; precios SUPUESTOS)"),
     ("tanda-o-ahorro", "¿Tanda o ahorro? Las cuentas de juntar dinero (escena precio; barras; montos SUPUESTOS)"),

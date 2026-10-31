@@ -8,11 +8,11 @@ Clase POSITIVA = la narracion esta MAL (dice algo que el codigo o la salida real
 Ninguna prediccion del modelo se usa como etiqueta. Las etiquetas salen solo de:
   - el banco (`narracion_llm_descartada` / `narracion` con su `nota_revision` del 14-oct;
     autor NO confirmado), y
-  - las respuestas de el operador a su paquete de validacion (`etiquetas_el operador.csv`).
+  - las respuestas de operador a su paquete de validacion (`etiquetas_operador.csv`).
 
 Uso:
   python scripts/medir_juez.py correr     -> corre juez y verificador sobre todos los casos (reanudable)
-  python scripts/medir_juez.py paquete    -> arma el paquete para el operador (sin mostrarle el veredicto)
+  python scripts/medir_juez.py paquete    -> arma el paquete para operador (sin mostrarle el veredicto)
   python scripts/medir_juez.py metricas   -> matrices de confusion con las etiquetas disponibles
 """
 from __future__ import annotations
@@ -30,8 +30,8 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "scripts"))
 EVID = REPO / "docs/operations/evidencia/etapa2_calidad_juez_20261021"
 CORRIDAS = EVID / "10_corridas_juez.jsonl"
-PAQUETE = EVID / "20_paquete_validacion_el operador.md"
-PLANTILLA = EVID / "21_etiquetas_el operador.csv"
+PAQUETE = EVID / "20_paquete_validacion_operador.md"
+PLANTILLA = EVID / "21_etiquetas_operador.csv"
 CLAVES = EVID / "22_claves_paquete.json"
 REPETICIONES_ETIQUETADOS = 3
 
@@ -114,7 +114,7 @@ def _corridas() -> dict:
 
 
 def paquete(minimo: int = 30, semilla: int = 20261021) -> int:
-    """Paquete CIEGO para el operador: narracion junto a la salida real, sin el veredicto del juez.
+    """Paquete CIEGO para operador: narracion junto a la salida real, sin el veredicto del juez.
 
     Seleccion estratificada (para que haya casos de todos los tipos): las 8 con etiqueta del banco
     (para confirmarlas), todas las que el juez rechazo, todas las que el verificador marco, y el
@@ -145,7 +145,7 @@ def paquete(minimo: int = 30, semilla: int = 20261021) -> int:
               "- **MAL**: la voz dice un resultado, un número o un hecho que la salida real contradice.",
               "- **NO SÉ**: la voz habla de lo que hace el código por dentro y la salida no alcanza para saberlo.",
               "", "No se muestra lo que opinó el juez: así tu respuesta no se contagia.",
-              "Contesta en `21_etiquetas_el operador.csv` (columna `tu_respuesta`) o por Telegram así: `07 MAL`.", ""]
+              "Contesta en `21_etiquetas_operador.csv` (columna `tu_respuesta`) o por Telegram así: `07 MAL`.", ""]
     with PLANTILLA.open("w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
         w.writerow(["numero", "titulo", "tu_respuesta (BIEN / MAL / NO SE)", "comentario"])
@@ -208,8 +208,8 @@ def leer_respuestas(ruta: Path, claves: dict) -> dict:
     return salida
 
 
-def _etiquetas_el operador() -> dict:
-    """Respuestas de el operador, si ya existen. NO SE y vacio no son etiqueta (se cuentan aparte)."""
+def _etiquetas_operador() -> dict:
+    """Respuestas de operador, si ya existen. NO SE y vacio no son etiqueta (se cuentan aparte)."""
     if not (PLANTILLA.is_file() and CLAVES.is_file()):
         return {"etiquetas": {}, "no_se": 0, "vacias": 0, "no_reconocidas": [], "filas": 0}
     return leer_respuestas(PLANTILLA, json.loads(CLAVES.read_text(encoding="utf-8"))["claves"])
@@ -227,13 +227,13 @@ def _desplegado(juez: str, mate: str) -> str:
 def metricas() -> int:
     por_caso = _corridas()
     todos = {c["caso"]: c for c in casos()}
-    lectura = _etiquetas_el operador()
-    el operador = lectura["etiquetas"]
+    lectura = _etiquetas_operador()
+    operador = lectura["etiquetas"]
     fuentes = {"banco_14oct (autor no confirmado)": {k: c["etiqueta"] for k, c in todos.items() if c["etiqueta"]},
-               "el operador": el operador}
+               "operador": operador}
     informe = {"clase_positiva": "narracion MAL", "fuentes": {},
-               "lectura_csv_el operador": {k: v for k, v in lectura.items() if k != "etiquetas"} |
-                                     {"etiquetas_validas": len(el operador)}}
+               "lectura_csv_operador": {k: v for k, v in lectura.items() if k != "etiquetas"} |
+                                     {"etiquetas_validas": len(operador)}}
     for nombre, etiquetas in fuentes.items():
         if not etiquetas:
             informe["fuentes"][nombre] = "sin etiquetas todavia"
@@ -280,7 +280,7 @@ def metricas() -> int:
         informe["fuentes"][nombre] = bloque
     seg = [r["juez"]["segundos"] for rs in por_caso.values() for r in rs]
     informe["sin_etiqueta"] = {
-        "casos": sum(1 for k in por_caso if not todos.get(k, {}).get("etiqueta") and k not in el operador),
+        "casos": sum(1 for k in por_caso if not todos.get(k, {}).get("etiqueta") and k not in operador),
         "juez_rechaza": sum(1 for k, rs in por_caso.items() if not todos[k]["etiqueta"] and rs[0]["juez"]["veredicto"] == "FALLA"),
         "verificador": dict(Counter(rs[0]["matematica"]["veredicto"] for k, rs in por_caso.items() if not todos[k]["etiqueta"])),
         "juez_caido": sum(1 for rs in por_caso.values() for r in rs if r["juez"].get("juez_caido"))}

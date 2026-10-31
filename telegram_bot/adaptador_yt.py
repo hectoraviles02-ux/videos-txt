@@ -22,7 +22,7 @@ def _ruta_bd_compuerta():
 
 
 def _compuerta(ruta, texto, canal, programada_para=None):
-    """Etapa 1 (21-oct-2026): no se sube nada sin aprobacion vigente de el operador en la cola
+    """Etapa 1 (21-oct-2026): no se sube nada sin aprobacion vigente de operador en la cola
     (SHA-256 del archivo + texto + canal + horario). Lanza PublicacionBloqueada."""
     import sys as _sys
     from datetime import datetime as _dt

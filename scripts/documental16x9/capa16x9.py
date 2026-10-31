@@ -4,7 +4,7 @@
 Hermana de scripts/expediente3d/capa_expediente3d.py (vertical, sin tocar). Fijo en todo el video:
   · arriba-izq. logo AVIL·ES · arriba-der. «CAP. N · TÍTULO» · barra de avance
   · abajo: subtítulos karaoke (palabras de la voz verificada) · «Fuente: …» del beat · firma @avil.es
-Sin cuadrícula (el operador, 14-oct) y sin «Comenta …» (ADECUACION B10).
+Sin cuadrícula (operador, 14-oct) y sin «Comenta …» (ADECUACION B10).
 Tarjetas por beat (guion.json → beat.tarjeta):
   {"tipo": "dato", "cifra": "2.29 s", "texto": "...", "palabra": "segundos", "lado": "izq"}
   {"tipo": "matriz", "filas": [2, 3, 4], "palabras": ["GitLab", …]}   ← demos/salidas/matriz_patron.json

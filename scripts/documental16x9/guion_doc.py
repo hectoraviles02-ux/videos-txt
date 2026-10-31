@@ -69,7 +69,7 @@ def escribir(g: dict, d: Path, ritmo: float = 2.70) -> dict:
     r = g["resumen"]
     md = ["# %s — guion" % g["titulo"], "",
           "Generado por `%s` (no editar a mano: se edita el constructor y se vuelve a correr)." % g.get("constructor", ""),
-          "", "**Estado:** GUION para aprobación de el operador. Sin voz completa, sin render completo, sin publicar.",
+          "", "**Estado:** GUION para aprobación de operador. Sin voz completa, sin render completo, sin publicar.",
           "**Formato:** %s · **Ritmo de estimación:** %.2f palabras/s (medido 2.64–2.77, pausas incluidas)." % (g.get("formato", ""), ritmo),
           "**Total estimado:** %s (%d palabras narradas%s)." % (r["minutaje_total"], r["palabras"],
                                                                 "; incluye tiempo reservado sin texto" if any("seg_reservados" in b for b in g["beats"]) else ""),

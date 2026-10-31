@@ -1,4 +1,4 @@
-# Arranque al iniciar sesion (el operador, 23-oct-2026: «que arranque de inicio»). No es tarea programada:
+# Arranque al iniciar sesion (operador, 23-oct-2026: «que arranque de inicio»). No es tarea programada:
 # lo lanza un acceso en la carpeta Inicio de Windows. Levanta Ollama, el bot y la fabrica si no estan ya corriendo.
 # La fabrica solo produce de 19:00 a 07:00 (HORARIO_FABRICA en scripts\fabrica_continua.py); fuera de horario espera.
 $log = "C:\VIDEOS-TXT\logs\arranque_inicio.log"

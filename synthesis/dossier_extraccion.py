@@ -5,7 +5,7 @@ Motivo (medido 2026-10-13): qwen 14B, con la nota completa en una sola llamada, 
 los que 3 pasaron la validación, y omitió 5 de 10 hechos centrales (incluido el 2,9 % / 3,45 % /
 3,9 %, el centro de la nota).
 
-Diseño (GO de el operador, 13-oct):
+Diseño (GO de operador, 13-oct):
 1. La fuente se divide en BLOQUES de oraciones; cada oración guarda su posición exacta.
 2. INVENTARIO determinista por bloque: cifras (números, %, fechas) y nombres propios.
 3. Por bloque, el LLM devuelve claims atómicos (cita mínima, sujeto, tipo, atribuido_a) y un

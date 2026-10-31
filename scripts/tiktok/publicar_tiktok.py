@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """Publicador de TikTok (Content Posting API, app «AVILES Publicador», 17-oct-2026).
 
-  python publicar_tiktok.py autorizar            # una vez: abre el navegador, el operador acepta, guarda token.json
+  python publicar_tiktok.py autorizar            # una vez: abre el navegador, operador acepta, guarda token.json
   python publicar_tiktok.py info                 # qué opciones de privacidad permite TikTok a esta cuenta
   python publicar_tiktok.py subir --id e92 --file <mp4> --titulo "..." [--borrador]
 
 - Credenciales: TIKTOK_CLIENT_KEY / TIKTOK_CLIENT_SECRET en C:\\VIDEOS-TXT\\.env (nunca se imprimen).
 - Token del usuario: docs/operations/evidencia/publicacion_tiktok_20261017/token.json (gitignored: **/token.json).
 - Mientras la app NO esté auditada, TikTok solo permite publicar en privado (SELF_ONLY); `--borrador` manda
-  el video a la bandeja de TikTok para que el operador lo publique desde el celular.
+  el video a la bandeja de TikTok para que operador lo publique desde el celular.
 - Idempotente por --id en _tiktok_publicados.json (no re-sube). NO se publica nada sin orden explícita."""
 from __future__ import annotations
 
@@ -130,7 +130,7 @@ def _ruta_bd_compuerta():
 
 
 def _compuerta(ruta, texto, canal, programada_para=None):
-    """Etapa 1 (21-oct-2026): no se sube nada sin aprobacion vigente de el operador en la cola
+    """Etapa 1 (21-oct-2026): no se sube nada sin aprobacion vigente de operador en la cola
     (SHA-256 del archivo + texto + canal + horario). Lanza PublicacionBloqueada."""
     import sys as _sys
     from datetime import datetime as _dt

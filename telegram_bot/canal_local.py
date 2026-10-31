@@ -43,7 +43,7 @@ LIMITE_TELEGRAM = 4000
 MAX_TURNOS = 12  # cuantos pares pregunta/respuesta se conservan por chat
 
 SISTEMA = (
-    "Sos el asistente del proyecto VIDEOS-TXT, que corre en la maquina de el operador. "
+    "Sos el asistente del proyecto VIDEOS-TXT, que corre en la maquina de operador. "
     "El proyecto recibe links y archivos por Telegram, extrae su contenido a texto, "
     "genera un guion y produce un video.\n\n"
     "REGLAS QUE NO SE NEGOCIAN:\n"

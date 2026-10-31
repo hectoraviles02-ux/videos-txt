@@ -37,7 +37,7 @@ CENTENAS = {"cien": 100, "ciento": 100, "doscientos": 200, "doscientas": 200, "t
 MULTIPLICADORES = {"mil": 1000, "millon": 1_000_000, "millones": 1_000_000}
 
 # Verbos y sustantivos con los que la voz atribuye un resultado a la ejecucion. Ampliada el
-# 21-oct tras la revision de el operador («La salida es cinco», «El programa calcula cinco» solo
+# 21-oct tras la revision de operador («La salida es cinco», «El programa calcula cinco» solo
 # daban AVISO); cada palabra nueva se midio contra las 101 narraciones reales del banco.
 VERBOS_RESULTADO = {"da", "dan", "dara", "daria", "devuelve", "devuelven", "regresa", "regresan",
                     "retorna", "retornan", "imprime", "imprimen", "muestra", "muestran", "sale",

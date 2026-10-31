@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Fábrica continua de VIDEOS-TXT — pedido de el operador (22-oct-2026): «la máquina de videos nunca debe estar
+"""Fábrica continua de VIDEOS-TXT — pedido de operador (22-oct-2026): «la máquina de videos nunca debe estar
 quieta y eso debe vivir en código»; las URL que él manda por Telegram tienen PRIORIDAD; se intercalan
 Python, matemáticas e investigación.
 
@@ -9,7 +9,7 @@ No es un motor nuevo: solo decide QUÉ producir y llama a lo que ya existe.
   investigacion -> scripts/producir_pieza.py sobre un expediente en cola (guiones/expedientes/<pieza>/ con APROBADO)
 Todo termina en Telegram para revisión. NADA se publica solo (R27: solo el botón APROBAR publica).
 
-Prioridad de el operador: mientras el bot tenga una URL en curso (bitácora con PENDIENTE sin cierre) o la fábrica
+Prioridad de operador: mientras el bot tenga una URL en curso (bitácora con PENDIENTE sin cierre) o la fábrica
 esté ocupada, esta fábrica espera. Entre pieza y pieza suelta el candado.
 Rotación: ROTACION abajo. Si no hay guion en cola para matemáticas o investigación, hace Python: nunca queda quieta.
 Detener: crear logs/DETENER_FABRICA (termina al acabar la pieza en curso) o cerrar el proceso.
@@ -39,23 +39,23 @@ ESTADO = REPO / "logs" / "fabrica_continua_estado.json"
 DETENER = REPO / "logs" / "DETENER_FABRICA"
 BITACORA = REPO / "logs" / "bitacora.jsonl"
 PAUSA_ENTRE_PIEZAS_S = 45
-# el operador, 24-oct: «no estamos solo en Python» → matemáticas (pizarra) cada tercer turno; la cola la llena
+# operador, 24-oct: «no estamos solo en Python» → matemáticas (pizarra) cada tercer turno; la cola la llena
 # scripts/pizarra/escritor.py. Si no hay guion en cola, hace Python (nunca queda quieta).
 ROTACION = ["python", "python", "matematicas", "python", "python", "python", "python", "matematicas", "python",
             "python"]   # 80 % Python (60 principiante + 20 real) · 20 % matemáticas; expedientes en pausa (disco C:)
-# Un expediente 3D tiene la fábrica HORAS (render Blender). Solo de madrugada, para no bloquear las URL de el operador.
+# Un expediente 3D tiene la fábrica HORAS (render Blender). Solo de madrugada, para no bloquear las URL de operador.
 VENTANA_RENDER_LARGO = (0, 7)      # de 00:00 a 06:59
-HORARIO_FABRICA = (19, 7)          # el operador, 23-oct: la fábrica produce de 19:00 a 06:59; de día espera
+HORARIO_FABRICA = (19, 7)          # operador, 23-oct: la fábrica produce de 19:00 a 06:59; de día espera
 
 
 def en_horario(h: int) -> bool:
     ini, fin = HORARIO_FABRICA
     return ini <= h or h < fin if ini > fin else ini <= h < fin
 
-# el operador, 24-oct: «menos matemáticos, más simples para la raza». Medido en TikTok Studio (24-oct): retos básicos del
+# operador, 24-oct: «menos matemáticos, más simples para la raza». Medido en TikTok Studio (24-oct): retos básicos del
 # 18–21 oct (for, if, tabla de multiplicar) mediana 192 vistas; avanzados del 22–24 oct (coseno, SHA-256) mediana 13.
 # Estos van PRIMERO, en nivel principiante y con ejemplo de la vida diaria.
-# Experimento de 14 días (el operador, 24-oct): 60 % Python principiante · 20 % Python de problemas reales · 20 % matemáticas
+# Experimento de 14 días (operador, 24-oct): 60 % Python principiante · 20 % Python de problemas reales · 20 % matemáticas
 # de bolsillo (pizarra). Cada pieza se mide a las 72 h (retención, compartidos, seguidores). Python: 3 principiante : 1 real.
 PRINCIPIANTE = [
     "adivina el número: el programa piensa un número y da pistas",
@@ -180,7 +180,7 @@ def _guardar(est: dict) -> None:
     tmp.replace(ESTADO)
 
 
-# ── prioridad de el operador ───────────────────────────────────────────────────
+# ── prioridad de operador ───────────────────────────────────────────────────
 def url_en_curso(ahora: datetime | None = None, ventana_min: int = 45) -> str | None:
     """URL que el bot recibió y todavía no cierra (PENDIENTE sin OK/ERROR después), dentro de la ventana."""
     if not BITACORA.is_file():
@@ -206,7 +206,7 @@ def url_en_curso(ahora: datetime | None = None, ventana_min: int = 45) -> str | 
 
 
 def esperar_turno() -> bool:
-    """Espera mientras el operador tenga una URL en curso o la fábrica esté ocupada. False si piden detener."""
+    """Espera mientras operador tenga una URL en curso o la fábrica esté ocupada. False si piden detener."""
     avisado = False
     while True:
         if DETENER.exists():
@@ -221,14 +221,14 @@ def esperar_turno() -> bool:
         if not u and not candado.ocupado():
             return True
         if avisado is not True:
-            log("ESPERO: %s" % ("URL de el operador en curso: " + u[:80] if u else "fábrica ocupada: " + candado.quien()))
+            log("ESPERO: %s" % ("URL de operador en curso: " + u[:80] if u else "fábrica ocupada: " + candado.quien()))
             avisado = True
         time.sleep(20)
 
 
 # ── cola de guiones (matemáticas e investigación) ─────────────────────────
 def en_cola(serie: str) -> Path | None:
-    """Primera pieza con guion.json listo y sin entrega. Expedientes exigen APROBADO (el operador aprobó el look)."""
+    """Primera pieza con guion.json listo y sin entrega. Expedientes exigen APROBADO (operador aprobó el look)."""
     base = REPO / "guiones" / serie
     for d in sorted(p for p in base.glob("*") if p.is_dir()):
         if not (d / "guion.json").is_file() or (d / "NO_PRODUCIR").exists():

@@ -3,14 +3,14 @@
 
 Es el ÚNICO módulo, fuera de content_factory/db.py, que emite y gasta códigos de aprobación
 (tests/test_etapa1_compuerta.py lo nombra en su lista). La regla R27 sigue igual: una aprobación
-solo nace de que el operador apriete el botón; aquí nada aprueba por él.
+solo nace de que operador apriete el botón; aquí nada aprueba por él.
 
 Recorrido de un video:
   1. `registrar`: cada MP4 de <pieza>/publicacion.json es una pieza de la cola (una por archivo:
      la aprobación queda atada a la huella de UN archivo, y YouTube y Facebook llevan música distinta).
   2. `enviar_para_aprobar`: emite el código de un solo uso, manda el texto completo y después
      el MP4 como video reproducible con botones. El archivo local original se conserva para publicar.
-  3. el operador aprieta APROBAR → `on_callback` → `aprobar_y_publicar`:
+  3. operador aprieta APROBAR → `on_callback` → `aprobar_y_publicar`:
      texto igual al que vio → `db.aprobar_pieza` (gasta el código) → `distribucion.publicar_pieza`
      (reconciliar-o-saltar, compuerta, ledger) → lectura de la plataforma → mensaje con el estado:
      APROBADO · PUBLICANDO · PUBLICADO Y CONFIRMADO · SUBIDO, PENDIENTE DE VERIFICAR · INCIERTO.
@@ -68,7 +68,7 @@ def registrar(conn, carpeta: Path, *, en: str) -> list[tuple[int, dict]]:
     tema_id = db.upsert_tema(conn, {
         "hash_titulo": db.sha256_texto("expediente|%s" % carpeta.name), "titulo": pub["tema"],
         "pilar": pub.get("pilar", "SIN_PILAR"), "intent": "educativo", "creado_en": en[:10],
-        "estado": "ENCARGO_el operador", "metodo_clasificacion": "encargo_manual",
+        "estado": "ENCARGO_operador", "metodo_clasificacion": "encargo_manual",
         "evidencia": [{"origen": pub.get("origen", "motor_expediente3d"), "carpeta": str(carpeta)}]})
     salida = []
     for v in pub["videos"]:
@@ -94,7 +94,7 @@ def localizar(conn, pieza_id: int) -> tuple[Path, dict, dict]:
     return carpeta, pub, video
 
 
-# ── 2. envío a el operador con los botones ──────────────────────────────────────────
+# ── 2. envío a operador con los botones ──────────────────────────────────────────
 
 def _telegram(metodo: str, data: dict, archivo: Path | None = None) -> dict:
     import requests
@@ -108,7 +108,7 @@ def _telegram(metodo: str, data: dict, archivo: Path | None = None) -> dict:
 
 
 def teclado(pieza_id: int, codigo: str, texto: str, canal: str) -> dict:
-    t8 = db.sha256_texto(texto)[:8]     # el botón también ata el TEXTO que el operador está viendo
+    t8 = db.sha256_texto(texto)[:8]     # el botón también ata el TEXTO que operador está viendo
     return {"inline_keyboard": [
         [{"text": "✅ APROBAR y publicar en %s" % NOMBRE[canal], "callback_data": "ap|%d|%s|%s" % (pieza_id, codigo, t8)}],
         [{"text": "🗑 No publicar", "callback_data": "an|%d" % pieza_id}]]}
@@ -228,7 +228,7 @@ def _cargar_tt():
 def publicador_tiktok(ruta: Path, texto: str, *, etiqueta_ia: bool, tt=None):
     """TikTok (22-oct-2026). La app «AVILES Publicador» NO está auditada: TikTok rechaza publicar en público
     («unaudited_client_can_only_post_to_private_accounts», probado 22:27) y su API no programa. Lo que SÍ funciona
-    (probado: SEND_TO_USER_INBOX) es mandar el video como BORRADOR a la bandeja de el operador; él lo publica o programa
+    (probado: SEND_TO_USER_INBOX) es mandar el video como BORRADOR a la bandeja de operador; él lo publica o programa
     desde el celular. Antes de subir: token vigente (si no, Desconectado: no se subió nada).
     El texto aprobado viaja en la aprobación y en el mensaje de Telegram (la bandeja no recibe pie de texto)."""
     import requests
@@ -317,7 +317,7 @@ def publicar(conn, pieza_id: int, *, en: str, construir=_construir, verificar=ve
     carpeta, pub, video = localizar(conn, pieza_id)
     canal, ruta, texto = video["canal"], carpeta / video["archivo"], texto_de(pub, video)
     if canal == "tiktok" and video.get("modo") == "studio":
-        # 30-oct: el operador no publica desde el celular; la bandeja solo duplicaba. La aprobación queda VIGENTE
+        # 30-oct: operador no publica desde el celular; la bandeja solo duplicaba. La aprobación queda VIGENTE
         # y la programación en TikTok Studio se registra después con scripts/registrar_programado_studio.py.
         return {"linea": "📅 Aprobado para TikTok: se programa en TikTok Studio (no se manda a tu bandeja).",
                 "botones": None}
@@ -442,7 +442,7 @@ async def on_callback(update, context) -> None:
     partes = (q.data or "").split("|")
     accion, pieza_id = partes[0], int(partes[1])
     if accion != "ap" and str(usuario.id) != os.environ.get("VIDEOS_TXT_TELEGRAM_CHAT_ID", "").strip():
-        await _contestar(q, "Solo el operador decide sobre esta pieza", show_alert=True)
+        await _contestar(q, "Solo operador decide sobre esta pieza", show_alert=True)
         return
     logger.info("botón %s pieza %d recibido", accion, pieza_id)
     if pieza_id in _EN_CURSO:   # doble toque: la primera ya está en marcha; no se toca el mensaje

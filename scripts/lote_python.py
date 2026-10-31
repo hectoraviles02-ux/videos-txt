@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Lote nocturno de reels de Python (nivel intermedio) — pedido de el operador el 22-oct-2026:
+"""Lote nocturno de reels de Python (nivel intermedio) — pedido de operador el 22-oct-2026:
 «haz videos de python para intermedios, quiero que toda la noche te la pases haciendo estos videos».
 
 Reusa lo que ya existe, igual que la ruta manual de scripts/ciclo_diario.py:
@@ -8,7 +8,7 @@ Reusa lo que ya existe, igual que la ruta manual de scripts/ciclo_diario.py:
   telegram_bot.reels_review.enviar_reel_con_botones -> a Telegram con APROBAR (nada se publica solo)
 
 Reglas:
-- Toma el candado de la fábrica SOLO durante cada reel y espera entre reels: si el operador manda una URL al
+- Toma el candado de la fábrica SOLO durante cada reel y espera entre reels: si operador manda una URL al
   bot, el bot puede tomar la fábrica en la pausa.
 - Narración con FALLA: no se manda con botón; solo un aviso con el motivo.
 - Para detenerlo: crear el archivo logs/DETENER_LOTE_PYTHON (o cerrar el proceso).
@@ -123,7 +123,7 @@ def main() -> int:
         if DETENER.exists():
             log("DETENIDO por archivo %s" % DETENER)
             break
-        for _ in range(60):                       # si el bot está ocupado (URL de el operador), espera
+        for _ in range(60):                       # si el bot está ocupado (URL de operador), espera
             if not candado.ocupado():
                 break
             time.sleep(30)

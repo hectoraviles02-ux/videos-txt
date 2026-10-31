@@ -5,7 +5,7 @@ Uso:
   python scripts/evaluar_verificador.py                  # solo capa determinista (sin LLM)
   python scripts/evaluar_verificador.py --modelo qwen2.5:7b-instruct-q4_K_M   # + juez Ollama
 
-Metricas (lo que pidio el operador para elegir verificador):
+Metricas (lo que pidio operador para elegir verificador):
   - exactitud por clase y matriz de confusion
   - FALSOS BLOQUEOS: esperada RESPALDADA y el gate bloquea
   - FUGAS: esperada PARCIAL/SIN EVIDENCIA/CONTRADICHA y el gate deja pasar (lo grave)

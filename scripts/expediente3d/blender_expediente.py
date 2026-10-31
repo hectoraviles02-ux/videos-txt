@@ -9,7 +9,7 @@ EFECTOS ocurren, anclados a la PALABRA exacta de la voz (linea_tiempo.json):
   linea     → línea de tiempo de marcas que se encienden una por una («marcar»)
   monolito  → pantalla flotante (la capa 2D escribe encima); «alerta» la pone roja
   espacio   → planeta + nave + trayectorias (22-oct-2026), con cámara y estrellas propias, lejos del set
-Sin cuadrícula (el operador, 14-oct): piso oscuro liso y reflejante con halo. Texto, cifras, fuentes y firma
+Sin cuadrícula (operador, 14-oct): piso oscuro liso y reflejante con halo. Texto, cifras, fuentes y firma
 van en la capa 2D (capa_expediente3d.py), no aquí.
 
 Uso:  <blender_env>\\python.exe blender_expediente.py <dir_pieza> [samples]
@@ -320,7 +320,7 @@ def construir_monolito(c):
             key_val(m, "estado", [(f0 - 1, 1.0), (f0 + 10, 0.0)])
 
 
-# ── espacio (22-oct-2026, aprobada por el operador desde la muestra laboratorio/muestra_mars3d_20261022): planeta + nave +
+# ── espacio (22-oct-2026, aprobada por operador desde la muestra laboratorio/muestra_mars3d_20261022): planeta + nave +
 # trayectorias de aproximación. Va LEJOS del set (fuera del piso de 400 u, que llega a x=±200) con su propio domo de
 # estrellas, su luz y su CÁMARA: así las demás estaciones (Knight, Cloudflare…) se renderizan igual que antes.
 # guion.datos.espacio = {"trayectorias": [{"id": "plan", "km": 226, "color": "cian"}, …], "minimo_km": 80}

@@ -48,7 +48,7 @@ def _juez(code: str, output: str, narracion: str, temperatura: float) -> dict:
 
 
 ALCANCE = ("OK solo significa que la narracion puede pasar a REVISION HUMANA; no aprueba ni autoriza "
-           "publicar (la aprobacion nace unicamente del boton de el operador en Telegram, Etapa 1)")
+           "publicar (la aprobacion nace unicamente del boton de operador en Telegram, Etapa 1)")
 
 
 def juez_llm(code: str, output: str, narracion: str) -> dict:

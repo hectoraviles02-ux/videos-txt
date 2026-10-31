@@ -94,7 +94,7 @@ def test_sin_numeros_no_opina():
     assert r == {"veredicto": "OK", "hallazgos": [], "numeros": 0}
 
 
-# Revision de el operador (21-oct): con print(2) y salida 2, «La salida es cinco» y «El programa
+# Revision de operador (21-oct): con print(2) y salida 2, «La salida es cinco» y «El programa
 # calcula cinco» solo daban AVISO. Toda frase que atribuye un resultado falso debe BLOQUEAR.
 @pytest.mark.parametrize("frase", [
     "El resultado da cinco", "El resultado es cinco", "La salida es cinco", "El programa calcula cinco",

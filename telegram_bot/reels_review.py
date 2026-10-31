@@ -42,7 +42,7 @@ def ruta_reel(eid: str) -> Path | None:
 
 # ── publicadores (reutilizan lo existente; dedup ANTES) ────────────────────
 BLOQUEO = ("publicacion directa desactivada (Etapa 1, 21-oct-2026): todo video pasa por la "
-           "cola con la aprobacion de el operador atada a su huella")
+           "cola con la aprobacion de operador atada a su huella")
 
 
 def _fb_publicar(eid: str) -> dict:
