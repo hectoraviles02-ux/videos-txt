@@ -18,9 +18,9 @@ Este repositorio publica solo código y pruebas. No incluye originales descargad
 
 Es una publicación parcial de un proyecto personal. Medido en esta copia: 650 pruebas pasan, 51 fallan y 35 dan error,
 casi todas porque faltan módulos internos omitidos (por ejemplo `telegram_bot/handlers.py`, `synthesis/gate_fidelidad.py`,
-`content_factory/topics/scorer.py`) o archivos de datos locales que no se publican. Lo que sí funciona solo:
-`scripts/foto_real/` (medios con licencia y motor de render), los extractores de `scripts/procesar_*.py` y la mayor parte de
-`content_factory/`. Algunos motores necesitan entornos aparte (Chatterbox para la voz, Blender para el expediente 3D).
+`content_factory/topics/scorer.py`) o archivos de datos locales que no se publican. De 169 módulos, 144 importan
+sin error en esta copia (entre ellos `scripts/foto_real/`, los extractores `scripts/procesar_*.py` y la mayor parte de
+`content_factory/`); importar no garantiza que cada flujo completo funcione. Algunos motores necesitan entornos aparte (Chatterbox para la voz, Blender para el expediente 3D).
 
 ## Licencia
 
