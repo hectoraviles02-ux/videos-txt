@@ -94,13 +94,16 @@ class Ledger:
         return self.obtener(pieza_id, canal) is not None
 
     def anota(self, pieza_id: int, canal: str, identificador_remoto: str,
-              url: str | None = None, programada_para: str | None = None) -> None:
+              url: str | None = None, programada_para: str | None = None,
+              destino: str | None = None) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         rec = {"pieza_id": pieza_id, "canal": canal,
                "identificador_remoto": identificador_remoto, "url": url,
                "ts": time.strftime("%Y-%m-%d %H:%M:%S")}
         if programada_para:
             rec["programada_para"] = programada_para
+        if destino:   # 31-oct-2026: «bandeja» = borrador; la reconciliación no debe darlo por publicado
+            rec["destino"] = destino
         with open(self.path, "a", encoding="utf-8") as f:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
@@ -131,7 +134,7 @@ def _asegurar_publicada(conn, pieza_id: int, fecha: str, detalle: str) -> None:
 
 def reconciliar(conn, pieza_id: int, *, canal: str = CANAL_DEFECTO, fecha: str,
                 identificador_remoto: str | None = None, url: str | None = None,
-                programada_para: str | None = None) -> dict:
+                programada_para: str | None = None, destino: str | None = None) -> dict:
     """Completa en BD una publicacion que ya ocurrio en el canal. NO llama al canal.
 
     - Si no hay fila de publicacion pero se pasa `identificador_remoto` (evidencia
@@ -140,6 +143,26 @@ def reconciliar(conn, pieza_id: int, *, canal: str = CANAL_DEFECTO, fecha: str,
     - Idempotente: si ya esta CONFIRMADA y la pieza PUBLICADA, no repite nada.
     """
     pub = db.obtener_publicacion(conn, pieza_id, canal)
+    # 31-oct-2026: un borrador en la bandeja se reconcilia como EN_BANDEJA, nunca como publicado.
+    # Los registros del ledger anteriores a esta fecha no traen «destino»: su url «tiktok bandeja …» lo delata.
+    es_bandeja = destino == "bandeja" or str(url or (pub["url"] if pub is not None else "") or "").startswith(
+        "tiktok bandeja")
+    if es_bandeja and (pub is None or pub["estado"] in (db.PUB_RECONCILIACION_PENDIENTE, db.PUB_EN_BANDEJA)):
+        if pub is None:
+            if not identificador_remoto:
+                raise PublicacionError(
+                    "no hay nada que reconciliar para la pieza %d: ni fila ni id remoto" % pieza_id)
+            db.registrar_publicacion(
+                conn, pieza_id=pieza_id, canal=canal, publicada_en=fecha,
+                identificador_remoto=identificador_remoto, url=url, estado_pub=db.PUB_EN_BANDEJA)
+        elif pub["estado"] != db.PUB_EN_BANDEJA:
+            db.actualizar_estado_publicacion(conn, pieza_id, canal, db.PUB_EN_BANDEJA)
+        if _estado_pieza(conn, pieza_id) == "PRODUCIDA":
+            db.transicionar(conn, pieza_id, "PRODUCIDA", "LISTA", fecha,
+                            "lista: borrador en la bandeja de %s (reconciliado)" % canal)
+        pub = db.obtener_publicacion(conn, pieza_id, canal)
+        return {"resultado": "bandeja_reconciliada", "pieza_id": pieza_id,
+                "identificador_remoto": pub["identificador_remoto"]}
     if pub is None:
         if not identificador_remoto:
             raise PublicacionError(
@@ -232,7 +255,8 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
         # se reconcilia SIN volver a llamar al canal.
         return reconciliar(conn, pieza_id, canal=canal, fecha=fecha,
                            identificador_remoto=reg.get("identificador_remoto"),
-                           url=reg.get("url"), programada_para=reg.get("programada_para"))
+                           url=reg.get("url"), programada_para=reg.get("programada_para"),
+                           destino=reg.get("destino"))
 
     # 2) COMPUERTA: aprobacion vigente de operador para lo que el publicador va a subir.
     _exigir_aprobacion(conn, pieza_id, publicador, canal, fecha)
@@ -261,7 +285,7 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
         return _incierto(conn, pieza_id, canal, fecha, "el publicador no devolvio video_id")
 
     # 5) EVIDENCIA REMOTA DURABLE antes de tocar la BD (sobrevive a un fallo de BD).
-    ledger.anota(pieza_id, canal, vid, url, programada_para)
+    ledger.anota(pieza_id, canal, vid, url, programada_para, destino=getattr(publicador, "destino", None))
 
     if programada_para:
         try:

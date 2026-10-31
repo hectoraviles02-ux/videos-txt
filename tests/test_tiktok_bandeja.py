@@ -86,6 +86,37 @@ def test_bandeja_pasa_a_confirmada_solo_con_evidencia(conn, tmp_path):
     assert _estado_pieza(conn, pieza_id) == "PUBLICADA"
 
 
+def test_si_falla_la_bd_la_reconciliacion_restaura_en_bandeja_no_publicada(conn, tmp_path, monkeypatch):
+    """TikTok acepta el borrador, se anota en el ledger y la BD falla al guardar EN_BANDEJA.
+    El siguiente intento reconcilia desde el ledger: debe quedar EN_BANDEJA, nunca CONFIRMADA."""
+    pieza_id = _pieza(conn)
+    pub = _Publicador(conn, pieza_id, tmp_path)
+    ledger = dist.Ledger(tmp_path / "l.jsonl")
+    original = db.registrar_publicacion
+
+    def falla(*a, **kw):
+        raise RuntimeError("disco lleno")
+    monkeypatch.setattr(db, "registrar_publicacion", falla)
+    res = dist.publicar_pieza(conn, pieza_id, publicador=pub, ledger=ledger, canal="tiktok", fecha="2026-10-31")
+    assert res["resultado"] == "publicado_pendiente_bd"
+    monkeypatch.setattr(db, "registrar_publicacion", original)
+    res = dist.publicar_pieza(conn, pieza_id, publicador=pub, ledger=ledger, canal="tiktok", fecha="2026-10-31")
+    assert pub.llamadas == 1                               # no se volvió a subir
+    assert db.obtener_publicacion(conn, pieza_id, "tiktok")["estado"] == db.PUB_EN_BANDEJA
+    assert _estado_pieza(conn, pieza_id) != "PUBLICADA"
+    assert res["resultado"] == "bandeja_reconciliada"
+
+
+def test_ledger_viejo_sin_destino_se_reconoce_por_la_url(conn, tmp_path):
+    """Los registros anteriores al 31-oct no guardaban «destino»; su url «tiktok bandeja …» basta."""
+    pieza_id = _pieza(conn)
+    r = dist.reconciliar(conn, pieza_id, canal="tiktok", fecha="2026-10-31",
+                         identificador_remoto="v_inbox_viejo", url="tiktok bandeja v_inbox_viejo")
+    assert r["resultado"] == "bandeja_reconciliada"
+    assert db.obtener_publicacion(conn, pieza_id, "tiktok")["estado"] == db.PUB_EN_BANDEJA
+    assert _estado_pieza(conn, pieza_id) != "PUBLICADA"
+
+
 class _TTFalso:
     def __init__(self, estado):
         self.estado = estado
