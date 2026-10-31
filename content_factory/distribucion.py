@@ -197,7 +197,8 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
     (o lanza). DEBE declarar `ruta_mp4` y `texto` (y `programada_para` si programa):
     contra eso se verifica la aprobacion de operador. Resultado: `ya_publicada |
     ya_programada | intento_sin_confirmar | reconciliada | programada_reconciliada |
-    error_api | resultado_incierto | publicada | programada | publicado_pendiente_bd`.
+    error_api | resultado_incierto | publicada | programada | publicado_pendiente_bd |
+    en_bandeja | ya_en_bandeja` (los dos últimos: publicador con `destino = "bandeja"`).
     Sin aprobacion valida lanza `SinAprobacionValida` y NO llama al canal.
     """
     if _estado_pieza(conn, pieza_id) is None:
@@ -215,6 +216,10 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
             return {"resultado": "ya_programada", "pieza_id": pieza_id,
                     "identificador_remoto": pub["identificador_remoto"],
                     "programada_para": pub["programada_para"]}
+        if pub["estado"] == db.PUB_EN_BANDEJA:
+            # ya hay un borrador en la bandeja del creador: no se sube otro.
+            return {"resultado": "ya_en_bandeja", "pieza_id": pieza_id,
+                    "identificador_remoto": pub["identificador_remoto"]}
         if pub["estado"] == db.PUB_PENDIENTE:
             # intento anterior con resultado INCIERTO: pudo haber salido. No se reintenta.
             return {"resultado": "intento_sin_confirmar", "pieza_id": pieza_id,
@@ -273,6 +278,21 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
         return {"resultado": "programada", "pieza_id": pieza_id, "identificador_remoto": vid,
                 "programada_para": programada_para}
 
+    if getattr(publicador, "destino", None) == "bandeja":
+        # 31-oct-2026: el canal recibió un BORRADOR en la bandeja del creador (TikTok sin auditar).
+        # Queda EN_BANDEJA: NO es publicada; se confirma después con confirmar_programada + evidencia.
+        try:
+            if _estado_pieza(conn, pieza_id) == "PRODUCIDA":
+                db.transicionar(conn, pieza_id, "PRODUCIDA", "LISTA", fecha,
+                                "lista: borrador en la bandeja de %s" % canal)
+            db.registrar_publicacion(
+                conn, pieza_id=pieza_id, canal=canal, publicada_en=fecha,
+                identificador_remoto=vid, url=url, estado_pub=db.PUB_EN_BANDEJA)
+        except Exception as e:  # noqa: BLE001
+            return {"resultado": "publicado_pendiente_bd", "pieza_id": pieza_id,
+                    "identificador_remoto": vid, "error": str(e)[:200]}
+        return {"resultado": "en_bandeja", "pieza_id": pieza_id, "identificador_remoto": vid}
+
     # 6) BD en orden seguro. La fila se escribe (RECONCILIACION_PENDIENTE) ANTES de
     #    la transicion a PUBLICADA; al terminar, se marca CONFIRMADA.
     try:
@@ -322,12 +342,12 @@ def liberar_intento(conn, pieza_id: int, *, canal: str, fecha: str, evidencia: s
 
 def confirmar_programada(conn, pieza_id: int, *, canal: str, fecha: str, evidencia: str,
                          url: str | None = None) -> dict:
-    """PROGRAMADA -> CONFIRMADA (publicada) con evidencia leida del canal. Pieza -> PUBLICADA."""
+    """PROGRAMADA o EN_BANDEJA -> CONFIRMADA (publicada) con evidencia leida del canal. Pieza -> PUBLICADA."""
     if not evidencia or not evidencia.strip():
         raise PublicacionError("confirmar una programada exige evidencia leida del canal")
     pub = db.obtener_publicacion(conn, pieza_id, canal)
-    if pub is None or pub["estado"] != db.PUB_PROGRAMADA:
-        raise PublicacionError("la pieza %d no tiene publicacion PROGRAMADA en %s" % (pieza_id, canal))
+    if pub is None or pub["estado"] not in (db.PUB_PROGRAMADA, db.PUB_EN_BANDEJA):
+        raise PublicacionError("la pieza %d no tiene publicacion PROGRAMADA ni EN_BANDEJA en %s" % (pieza_id, canal))
     _asegurar_publicada(conn, pieza_id, fecha, "publicada en %s (programada para %s): %s"
                         % (canal, pub["programada_para"], evidencia.strip()))
     db.actualizar_estado_publicacion(conn, pieza_id, canal, db.PUB_CONFIRMADA, url=url, publicada_en=fecha)

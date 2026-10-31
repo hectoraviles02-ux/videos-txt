@@ -54,8 +54,9 @@ PUB_CONFIRMADA = "CONFIRMADA"                      # canal confirmo y BD consist
 PUB_ERROR = "ERROR"                                # el canal rechazo
 PUB_RECONCILIACION_PENDIENTE = "RECONCILIACION_PENDIENTE"  # canal confirmo, BD incompleta
 PUB_PROGRAMADA = "PROGRAMADA"                      # v5: el canal acepto con fecha futura; NO es publicada
+PUB_EN_BANDEJA = "EN_BANDEJA"                      # 31-oct-2026: borrador en la bandeja del creador (TikTok); NO es publicada
 ESTADOS_PUBLICACION = (PUB_PENDIENTE, PUB_CONFIRMADA, PUB_ERROR, PUB_RECONCILIACION_PENDIENTE,
-                       PUB_PROGRAMADA)
+                       PUB_PROGRAMADA, PUB_EN_BANDEJA)
 
 #: Maquina de estados de una pieza. El enum va COMPLETO desde V0 (D-12) para
 #: que las fases 2 a 6 no obliguen a migrar la tabla. V0 solo ejercita
@@ -1261,7 +1262,8 @@ def estado_editorial(conn: sqlite3.Connection, pieza_id: int) -> dict:
             "SELECT canal, estado, programada_para, identificador_remoto, url FROM publicaciones"
             " WHERE pieza_id = ? ORDER BY canal", (pieza_id,)):
         canales[f["canal"]] = {
-            "estado": {PUB_CONFIRMADA: "PUBLICADO", PUB_PROGRAMADA: "PROGRAMADO"}.get(
+            "estado": {PUB_CONFIRMADA: "PUBLICADO", PUB_PROGRAMADA: "PROGRAMADO",
+                       PUB_EN_BANDEJA: "EN BANDEJA (borrador)"}.get(
                 f["estado"], f["estado"]),
             "programada_para": f["programada_para"],
             "identificador_remoto": f["identificador_remoto"], "url": f["url"]}

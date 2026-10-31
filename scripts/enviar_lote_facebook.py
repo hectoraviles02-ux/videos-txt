@@ -29,8 +29,9 @@ ENVIADOS = REPO / "docs/operations/evidencia/lote_diario_20261029/_enviados_fb.j
 def candidatos() -> list[str]:
     banco = [e["id"] for e in json.loads((lote.POC / "_banco.json").read_text(encoding="utf-8"))]
     juez = lote.veredictos()
-    fuera = set(json.loads(FB.read_text(encoding="utf-8"))) | set(
-        json.loads(ENVIADOS.read_text(encoding="utf-8")) if ENVIADOS.is_file() else {})
+    enviados = json.loads(ENVIADOS.read_text(encoding="utf-8")) if ENVIADOS.is_file() else {}
+    # solo cuentan como enviados los que Telegram aceptó: un envío fallido vuelve a ser candidato
+    fuera = set(json.loads(FB.read_text(encoding="utf-8"))) | {k for k, v in enviados.items() if v.get("facebook")}
     return [e for e in banco if e not in fuera and juez.get(e) == "OK"
             and (REPO / "guiones/reels_revision" / e / "publicacion.json").is_file()]
 

@@ -256,6 +256,7 @@ def publicador_tiktok(ruta: Path, texto: str, *, etiqueta_ia: bool, tt=None):
         return {"video_id": d["publish_id"], "url": "tiktok bandeja %s" % d["publish_id"]}
 
     _publicar.ruta_mp4, _publicar.texto, _publicar.programada_para = str(ruta), texto, None
+    _publicar.destino = "bandeja"   # 31-oct-2026: queda EN_BANDEJA en la BD, nunca como publicada
     return _publicar
 
 
@@ -273,8 +274,11 @@ def verificar_en_plataforma(canal: str, vid: str) -> tuple[bool, str]:
                 if estado in ("PUBLISH_COMPLETE", "SEND_TO_USER_INBOX", "FAILED"):
                     break
                 time.sleep(10)
-            return estado in ("PUBLISH_COMPLETE", "SEND_TO_USER_INBOX"), "TikTok status=%s %s" % (
-                estado, d.get("fail_reason") or "")
+            # 31-oct-2026: SEND_TO_USER_INBOX es un borrador en la bandeja, NO una publicación pública.
+            detalle = "TikTok status=%s %s" % (estado, d.get("fail_reason") or "")
+            if estado == "SEND_TO_USER_INBOX":
+                detalle += "(borrador en la bandeja, no es público)"
+            return estado == "PUBLISH_COMPLETE", detalle
         if canal == "youtube":   # el token solo tiene permiso de subir: se usa el oEmbed público, como subir_suelto_youtube.py
             r = requests.get("https://www.youtube.com/oembed", timeout=20,
                              params={"url": "https://www.youtube.com/watch?v=%s" % vid, "format": "json"})
@@ -333,6 +337,15 @@ def publicar(conn, pieza_id: int, *, en: str, construir=_construir, verificar=ve
     except distribucion.SinAprobacionValida as e:
         return {"linea": "🔒 BLOQUEADO por la compuerta: %s" % e, "botones": None}
     res, vid = r["resultado"], r.get("identificador_remoto")
+    if res in ("en_bandeja", "ya_en_bandeja"):
+        legado(canal, video.get("clave_legado", "expediente:%s:%s" % (carpeta.name, video["formato"])), vid,
+               "tiktok bandeja %s" % vid)
+        ap = db.aprobacion_vigente(conn, pieza_id)
+        if ap is not None:   # el borrador ya existe: que nadie vuelva a subirlo con la misma aprobación
+            db.invalidar_aprobacion(conn, int(ap["id"]), en, "borrador en la bandeja de %s (%s)" % (canal, vid))
+        return {"linea": "📥 EN TU BANDEJA DE TIKTOK como BORRADOR (id %s). NO está publicado: publícalo o "
+                         "prográmalo desde el celular; copia el texto de este mensaje como descripción." % vid,
+                "botones": None}
     if res in ("publicada", "ya_publicada", "reconciliada", "ya_reconciliada", "publicado_pendiente_bd"):
         url = {"youtube": "https://youtube.com/shorts/%s" % vid, "tiktok": "tiktok publish_id %s" % vid}.get(
             canal, "https://www.facebook.com/reel/%s" % vid)
