@@ -1,0 +1,42 @@
+{
+ "descripcion": "Lo que CADA estación del motor 3D sabe dibujar de verdad. Cada beat del guion declara en «debe_verse» qué tiene que aparecer en pantalla; si su estación no lo sabe dibujar, producir_expediente.py se detiene ANTES de la voz y del render (22-oct-2026, tras Mars: un video de una nave salió sin nave). Agregar un elemento aquí sin construir la escena es mentirle al motor. «espacio» (22-oct-2026): planeta con color y cráteres de Marte (procedural, sin imágenes), nave genérica (no es el modelo real de ninguna sonda) y trayectorias de datos.espacio.",
+ "estaciones": {
+  "racks": [
+   "servidores",
+   "centro de datos",
+   "sala de máquinas",
+   "falla de servidores"
+  ],
+  "globo": [
+   "red mundial",
+   "propagación",
+   "alcance global"
+  ],
+  "barras": [
+   "comparación de cifras",
+   "medición",
+   "crecimiento"
+  ],
+  "linea": [
+   "cronología",
+   "secuencia de pasos",
+   "fechas"
+  ],
+  "monolito": [
+   "pantalla",
+   "tarjeta de texto",
+   "código",
+   "alerta"
+  ],
+  "espacio": [
+   "marte",
+   "nave",
+   "trayectoria",
+   "descenso",
+   "zona mínima",
+   "propulsores",
+   "pérdida de señal",
+   "vectores de fuerza"
+  ]
+ }
+}

@@ -1,0 +1,9 @@
+{
+  "estado_corrida": "incompleta",
+  "fecha_corte": "2026-09-16",
+  "fuentes_json": "[\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\"]",
+  "hash_entradas": "2d90405aa955f827782d7e7bc1535b54d9ddf9cfccf7f811e1b68658fd015a4a",
+  "sin_llm": 1,
+  "top10_json": "{\"avisos\":[\"0 de 10, compuerta de diversidad: faltan pilares con candidatos\"],\"fecha_corte\":\"2026-09-16\",\"hash_entradas\":\"2d90405aa955f827782d7e7bc1535b54d9ddf9cfccf7f811e1b68658fd015a4a\",\"sin_llm\":true,\"temas\":[],\"version_reglas\":\"v0.1+e0d47457118c\"}",
+  "version_reglas": "v0.1+e0d47457118c"
+}

@@ -1,0 +1,296 @@
+# Capa 0 — Fuentes de señal y lexico por pilar.
+# Lo lee `content_factory/config.py::cargar_fuentes`.
+#
+# RQ-02: agregar o quitar una fuente es un cambio de ESTE archivo y no debe
+# requerir ni una linea de codigo. Si para dar de baja `r/podcasting` hubiera
+# que tocar `ingestion/reddit.py`, el requisito esta incumplido.
+#
+# RQ-03: cada fuente lleva `pilar_origen` (piso de clasificacion) SALVO las
+# marcadas `acervo_compartido: true` (Hacker News y Google Trends MX), cuyas
+# señales se clasifican unicamente por lexico. Una entrada sin ninguna de las
+# dos cosas hace fallar la carga: es un error de configuracion, no un caso.
+#
+# Limites medidos que esta lista respeta (explore.md, no re-medidos aqui):
+#   - Reddit: ~1 peticion/min  -> 11 subreddits, en serie, ~11 min de corrida
+#   - GitHub: 60 req/h por IP  -> 12 repos, muy por debajo del tope de 40
+
+fuentes:
+
+  # ── Acervo compartido: sin pilar de origen, solo lexico ──────────────────
+  - nombre: "trends:mx"
+    tipo: trends_mx
+    acervo_compartido: true
+    activa: true
+    parametros:
+      url: "https://trends.google.com/trending/rss?geo=MX"
+
+  - nombre: "hackernews:frontpage"
+    tipo: hackernews
+    acervo_compartido: true
+    activa: true
+    parametros:
+      url: "https://hn.algolia.com/api/v1/search_by_date"
+      tags: "story"
+      hits: "50"
+
+  # ── P1 · Gobierno + tecnologia ──────────────────────────────────────────
+  - nombre: "reddit:r/mexico"
+    tipo: reddit
+    pilar_origen: P1
+    activa: true
+    parametros: {sub: "mexico"}
+
+  - nombre: "reddit:r/MexicoFinanciero"
+    tipo: reddit
+    pilar_origen: P1
+    activa: true
+    parametros: {sub: "MexicoFinanciero"}
+
+  - nombre: "rss:eleconomista-tecnologia"
+    tipo: rss
+    pilar_origen: P1
+    activa: true
+    parametros: {url: "https://www.eleconomista.com.mx/rss/tecnologia"}
+
+  - nombre: "rss:xataka-mexico"
+    tipo: rss
+    pilar_origen: P1
+    activa: true
+    parametros: {url: "https://www.xataka.com.mx/index.xml"}
+
+  # ── P2 · IA local ───────────────────────────────────────────────────────
+  - nombre: "reddit:r/LocalLLaMA"
+    tipo: reddit
+    pilar_origen: P2
+    activa: true
+    parametros: {sub: "LocalLLaMA"}
+
+  - nombre: "reddit:r/ollama"
+    tipo: reddit
+    pilar_origen: P2
+    activa: true
+    parametros: {sub: "ollama"}
+
+  - nombre: "github:ollama/ollama"
+    tipo: github_releases
+    pilar_origen: P2
+    activa: true
+    parametros: {repo: "ollama/ollama"}
+
+  - nombre: "github:ggml-org/llama.cpp"
+    tipo: github_releases
+    pilar_origen: P2
+    activa: true
+    parametros: {repo: "ggml-org/llama.cpp"}
+
+  - nombre: "github:openai/whisper"
+    tipo: github_releases
+    pilar_origen: P2
+    activa: true
+    parametros: {repo: "openai/whisper"}
+
+  - nombre: "github:SYSTRAN/faster-whisper"
+    tipo: github_releases
+    pilar_origen: P2
+    activa: true
+    parametros: {repo: "SYSTRAN/faster-whisper"}
+
+  - nombre: "github:comfyanonymous/ComfyUI"
+    tipo: github_releases
+    pilar_origen: P2
+    activa: true
+    parametros: {repo: "comfyanonymous/ComfyUI"}
+
+  # ── P3 · IA confiable ───────────────────────────────────────────────────
+  - nombre: "reddit:r/MachineLearning"
+    tipo: reddit
+    pilar_origen: P3
+    activa: true
+    parametros: {sub: "MachineLearning"}
+
+  # ── P4 · Automatizacion practica ────────────────────────────────────────
+  - nombre: "reddit:r/Python"
+    tipo: reddit
+    pilar_origen: P4
+    activa: true
+    parametros: {sub: "Python"}
+
+  - nombre: "reddit:r/PowerShell"
+    tipo: reddit
+    pilar_origen: P4
+    activa: true
+    parametros: {sub: "PowerShell"}
+
+  - nombre: "reddit:r/excel"
+    tipo: reddit
+    pilar_origen: P4
+    activa: true
+    parametros: {sub: "excel"}
+
+  - nombre: "github:microsoft/playwright"
+    tipo: github_releases
+    pilar_origen: P4
+    activa: true
+    parametros: {repo: "microsoft/playwright"}
+
+  - nombre: "github:pandas-dev/pandas"
+    tipo: github_releases
+    pilar_origen: P4
+    activa: true
+    parametros: {repo: "pandas-dev/pandas"}
+
+  - nombre: "github:astral-sh/uv"
+    tipo: github_releases
+    pilar_origen: P4
+    activa: true
+    parametros: {repo: "astral-sh/uv"}
+
+  # ── P5 · Podcast / analisis ─────────────────────────────────────────────
+  # DEBILIDAD DECLARADA: P5 no tiene fuente exclusiva mas alla de este
+  # subreddit; depende del lexico sobre el acervo compartido. Se mide junto con
+  # la precision del clasificador (R7), no se tapa.
+  - nombre: "reddit:r/podcasting"
+    tipo: reddit
+    pilar_origen: P5
+    activa: true
+    parametros: {sub: "podcasting"}
+
+  # ── P6 · Entretenimiento tecnologico ────────────────────────────────────
+  - nombre: "reddit:r/emulation"
+    tipo: reddit
+    pilar_origen: P6
+    activa: true
+    parametros: {sub: "emulation"}
+
+  - nombre: "reddit:r/retrogaming"
+    tipo: reddit
+    pilar_origen: P6
+    activa: true
+    parametros: {sub: "retrogaming"}
+
+  - nombre: "github:gopher64/gopher64"
+    tipo: github_releases
+    pilar_origen: P6
+    activa: true
+    parametros: {repo: "gopher64/gopher64"}
+
+  - nombre: "github:nesdev-org/MesenCE"
+    tipo: github_releases
+    pilar_origen: P6
+    activa: true
+    parametros: {repo: "nesdev-org/MesenCE"}
+
+  - nombre: "github:mgba-emu/mgba"
+    tipo: github_releases
+    pilar_origen: P6
+    activa: true
+    parametros: {repo: "mgba-emu/mgba"}
+
+  - nombre: "github:finalburnneo/FBNeo"
+    tipo: github_releases
+    pilar_origen: P6
+    activa: true
+    parametros: {repo: "finalburnneo/FBNeo"}
+
+  # ── YouTube: consultas semilla ──────────────────────────────────────────
+  # `ytsearchdate:` NO EXISTE en yt-dlp 2026.08.19 (medido: "Unsupported url
+  # scheme"). Se usa una URL de resultados con `sp=` ("este mes") en modo
+  # plano; en ese modo `upload_date` viene `NA`, asi que `publicada_en` queda
+  # en None y `extra_json` declara `metodo: youtube_sp_mes`. Tope: 10/dia.
+  - nombre: "youtube:ia local"
+    tipo: youtube
+    pilar_origen: P2
+    activa: true
+    parametros:
+      consulta: "ia local ollama"
+      sp: "EgIIBA%3D%3D"      # filtro "este mes"
+      limite: "10"
+
+  - nombre: "youtube:automatizacion python"
+    tipo: youtube
+    pilar_origen: P4
+    activa: true
+    parametros:
+      consulta: "automatizacion python"
+      sp: "EgIIBA%3D%3D"
+      limite: "10"
+
+  - nombre: "youtube:emuladores retro"
+    tipo: youtube
+    pilar_origen: P6
+    activa: true
+    parametros:
+      consulta: "emuladores retro"
+      sp: "EgIIBA%3D%3D"
+      limite: "10"
+
+# ── Lexico por pilar ──────────────────────────────────────────────────────
+# Piso de clasificacion para el acervo compartido y desempate cuando la fuente
+# no trae pilar. Lo propone el sistema; EL OPERADOR LO REVISA (OP-1).
+#
+# RQ-45: ninguno de estos terminos puede estar en `marca.lista_negativa`. La
+# validacion corre en `cargar_config` y falla nombrando termino y pilar.
+lexico:
+  P1:
+    - gobierno
+    - transparencia
+    - regulacion
+    - politica publica
+    - datos abiertos
+    - licitacion
+    - mexico
+    - sat
+    - banxico
+  P2:
+    - ollama
+    - llama.cpp
+    - gguf
+    - cuantizacion
+    - modelo local
+    - lm studio
+    - vram
+    - inferencia local
+    - whisper
+    - comfyui
+  P3:
+    - alucinacion
+    - evaluacion de modelos
+    - benchmark
+    - sesgo
+    - alineacion
+    - trazabilidad
+    - citas verificables
+    - rag
+  P4:
+    - automatizacion
+    - script
+    - powershell
+    - pandas
+    - scraping
+    - playwright
+    - excel
+    - flujo de trabajo
+    - cli
+  P5:
+    - podcast
+    - entrevista
+    - microfono
+    - analisis
+    - episodio
+    - audio
+    - edicion de audio
+  P6:
+    - emulador
+    - retro
+    - consola
+    - videojuego
+    - arcade
+    - rom
+    - homebrew
+  P7:
+    - detras de camara
+    - como hago
+    - canal
+    - metricas del canal
+    - flujo de produccion
+    - fabrica de contenido

@@ -1,0 +1,41 @@
+{
+  "hits": [
+    {
+      "created_at": "2026-09-15T14:22:03.000Z",
+      "title": "Show HN: A local-first RAG pipeline that runs on 8GB of VRAM",
+      "url": "https://example.com/local-rag?utm_campaign=hn",
+      "author": "fulano",
+      "points": 412,
+      "story_text": null,
+      "num_comments": 133,
+      "objectID": "41800001",
+      "created_at_i": 1789481723
+    },
+    {
+      "created_at": "2026-09-14T08:05:41.000Z",
+      "title": "Ollama 0.14 adds structured outputs",
+      "url": "https://github.com/ollama/ollama/releases/tag/v0.14.0",
+      "author": "mengano",
+      "points": 287,
+      "num_comments": 64,
+      "objectID": "41799002",
+      "created_at_i": 1789358741
+    },
+    {
+      "created_at": "2026-09-13T19:44:12.000Z",
+      "title": "Ask HN: How do you archive your own video transcripts?",
+      "url": null,
+      "author": "zutano",
+      "points": 91,
+      "num_comments": 55,
+      "objectID": "41798003",
+      "created_at_i": 1789314252
+    }
+  ],
+  "nbHits": 3,
+  "page": 0,
+  "nbPages": 1,
+  "hitsPerPage": 50,
+  "query": "",
+  "params": "tags=story&numericFilters=created_at_i%3E1786800000"
+}

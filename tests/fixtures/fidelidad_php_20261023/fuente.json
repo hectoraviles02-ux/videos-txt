@@ -1,0 +1,296 @@
+{
+  "source_url": "https://www.facebook.com/share/v/1EA7jN1Hn3/",
+  "url_hash": "64cf064ceef8",
+  "tipo": "video",
+  "titulo": "109K views · 2K reactions | 3 fallas CRÍTICAS en 1 semana 🚨 PHP, Next.js y Node.js Si tienes una web o un servidor, esto te toca 👇 🟣 PHP (\"PHP2Shell\"): dos fallas encadenadas, encontradas con ayuda de IA. Ya había ataques 4 días ANTES del aviso oficial. Más de 1 millón de servidores expuestos podrían ser vulnerables. ✅ Qué hacer: actualiza a 8.5.12 / 8.4.27 / 8.3.36 / 8.2.35. Si no puedes ya: session.upload_progress.enabled = 0, reinicia PHP y revisa tus registros desde el 17 de octubre. ⚫ Next.js: una falla en el procesado de imágenes SVG y otra en su caché (9.5/10). Afecta a apps en tu propio servidor. ✅ Qué hacer: actualiza a 16.4.1 (o 15.5.28) y vuelve a desplegar. 🟢 Node.js: 10 fallas corregidas; la más seria, en el descompresor Brotli. ✅ Qué hacer: 22.23.4 / 24.22.1 / 26.12.1. ¿Sigues en la 20? Ya no tiene parche: migra. Y si usas Docker, reconstruye tus imágenes. 🤖 ¿Por qué tantas juntas? La IA acelera tanto a quienes investigan como a quienes atacan. 💾 Guarda este video y compártelo con quien administre una web 👉 Sígueme para más ciberseguridad explicada fácil #ciberseguridad #php #nextjs #nodejs #vulnerabilidad #seguridadinformatica #programacion #desarrolloweb #devops #javascript #servidores #tech #elingeartificial | El Inge Artificial",
+  "duracion_seg": 169,
+  "verificada": true,
+  "segmentos": [
+    {
+      "inicio_seg": 0.0,
+      "fin_seg": 4.16,
+      "texto": "En solo una semana aparecieron fallas críticas en PHP.",
+      "confianza": 0.682
+    },
+    {
+      "inicio_seg": 4.16,
+      "fin_seg": 8.48,
+      "texto": "Next.hot.se y node.hot.se",
+      "confianza": 0.682
+    },
+    {
+      "inicio_seg": 8.48,
+      "fin_seg": 11.28,
+      "texto": "3 de las tecnologías más usadas de Internet.",
+      "confianza": 0.682
+    },
+    {
+      "inicio_seg": 11.28,
+      "fin_seg": 15.12,
+      "texto": "Si tienes una web o un servidor, quédate hasta el final.",
+      "confianza": 0.682
+    },
+    {
+      "inicio_seg": 15.12,
+      "fin_seg": 20.16,
+      "texto": "Las 3 comparten el peor tipo de falla, ejecución remota de código.",
+      "confianza": 0.682
+    },
+    {
+      "inicio_seg": 20.16,
+      "fin_seg": 24.72,
+      "texto": "Alguien, desde Internet, podría ser que tu servidor ovedezca sus órdenes.",
+      "confianza": 0.682
+    },
+    {
+      "inicio_seg": 24.72,
+      "fin_seg": 28.72,
+      "texto": "A veces, sin usuario ni contraseña, ejemplo de riesgo,",
+      "confianza": 0.682
+    },
+    {
+      "inicio_seg": 28.72,
+      "fin_seg": 34.16,
+      "texto": "te roban la base de datos, borrant web o la usan para minar criptomonedas.",
+      "confianza": 0.759
+    },
+    {
+      "inicio_seg": 34.16,
+      "fin_seg": 39.84,
+      "texto": "Primero, PHP, el lenguaje detrás de casi 7 de cada 10 sitios web.",
+      "confianza": 0.759
+    },
+    {
+      "inicio_seg": 39.84,
+      "fin_seg": 45.04,
+      "texto": "Investigadores apoyados por inteligencia artificial encontraron 2 fallas encadenadas,",
+      "confianza": 0.759
+    },
+    {
+      "inicio_seg": 45.04,
+      "fin_seg": 52.32,
+      "texto": "apodadas PHP 2 gel que abusan de como PHP maneja la memoria.",
+      "confianza": 0.759
+    },
+    {
+      "inicio_seg": 52.32,
+      "fin_seg": 58.08,
+      "texto": "Lo alarmante, un sistema trampa de Amazon registró un ataque 4 días antes de la viso oficial.",
+      "confianza": 0.759
+    },
+    {
+      "inicio_seg": 58.08,
+      "fin_seg": 62.24,
+      "texto": "Aquí en afecta, a casi cualquier servidor web con PHP,",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 62.24,
+      "fin_seg": 66.48,
+      "texto": "más de un millón de servidores expuestos podrían ser vulnerables.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 66.48,
+      "fin_seg": 68.8,
+      "texto": "¿Qué hacer? Actualiza hoy.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 68.8,
+      "fin_seg": 72.24,
+      "texto": "Si no puedes desactiva el progreso de su vida de sesiones.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 72.24,
+      "fin_seg": 78.0,
+      "texto": "Reinicia PHP y reviza tus registros desde el 17 de octubre.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 78.0,
+      "fin_seg": 83.92,
+      "texto": "Segundo, Next.hot.se, uno de los framework web más populares.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 83.92,
+      "fin_seg": 85.84,
+      "texto": "Hubo dos fallas críticas.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 85.84,
+      "fin_seg": 89.92,
+      "texto": "Una venía de la librería que procesa imágenes, PHP,",
+      "confianza": 0.802
+    },
+    {
+      "inicio_seg": 89.92,
+      "fin_seg": 93.12,
+      "texto": "un archivo manipulado podía corromper la memoria.",
+      "confianza": 0.802
+    },
+    {
+      "inicio_seg": 93.12,
+      "fin_seg": 98.48,
+      "texto": "La otra, en su caché, podía terminar ejecutando datos enviados por un atacante.",
+      "confianza": 0.802
+    },
+    {
+      "inicio_seg": 98.48,
+      "fin_seg": 101.04,
+      "texto": "Afecta a las apps en tu propio servidor Linux,",
+      "confianza": 0.802
+    },
+    {
+      "inicio_seg": 101.04,
+      "fin_seg": 103.28,
+      "texto": "y a mí me llegó a estalerte en mi panel,",
+      "confianza": 0.802
+    },
+    {
+      "inicio_seg": 103.28,
+      "fin_seg": 107.68,
+      "texto": "que hacer actualiza la versión 16.4.1,",
+      "confianza": 0.802
+    },
+    {
+      "inicio_seg": 107.68,
+      "fin_seg": 113.04,
+      "texto": "o a la 15.5.28 si sigues en la 15, y vuelve a desplegar.",
+      "confianza": 0.802
+    },
+    {
+      "inicio_seg": 113.04,
+      "fin_seg": 115.76,
+      "texto": "Tercero, Note.hot.se,",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 115.76,
+      "fin_seg": 119.36,
+      "texto": "el motor que ejecuta ya va a script en muchísimos servidores.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 119.36,
+      "fin_seg": 121.2,
+      "texto": "Corrigieron 10 fallas.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 121.2,
+      "fin_seg": 124.08,
+      "texto": "La más seria en el descompresor Brotley,",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 124.08,
+      "fin_seg": 127.92,
+      "texto": "un archivo comprimido manipulado podía escribir fuera de la memoria,",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 127.92,
+      "fin_seg": 130.72,
+      "texto": "y abrir la puerta a ejecutar código.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 130.72,
+      "fin_seg": 133.12,
+      "texto": "Afecta a todas las versiones con suporte,",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 133.12,
+      "fin_seg": 136.08,
+      "texto": "y la 20 o anteriores ya no tendrán parche.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 136.08,
+      "fin_seg": 137.12,
+      "texto": "¿Qué hacer?",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 137.12,
+      "fin_seg": 139.36,
+      "texto": "Actualiza a la última versión de tu rama,",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 139.36,
+      "fin_seg": 142.56,
+      "texto": "y si usas Docker, reconstruye tus imágenes.",
+      "confianza": 0.795
+    },
+    {
+      "inicio_seg": 142.56,
+      "fin_seg": 144.48,
+      "texto": "¿Por qué tantas fallas juntas?",
+      "confianza": 0.819
+    },
+    {
+      "inicio_seg": 144.48,
+      "fin_seg": 146.72,
+      "texto": "Investigadores y también atacantes",
+      "confianza": 0.819
+    },
+    {
+      "inicio_seg": 146.72,
+      "fin_seg": 150.32,
+      "texto": "usan inteligencia artificial para encontrar errores más rápido.",
+      "confianza": 0.819
+    },
+    {
+      "inicio_seg": 150.32,
+      "fin_seg": 153.6,
+      "texto": "Por eso, el tiempo entre descubrir una falla y atacarla,",
+      "confianza": 0.819
+    },
+    {
+      "inicio_seg": 153.6,
+      "fin_seg": 155.28,
+      "texto": "es cada vez más corto.",
+      "confianza": 0.819
+    },
+    {
+      "inicio_seg": 155.28,
+      "fin_seg": 159.12,
+      "texto": "En resumen, actualiza hoy, no la próxima semana.",
+      "confianza": 0.819
+    },
+    {
+      "inicio_seg": 159.12,
+      "fin_seg": 160.72,
+      "texto": "Reinicia tus servicios,",
+      "confianza": 0.819
+    },
+    {
+      "inicio_seg": 160.72,
+      "fin_seg": 162.16,
+      "texto": "revisa tus registros,",
+      "confianza": 0.819
+    },
+    {
+      "inicio_seg": 162.16,
+      "fin_seg": 164.32,
+      "texto": "y activa alertas automáticas,",
+      "confianza": 0.819
+    },
+    {
+      "inicio_seg": 164.32,
+      "fin_seg": 166.16,
+      "texto": "como la que me avisó a mí.",
+      "confianza": 0.819
+    }
+  ],
+  "metodo": "auto-transcripcion",
+  "idioma": "es",
+  "avisos": [],
+  "fecha_extraccion": "2026-10-23 08:01"
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <category term="LocalLLaMA" label="r/LocalLLaMA"/>
+  <updated>2026-09-14T18:02:11+00:00</updated>
+  <id>/r/LocalLLaMA/top/.rss?t=month</id>
+  <link rel="self" href="https://www.reddit.com/r/LocalLLaMA/top/.rss?t=month" type="application/atom+xml"/>
+  <title>Top posts del mes en LocalLLaMA</title>
+  <entry>
+    <author><name>/u/ejemplo_uno</name><uri>https://www.reddit.com/user/ejemplo_uno</uri></author>
+    <category term="LocalLLaMA" label="r/LocalLLaMA"/>
+    <content type="html">&lt;p&gt;contenido recortado&lt;/p&gt;</content>
+    <id>t3_aaa111</id>
+    <link href="https://www.reddit.com/r/LocalLLaMA/comments/aaa111/qwen3_corre_en_8gb_de_vram/"/>
+    <updated>2026-09-14T17:40:00+00:00</updated>
+    <published>2026-09-14T17:40:00+00:00</published>
+    <title>Qwen3 corre en 8GB de VRAM con cuantizacion Q4</title>
+  </entry>
+  <entry>
+    <author><name>/u/ejemplo_dos</name><uri>https://www.reddit.com/user/ejemplo_dos</uri></author>
+    <category term="LocalLLaMA" label="r/LocalLLaMA"/>
+    <id>t3_bbb222</id>
+    <link href="https://www.reddit.com/r/LocalLLaMA/comments/bbb222/llamacpp_ahora_soporta_vulkan/"/>
+    <updated>2026-08-30T09:15:00+00:00</updated>
+    <published>2026-08-29T21:05:00+00:00</published>
+    <title>llama.cpp ahora soporta Vulkan en Windows</title>
+  </entry>
+  <entry>
+    <author><name>/u/ejemplo_tres</name></author>
+    <id>t3_ccc333</id>
+    <link href="https://www.reddit.com/r/LocalLLaMA/comments/ccc333/guia_de_rag_local/"/>
+    <published>2026-08-17T11:00:00+00:00</published>
+    <title>Guia paso a paso de RAG local sin nube</title>
+  </entry>
+</feed>

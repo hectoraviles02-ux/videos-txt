@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://videos-txt.local/schemas/guion.schema.json",
+  "title": "Guion Periodistico",
+  "description": "Lo que escuchara el espectador. Cada beat factual DEBE citar >=1 claim_id valido de la investigacion. Separa hecho / declaracion / inferencia / pregunta y declara la relacion con el beat anterior (para detectar causalidad no demostrada). Version 1.0.",
+  "type": "object",
+  "properties": {
+    "caso_id": { "type": "string", "minLength": 1 },
+    "version": { "type": "string" },
+    "formato_destino": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["documental_16x9", "reel_9x16", "reportaje_16x9", "podcast_audio"] }
+    },
+    "beats": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "texto": { "type": "string", "minLength": 1 },
+          "factual": {
+            "type": "boolean",
+            "description": "true si el beat afirma un hecho (exige claim_ids). false para transiciones/preguntas abiertas."
+          },
+          "claim_ids": { "type": "array", "items": { "type": "string" } },
+          "voz": { "type": "string", "enum": ["narrador", "fuente_original"] },
+          "relacion_con_anterior": { "type": ["string", "null"], "enum": ["secuencia", "contraste", "causal", null] }
+        },
+        "required": ["id", "texto", "factual", "voz"],
+        "allOf": [
+          {
+            "description": "Un beat factual exige al menos un claim_id.",
+            "if": { "properties": { "factual": { "const": true } }, "required": ["factual"] },
+            "then": { "properties": { "claim_ids": { "type": "array", "minItems": 1 } }, "required": ["claim_ids"] }
+          }
+        ]
+      }
+    }
+  },
+  "required": ["caso_id", "version", "beats"]
+}

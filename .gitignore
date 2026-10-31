@@ -1,0 +1,16 @@
+.env
+*.env
+token*.json
+**/token_*.json
+client_secret*.json
+*credentials*.json
+__pycache__/
+*.pyc
+raw/
+procesado/
+guiones/
+logs/
+runs/
+*.db
+*.mp4
+*.wav

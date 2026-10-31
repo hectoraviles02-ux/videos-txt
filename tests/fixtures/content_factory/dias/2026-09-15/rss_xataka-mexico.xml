@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Xataka Mexico</title>
+  <link>https://www.xataka.com.mx/</link>
+  <description>Tecnologia y gadgets</description>
+  <language>es-MX</language>
+  <item>
+    <title>Como correr un modelo de lenguaje en tu laptop sin internet</title>
+    <link>https://www.xataka.com.mx/inteligencia-artificial/modelo-local-laptop?utm_source=feed&amp;utm_medium=rss</link>
+    <description>Guia practica</description>
+    <pubDate>Mon, 15 Sep 2026 12:30:00 +0000</pubDate>
+    <guid isPermaLink="false">xataka-99001</guid>
+  </item>
+  <item>
+    <title>Mexico publica su estrategia de datos abiertos 2027</title>
+    <link>https://www.xataka.com.mx/legislacion-y-derechos/datos-abiertos-2027</link>
+    <pubDate>Sun, 14 Sep 2026 08:00:00 +0000</pubDate>
+    <guid isPermaLink="false">xataka-99002</guid>
+  </item>
+</channel>
+</rss>

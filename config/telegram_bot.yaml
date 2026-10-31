@@ -1,0 +1,99 @@
+bot_token: "${VIDEOS_TXT_TELEGRAM_BOT_TOKEN}"
+allowed_chat_ids: []  # pon aqui tus IDs de Telegram (o usa VIDEOS_TXT_TELEGRAM_CHAT_ID)
+
+ollama:
+  url: "http://localhost:11434"
+  # 14b, NO 7b. Medido el 2026-08-18 con el mismo texto de entrada:
+  #   7b  ->  8.0s, 27.7 tok/s — "El usuario configura herramientas digitales"
+  #   14b -> 37.2s, 10.4 tok/s — "Claude, el asistente virtual, ayuda en la edicion"
+  # El 7b BORRA al sujeto de la fuente. Ese fue el origen del guion que decia
+  # "CapCut tiene un chat" cuando el video mostraba a Claude manejando CapCut.
+  # El 14b se desborda a CPU en 8GB de VRAM y tarda 29s mas por guion: es un
+  # precio barato al lado de producir un video sobre el tema equivocado.
+  model: "qwen2.5:14b-instruct-q4_K_M"
+
+sd:
+  model_id: "SG161222/Realistic_Vision_V5.1_noVAE"
+  device: "cuda"
+  width: 1024
+  height: 576
+  num_inference_steps: 25
+  guidance_scale: 7.5
+  negative_prompt: "blurry, low quality, distorted, ugly, deformed"
+  quality_prefix: "masterpiece, best quality, highly detailed, "
+  low_vram: true
+
+pipeline:
+  max_duration_seconds: 7200
+  temp_dir: "runs"
+  # "clips" = metraje real de archivo. Medido por el quality gate: clips dan
+  # movimiento 14.37; una foto con zoom Ken Burns da 1.7-2.0 y el umbral esta
+  # en 5.0. La foto fija es lo que produce el efecto PowerPoint.
+  # MEDIDO el 2026-09-04 sobre el MISMO guion (cereales, 9 escenas), con las
+  # mismas search_keywords, cambiando solo de donde sale la imagen:
+  #
+  #                      metraje de banco      generado con IA
+  #   resolucion         3840x2160 (4K)        768x432
+  #   duracion del clip  16-23 s               2 s (hay que repetirlo)
+  #   las 9 escenas      93 segundos           13 minutos
+  #   escena 1           tazon de cereal con   un platano en una esquina
+  #                      leche cayendo, foco   y el 80% mantel vacio
+  #                      de estudio
+  #
+  # Se cambia a "clips". Lo que se pierde es la coherencia visual: nueve
+  # clips de nueve rodajes distintos no comparten luz ni camara, y eso era
+  # justo lo que la IA daba. Se cambia unidad de estilo por calidad de
+  # imagen, a la vista de las dos capturas.
+  adapter: "clips"          # "clips" | "ia" | "ffmpeg" | "sd" | "stock" | "web"
+  # Cambiado de "clips" a "ia" el 2026-08-29 a peticion del usuario, para
+  # probar el modo rapido. La medicion de arriba sobre "clips" sigue
+  # vigente: es el valor al que se vuelve si los clips generados no
+  # convencen.
+  language: "es"
+  # kokoro, NO clonada. MEDIDO el 2026-08-25: la voz clonada (VoxCPM2)
+  # ALTERA el texto del guion, y como el subtitulo se saca transcribiendo el
+  # audio, el video terminaba diciendo algo distinto sin dejar rastro. Kokoro
+  # es fiel al texto, va a 120-125 ppm contra 105 y sintetiza en 1.6 s contra
+  # 160. La voz em_alex la eligio el operador ese dia comparando contra el
+  # referente. NO volver a "clonada" sin una medicion que contradiga esto.
+  tts_engine: "kokoro"       # "kokoro" | "gtts" | "edge" | "clonada"
+  # Elegida de oido por el usuario el 2026-08-19, comparando 4 voces con el
+  # mismo texto. Descartadas: es-AR-TomasNeural, es-MX-DaliaNeural,
+  # es-ES-AlvaroNeural.
+  # NO cambiar sin volver a preguntarle: la prosodia (si una voz "genera
+  # confianza") no se mide con duracion, silencios ni bitrate. Se escucha.
+  tts_voice: "es-MX-JorgeNeural"
+
+  # Modo rapido de los clips por IA. Solo aplica con adapter "ia".
+  # MEDIDO el 2026-08-28 en la RTX 2000 Ada, dos escenas por generate():
+  #   false -> DDIM 20 pasos guia 7.5   ~67 s por clip
+  #   true  -> AnimateLCM 8 pasos guia 2.0  ~28 s por clip  (-58%)
+  # Se deja en false porque es lo que corria antes: encenderlo es una
+  # decision, no un default. La configuracion de 8 pasos la eligio el usuario
+  # A OJO el 2026-08-28, comparando cuatro corridas del mismo prompt; las de
+  # 4 y 6 pasos eran mas rapidas y quedaron descartadas. No cambiar los pasos
+  # por ser "mas eficiente": eso ya se probo y se rechazo mirando el video.
+  # false a proposito desde el 2026-08-30: el operador pidio "videos
+  # PRECISOS CON EMOCION COMPLETOS, no importa cuanto dure". El modo rapido
+  # cambia 20 pasos de difusion por 8; gana minutos y pierde imagen.
+  video_rapido: false
+
+  # Buscar el tema en fuentes oficiales -arXiv, NASA, Europe PMC- antes de
+  # escribir. Con esto el guion sale con hechos citables en vez de con lo que
+  # el modelo recuerde. Si el tema no da 8 hechos concretos, el bot lo dice y
+  # no produce: un documental de generalidades es peor que ninguno.
+  investigar: true
+
+  # Base propia. Sus hechos se suman a los de las fuentes publicas cuando el
+  # tema toca alguno de los que ese archivo declara. Se lee en SOLO LECTURA
+  # y prefiriendo la replica .read.db para no estorbar a quien escribe.
+  fuente_local: "config/fuente_abasto.json"
+
+  # Voz clonada del usuario. Medido el 2026-08-22: con esta referencia limpia
+  # el clon queda a 1.9-4.4% de su tono real; con audio de llamada telefonica
+  # quedaba a 9-12%. La calidad la fija la limpieza de la referencia, no su
+  # duracion.
+  # El texto NO es opcional: el modelo necesita saber que dice el clip para
+  # separar la voz del contenido.
+  voz_referencia: "voz/referencia.wav"
+  voz_referencia_texto: "Nuevo. Recibe ayuda mas rapida de inteligencia de Meta IA. La nueva version mejorada de Meta te ofrece respuestas mas detalladas y personalizadas al instante. Ya se que necesitas ayuda para planificar o analizar tus opciones. Inicia un chat con Meta IA. Luego, haz una pregunta o comparte una foto y explica lo que necesitas."

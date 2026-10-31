@@ -1,0 +1,35 @@
+[
+  {
+    "html_url": "https://github.com/ollama/ollama/releases/tag/v0.14.0",
+    "id": 220100001,
+    "tag_name": "v0.14.0",
+    "name": "v0.14.0",
+    "draft": false,
+    "prerelease": false,
+    "created_at": "2026-09-14T17:00:00Z",
+    "published_at": "2026-09-14T18:12:00Z",
+    "body": "Structured outputs y soporte de Vulkan en Windows."
+  },
+  {
+    "html_url": "https://github.com/ollama/ollama/releases/tag/v0.13.2",
+    "id": 219900002,
+    "tag_name": "v0.13.2",
+    "name": "",
+    "draft": false,
+    "prerelease": false,
+    "created_at": "2026-08-30T10:00:00Z",
+    "published_at": "2026-08-30T11:30:00Z",
+    "body": "Correcciones de memoria en GPU NVIDIA."
+  },
+  {
+    "html_url": "https://github.com/ollama/ollama/releases/tag/v0.13.1-rc1",
+    "id": 219800003,
+    "tag_name": "v0.13.1-rc1",
+    "name": "v0.13.1-rc1",
+    "draft": true,
+    "prerelease": true,
+    "created_at": "2026-08-25T10:00:00Z",
+    "published_at": null,
+    "body": "Borrador: no debe entrar como senal."
+  }
+]

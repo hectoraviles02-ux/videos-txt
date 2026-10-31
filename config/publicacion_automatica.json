@@ -1,0 +1,18 @@
+{
+  "activa": false,
+  "version": "2026-10-21.1",
+  "palabras_operador": "go ya tenemos todo conectado para que fiumcione desde los guiones hasta la publicación a diario a su maximo potnecial  qupor que no lo estamos usando",
+  "alcance": "Autorización delegada para crear y publicar sin revisión individual, confirmada en este chat. No constituye revisión humana del MP4.",
+  "canales": ["facebook"],
+  "pilares": ["P2", "P3", "P4"],
+  "videos_por_dia": 1,
+  "hora_local": "07:00",
+  "zona": "America/Mexico_City",
+  "duracion_min_s": 10,
+  "duracion_max_s": 90,
+  "ancho": 1080,
+  "alto": 1920,
+  "apis_pagadas": false,
+  "youtube": "BLOQUEADO: OAuth invalid_grant; token expirado o revocado, medido 2026-10-21",
+  "tiktok": "No habilitado: acceso de publicación pública no verificado"
+}

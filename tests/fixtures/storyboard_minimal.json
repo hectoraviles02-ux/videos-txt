@@ -1,0 +1,56 @@
+{
+  "storyboard_version": "1.0",
+  "metadata": {
+    "source_script": "lab-test-001",
+    "title": "Laboratorio FFmpeg+Pillow",
+    "total_duration_seconds": 25,
+    "scene_count": 3,
+    "generated_at": "2026-07-25T12:00:00Z",
+    "generator": "lab-manual"
+  },
+  "scenes": [
+    {
+      "id": "scene-001",
+      "type": "hook",
+      "title": "Apertura",
+      "start_seconds": 0.0,
+      "end_seconds": 10.0,
+      "narration": "Bienvenidos al laboratorio de validación del adaptador ffmpeg-pillow.",
+      "visual": {
+        "components": [
+          {"type": "solid_color", "color": "#1a1a2e"},
+          {"type": "text", "content": "FFmpeg + Pillow", "position": "center"},
+          {"type": "text", "content": "Adaptador de video", "position": "bottom"}
+        ]
+      }
+    },
+    {
+      "id": "scene-002",
+      "type": "narrative",
+      "title": "Demostración",
+      "start_seconds": 10.0,
+      "end_seconds": 20.0,
+      "narration": "Esta escena muestra una imagen con texto superpuesto.",
+      "visual": {
+        "components": [
+          {"type": "image", "source": "__TEST_IMAGE__"},
+          {"type": "text", "content": "Imagen de prueba", "position": "top"}
+        ]
+      }
+    },
+    {
+      "id": "scene-003",
+      "type": "closing",
+      "title": "Cierre",
+      "start_seconds": 20.0,
+      "end_seconds": 25.0,
+      "narration": "Fin de la prueba de laboratorio.",
+      "visual": {
+        "components": [
+          {"type": "solid_color", "color": "#16213e"},
+          {"type": "text", "content": "Fin", "position": "center"}
+        ]
+      }
+    }
+  ]
+}

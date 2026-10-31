@@ -1,0 +1,53 @@
+{
+  "version": "2026-10-17.1",
+  "autoridad": "Operador: si dale; cuatro temas en dos etapas",
+  "etapa_activa": 1,
+  "temas": {
+    "python_practico": {"etapa": 1, "pilar": "P4", "nombre": "Python práctico"},
+    "fallas_tecnologicas": {"etapa": 1, "pilar": "P3", "nombre": "Fallas tecnológicas explicadas"},
+    "ia_local": {"etapa": 2, "pilar": "P2", "nombre": "IA local"},
+    "ia_confiable": {"etapa": 2, "pilar": "P3", "nombre": "IA confiable"}
+  },
+  "etapa_2_requiere": ["piloto_por_tema", "validacion_tecnica", "revision_humana", "decision_operador"],
+  "canales": {
+    "youtube_largo": {
+      "temas": ["python_practico", "fallas_tecnologicas", "ia_local", "ia_confiable"],
+      "formatos": ["tutorial_desarrollado", "documental", "comparacion_reproducible"],
+      "proposito": "Explicar causas, procedimientos y pruebas con contexto",
+      "metrica": "minutos_vistos_y_retencion"
+    },
+    "youtube_shorts": {
+      "temas": ["python_practico", "fallas_tecnologicas", "ia_local", "ia_confiable"],
+      "formatos": ["concepto_demostrado", "hallazgo_autosuficiente"],
+      "proposito": "Resolver una pregunta concreta; relacionar un largo cuando exista",
+      "metrica": "retencion_y_suscriptores_atribuibles"
+    },
+    "tiktok": {
+      "temas": ["python_practico", "fallas_tecnologicas", "ia_local", "ia_confiable"],
+      "formatos": ["reto_explicado", "experimento", "expediente_breve"],
+      "proposito": "Medir interés y seguidores con demostraciones completas",
+      "metrica": "seguidores_atribuibles_por_1000_vistas"
+    },
+    "facebook": {
+      "temas": ["python_practico", "fallas_tecnologicas", "ia_local", "ia_confiable"],
+      "formatos": ["consecuencia_practica", "automatizacion_demostrada", "calculo_visual"],
+      "proposito": "Explicar utilidad y consecuencias con aportacion original",
+      "metrica": "retencion_y_seguidores_atribuibles"
+    },
+    "kwai": {
+      "temas": ["python_practico", "fallas_tecnologicas"],
+      "formatos": ["piloto_vertical_autosuficiente"],
+      "proposito": "Evaluar distribucion adicional antes de ampliar",
+      "metrica": "retencion_y_seguidores_atribuibles",
+      "estado": "piloto_requiere_revision"
+    }
+  },
+  "reglas": {
+    "duraciones": "Hipotesis editoriales; consultar reglas vigentes por programa",
+    "publicacion": "Exige evidencia tecnica y aprobacion humana; este archivo no autoriza publicar",
+    "datos_ausentes": "SIN_DATOS; nunca convertir en cero",
+    "metricas": "Comparar a igual edad de publicacion; no atribuir seguidores sin datos",
+    "pilares_restantes": "Conservados en marca.yaml; fuera de la primera etapa",
+    "integracion": "Plan declarativo; aun no conectado al selector ni al publicador"
+  }
+}

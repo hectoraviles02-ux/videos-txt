@@ -1,0 +1,26 @@
+{
+ "origen": "Mars 3D, primera corrida con Chatterbox real, 22-oct-2026 (guiones/expedientes/2026-10-22_mars-climate-orbiter-3d/_previo/20261022_105328_voz/)",
+ "casos": [
+  {
+   "beat": "b5",
+   "guion": "Una libra de fuerza son cuatro punto cuatro cinco newtons. Lo medimos en Python: cada empujón de la nave era cuatro veces y media más fuerte de lo que navegación creía.",
+   "oido": "Una libra de fuerza son 4 .45 newtons. Lo medimos en Python, cada empujón de la nave era cuatro veces y media más fuerte de lo que navegación creía. ¿Qué ella?",
+   "esperado": "rechazar",
+   "por_que": "el TTS agregó «¿Qué ella?» al final: debe RECHAZARSE"
+  },
+  {
+   "beat": "b1",
+   "guion": "Veintitrés de septiembre de mil novecientos noventa y nueve. Una nave de la NASA llegó a Marte y desapareció. No fue una tormenta ni una falla del motor. Fue un error de unidades.",
+   "oido": "23 de septiembre de 1999. Una nave de la NASA llegó a Marte y desapareció. No fue una tormenta ni una falla del motor. Fue un error de humedades.",
+   "esperado": "revisar",
+   "por_que": "whisper oyó «humedades» por «unidades»: pasa, pero va a escucha humana"
+  },
+  {
+   "beat": "b4",
+   "guion": "La especificación pedía newtons por segundo, del sistema métrico. Pero ese programa entregó libras por segundo, unidades inglesas. Y navegación las leyó como si fueran métricas.",
+   "oido": "La especificación pedía newtons por segundo del sistema métrico, pero ese programa entregó libras por segundo, unidades ingresas, y navegación las leyó como si fueran métricas.",
+   "esperado": "revisar",
+   "por_que": "whisper oyó «ingresas» por «inglesas»: pasa, pero va a escucha humana"
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+from __future__ import annotations
+
+import logging
+
+from telegram.ext import Application
+
+from telegram_bot.config import validate_and_load
+from telegram_bot.handlers import HANDLERS, error_handler
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+)
+
+# Los clientes HTTP loguean la URL completa en INFO, y la URL de la Telegram Bot
+# API lleva el token embebido. Se bajan a WARNING para no filtrar credenciales al
+# log. NO afecta el logging de la aplicacion ni sus excepciones.
+for _noisy in ("httpx", "httpcore", "urllib3"):
+    logging.getLogger(_noisy).setLevel(logging.WARNING)
+
+
+def main() -> None:
+    config = validate_and_load()
+
+    application = Application.builder().token(config.token).build()
+    application.bot_data["config"] = config
+
+    for handler in HANDLERS:
+        application.add_handler(handler)
+
+    application.add_error_handler(error_handler)
+
+    application.run_polling()
+
+
+if __name__ == "__main__":
+    main()

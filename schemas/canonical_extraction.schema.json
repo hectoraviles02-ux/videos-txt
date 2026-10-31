@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://videos-txt.local/schemas/canonical_extraction.schema.json",
+  "title": "Extracción Canónica",
+  "description": "Representación normalizada del contenido extraído de una fuente (Nivel 1 del modelo de autoridades). Versión 1.0.",
+  "type": "object",
+  "properties": {
+    "source_url": {
+      "description": "URL normalizada de la fuente original (sin utm_, fbclid, fragmentos)",
+      "type": "string",
+      "format": "uri",
+      "examples": ["https://www.youtube.com/watch?v=abc123"]
+    },
+    "url_hash": {
+      "description": "SHA1 primeros 12 caracteres de source_url normalizada. Llave natural para dedup.",
+      "type": "string",
+      "pattern": "^[a-f0-9]{12}$",
+      "examples": ["4befb78f657c"]
+    },
+    "tipo": {
+      "description": "Tipo de fuente original",
+      "type": "string",
+      "enum": ["video", "texto"]
+    },
+    "titulo": {
+      "description": "Título de la fuente (de metadatos de plataforma o del HTML)",
+      "type": "string",
+      "minLength": 1,
+      "examples": ["Sesión 1 - Módulo de Redes"]
+    },
+    "idioma": {
+      "description": "Código ISO 639-1 del idioma detectado. 'und' si indeterminado.",
+      "type": "string",
+      "pattern": "^(es|en|und|[a-z]{2}(-[A-Z]{2})?)$",
+      "default": "und"
+    },
+    "fecha_extraccion": {
+      "description": "Fecha y hora de la extracción en formato ISO",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$",
+      "examples": ["2026-07-23 12:11"]
+    },
+    "metodo": {
+      "description": "Método utilizado para obtener el contenido textual",
+      "type": "string",
+      "enum": ["subtitulos_oficiales", "auto-transcripcion", "extractor_articulo"]
+    },
+    "duracion_seg": {
+      "description": "Duración total en segundos. 0 para texto/artículos.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "verificada": {
+      "description": "Indica si la fuente fue verificada (URL resolvió, extracción completada)",
+      "type": "boolean",
+      "default": false
+    },
+    "segmentos": {
+      "description": "Lista de segmentos de contenido. Vacía si la extracción falló.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "inicio_seg": {
+            "description": "Timestamp de inicio en segundos. null para texto/artículos.",
+            "type": ["number", "null"],
+            "minimum": 0
+          },
+          "fin_seg": {
+            "description": "Timestamp de fin en segundos. null para texto/artículos.",
+            "type": ["number", "null"],
+            "minimum": 0
+          },
+          "texto": {
+            "description": "Contenido textual del segmento. '[INAUDIBLE]' si no pudo transcribirse.",
+            "type": "string",
+            "minLength": 0
+          },
+          "confianza": {
+            "description": "Nivel de confianza de la transcripción (0.0 a 1.0). 1.0 para subtítulos oficiales.",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": ["inicio_seg", "fin_seg", "texto", "confianza"]
+      }
+    },
+    "avisos": {
+      "description": "Lista de advertencias sobre limitaciones de la extracción",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "source_url",
+    "url_hash",
+    "tipo",
+    "titulo",
+    "idioma",
+    "fecha_extraccion",
+    "metodo",
+    "duracion_seg",
+    "verificada",
+    "segmentos",
+    "avisos"
+  ],
+  "allOf": [
+    {
+      "description": "Si la fuente es video, duracion_seg debe ser > 0 o null",
+      "if": {
+        "properties": { "tipo": { "const": "video" } }
+      },
+      "then": {
+        "properties": {
+          "duracion_seg": { "minimum": 0 }
+        }
+      }
+    },
+    {
+      "description": "Método debe ser consistente con el tipo de fuente",
+      "if": {
+        "properties": { "tipo": { "const": "texto" } }
+      },
+      "then": {
+        "properties": {
+          "metodo": { "enum": ["extractor_articulo"] }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+# Fixture de fuentes para las pruebas. Deliberadamente pequena y con un caso
+# de cada forma: acervo compartido, pilar de origen, y los seis tipos.
+fuentes:
+  - nombre: "trends:mx"
+    tipo: trends_mx
+    acervo_compartido: true
+    activa: true
+    parametros: {url: "https://ejemplo/trends"}
+
+  - nombre: "hackernews:frontpage"
+    tipo: hackernews
+    acervo_compartido: true
+    activa: true
+    parametros: {url: "https://ejemplo/hn"}
+
+  - nombre: "reddit:r/prueba"
+    tipo: reddit
+    pilar_origen: P1
+    activa: true
+    parametros: {sub: "prueba"}
+
+  - nombre: "github:ejemplo/repo"
+    tipo: github_releases
+    pilar_origen: P2
+    activa: true
+    parametros: {repo: "ejemplo/repo"}
+
+  - nombre: "rss:ejemplo"
+    tipo: rss
+    pilar_origen: P4
+    activa: true
+    parametros: {url: "https://ejemplo/rss"}
+
+  - nombre: "youtube:ejemplo"
+    tipo: youtube
+    pilar_origen: P6
+    activa: true
+    parametros: {consulta: "emuladores", sp: "EgIIBQ%3D%3D"}
+
+  - nombre: "reddit:r/apagada"
+    tipo: reddit
+    pilar_origen: P3
+    activa: false
+    parametros: {sub: "apagada"}
+
+lexico:
+  P1:
+    - gobierno
+    - transparencia
+  P2:
+    - ollama
+    - modelo local
+  P3:
+    - alucinacion
+  P4:
+    - automatizacion
+  P5:
+    - podcast
+  P6:
+    - emulador
+  P7:
+    - detras de camara

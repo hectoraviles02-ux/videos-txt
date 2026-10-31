@@ -1,0 +1,40 @@
+{
+  "storyboard_version": "1.0",
+  "metadata": {
+    "source_script": "e2e-integration",
+    "title": "Integración RunManager",
+    "total_duration_seconds": 15,
+    "scene_count": 2,
+    "generated_at": "2026-07-26T12:00:00Z"
+  },
+  "scenes": [
+    {
+      "id": "scene-001",
+      "type": "hook",
+      "title": "Apertura",
+      "start_seconds": 0.0,
+      "end_seconds": 8.0,
+      "narration": "Prueba de integración del pipeline completo con RunManager.",
+      "visual": {
+        "components": [
+          {"type": "solid_color", "color": "#1a1a2e"},
+          {"type": "text", "content": "Pipeline VIDEOS-TXT", "position": "center"}
+        ]
+      }
+    },
+    {
+      "id": "scene-002",
+      "type": "closing",
+      "title": "Cierre",
+      "start_seconds": 8.0,
+      "end_seconds": 15.0,
+      "narration": "Corrida exitosa con manifest, storyboard y evidencia de calidad.",
+      "visual": {
+        "components": [
+          {"type": "solid_color", "color": "#16213e"},
+          {"type": "text", "content": "RunManager OK", "position": "center"}
+        ]
+      }
+    }
+  ]
+}

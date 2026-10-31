@@ -1,0 +1,101 @@
+{
+  "por_tema": {
+    "1658d4d629f41ab834967508bf0fb28566e62aecc6192a4561f725bcbb9665f9": {
+      "creado_en": "2026-09-14",
+      "embedding_b64": "6+rqvrW0ND65uLg9o6KiPpybG7/k42M/u7q6vqKhIT/S0VG/n56evra1NT/Qz08/sbAwvby7Oz/n5uY+qaioPQ==",
+      "evidencia": [
+        {
+          "fuente": "github:SYSTRAN/faster-whisper",
+          "publicada_en": "2026-08-30T11:30:00Z",
+          "url": "https://github.com/ollama/ollama/releases/tag/v0.13.2"
+        }
+      ],
+      "pen_repeticion": 0.605211
+    },
+    "49c1643b3ec48949991a1ad8637b899fd733927cc37202196052dd1f9c94709e": {
+      "creado_en": "2026-09-14",
+      "embedding_b64": "19bWPsC/Pz+SkRG//fx8Pr69Pb/W1VU/1NNTv+fm5j6ZmJi9wsFBP8HAQDzHxsY+1dRUPtva2j7w728/wL8/vw==",
+      "evidencia": [
+        {
+          "fuente": "youtube:automatizacion python",
+          "publicada_en": null,
+          "url": "https://www.youtube.com/watch?v=abc123XYZ_9"
+        }
+      ],
+      "pen_repeticion": 0.497295
+    },
+    "51e4fe6eba4ccf35c2af1a16c4c2256489648bf8bfa2ccb6aeb9e123052d8b9b": {
+      "creado_en": "2026-09-14",
+      "embedding_b64": "wsFBP/79fT/9/Hy+09LSPrOysr7e3V2/2NdXP5eWlr7S0VG/19bWPr69Pb+fnp4+iokJv7q5Ob+3tra+6OdnPw==",
+      "evidencia": [
+        {
+          "fuente": "github:SYSTRAN/faster-whisper",
+          "publicada_en": "2026-09-14T18:12:00Z",
+          "url": "https://github.com/ollama/ollama/releases/tag/v0.14.0"
+        }
+      ],
+      "pen_repeticion": 0.187359
+    },
+    "7829f5fdb2bec26b5d6d09000bb38139f1384329c3f24a218e0a5de3f993d1af": {
+      "creado_en": "2026-09-14",
+      "embedding_b64": "rKsrv7e2tj6fnp6+1NNTP4iHB7+FhAS+urk5v66tLT+/vr6+wL8/v+LhYT/X1ta+xcREPt/e3j6mpSU/iYiIvQ==",
+      "evidencia": [
+        {
+          "fuente": "reddit:r/LocalLLaMA",
+          "publicada_en": "2026-09-14T17:40:00+00:00",
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/aaa111/qwen3_corre_en_8gb_de_vram/"
+        }
+      ],
+      "pen_repeticion": 0.605211
+    },
+    "bbbd5af367a4d66df482714a4d35d92db93bdebe1b26b7f5fb4c5c92c22e1f46": {
+      "creado_en": "2026-09-14",
+      "embedding_b64": "9PNzv7u6uj78+3s/tLMzv8vKyr6trCw+xsVFP/Lxcb+koyO/jo0NP97dXT+4tzc/8fBwPaKhIT/j4uK+sbAwvQ==",
+      "evidencia": [
+        {
+          "fuente": "reddit:r/LocalLLaMA",
+          "publicada_en": "2026-08-30T09:15:00+00:00",
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/bbb222/llamacpp_ahora_soporta_vulkan/"
+        }
+      ],
+      "pen_repeticion": 0.29857
+    },
+    "dbb9e50e232bd0c92f25614f085b2fce2c0247a3e180fe3c27ff07c287ac2b71": {
+      "creado_en": "2026-09-14",
+      "embedding_b64": "1tVVP83MTL7u7W2/+fj4Pfr5eb+sqys/hYQEvtbVVT+FhAS+lpUVv6alJb+amRk/vLs7P/Tzcz+WlRU/4+LiPg==",
+      "evidencia": [
+        {
+          "fuente": "youtube:automatizacion python",
+          "publicada_en": null,
+          "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        }
+      ],
+      "pen_repeticion": 0.497295
+    },
+    "dcf7cf47a888d712a786a2e4b5e1b8bbb564aa2b1aaf85ae1830e087e2eb8788": {
+      "creado_en": "2026-09-14",
+      "embedding_b64": "paQkvp+enr7u7W2/lJMTP83MTD6ZmJi9yMdHv8/Ozr66uTm/8vFxv4iHBz/T0tI+r66uvqOior6+vT0/iYiIvQ==",
+      "evidencia": [
+        {
+          "fuente": "youtube:automatizacion python",
+          "publicada_en": null,
+          "url": "https://www.youtube.com/watch?v=LQqv4M_NtNc"
+        }
+      ],
+      "pen_repeticion": 0.516632
+    },
+    "f2e4bc9066a268b1f5d9feae919cd312d15f38f3d7743e4976a3faea1203f906": {
+      "creado_en": "2026-09-14",
+      "embedding_b64": "7OtrP+jnZz+opye/1dRUvgAAgL+lpCS+09LSvqinJ7+EgwM/jo0Nv9/e3j7b2to+tbQ0Pr69Pb/NzEy+lJMTvw==",
+      "evidencia": [
+        {
+          "fuente": "reddit:r/LocalLLaMA",
+          "publicada_en": null,
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/ccc333/guia_de_rag_local/"
+        }
+      ],
+      "pen_repeticion": 0.303566
+    }
+  },
+  "ventana": []
+}

@@ -1,0 +1,1113 @@
+{
+  "version": 2,
+  "fecha_revision": "2026-10-17",
+  "descripcion": "Reglas de monetización por plataforma (YouTube, TikTok, Facebook/Meta) extraídas de fuentes oficiales. Cada regla lleva la ruta del procesado/*.json que la respalda y una cita textual (substring exacto de un segmento). Lo no confirmado va como nivel 'riesgo' con confirmado=false. Uso: python scripts/validar_monetizacion.py",
+  "niveles": {
+    "bloqueante": "Si se incumple, el video no debe publicarse en esa plataforma (o no cobrará / puede ser sancionado).",
+    "riesgo": "Puede limitar ingresos o alcance; requiere revisión o no está confirmado en la fuente.",
+    "recomendacion": "Buena práctica respaldada por la fuente; no impide cobrar."
+  },
+  "metadatos_validos": {
+    "musica": [
+      "ninguna",
+      "meta_sound_collection",
+      "youtube_audio_library",
+      "youtube_audio_library_cc",
+      "tiktok_cml",
+      "otra_con_licencia",
+      "otra_sin_licencia",
+      "desconocida"
+    ],
+    "booleanos": [
+      "voz_ia",
+      "voz_ia_realista",
+      "voz_clonada_tercero",
+      "escena_realista_ia",
+      "musica_ia",
+      "etiqueta_ia",
+      "contenido_marca",
+      "aviso_comercial",
+      "atribucion_en_descripcion",
+      "contenido_terceros"
+    ]
+  },
+  "plataformas": {
+    "youtube": {
+      "programa": "Programa de socios de YouTube (YPP) + reparto de ingresos de Shorts",
+      "elegibilidad": [
+        {
+          "id": "yt_ypp_umbrales",
+          "descripcion": "ACTUAL: reparto de ingresos publicitarios del YPP con 1,000 suscriptores + 4,000 horas (12 meses) o 1,000 suscriptores + 10 millones de vistas de Shorts (90 días).",
+          "umbrales": {
+            "suscriptores": 1000,
+            "horas_reproduccion_12m": 4000,
+            "vistas_shorts_90d": 10000000
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-ypp-elegibilidad/descripcion-general-y-elegibilidad-del-programa-de_423cd7358156.json",
+            "cita": "1. Tener 1,000 suscriptores y 4,000 horas de reproducción calificadas en los últimos 12 meses, o 2. Tener 1,000 suscriptores y 10 millones de vistas de Shorts calificadas en los últimos 90 días"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "fuente_secundaria": {
+            "ruta": "procesado/2026-10-17_plataformas-youtube-ypp-ampliado/descripcion-general-del-programa-de-socios-de-yout_efd40ed67d5e.json",
+            "cita": "Tener 1,000 suscriptores y 10 millones de vistas de Shorts públicas calificadas en los últimos 90 días"
+          }
+        },
+        {
+          "id": "yt_ypp_ampliado_500",
+          "vigencia": "actual",
+          "descripcion": "ACTUAL: YPP ampliado con 500 suscriptores + 3 cargas públicas en 90 días + 3,000 horas (12 meses) o 3 M de vistas de Shorts (90 días). Da financiación de fans y Shopping (membresías, Súper chat, Súper gracias, etc.). NO habilita el reparto de ingresos publicitarios: ese pide los umbrales de 1,000 suscriptores.",
+          "umbrales": {
+            "suscriptores": 500,
+            "cargas_publicas_90d": 3,
+            "horas_reproduccion_12m": 3000,
+            "vistas_shorts_90d": 3000000,
+            "habilita_anuncios": false
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_plataformas-youtube-ypp-ampliado/descripcion-general-del-programa-de-socios-de-yout_efd40ed67d5e.json",
+            "cita": "Conseguir 500 suscriptores con 3 cargas públicas válidas en los últimos 90 días y 3,000 horas de reproducción calificadas en los últimos 12 meses, o"
+          },
+          "fuente_secundaria": {
+            "ruta": "procesado/2026-10-17_plataformas-youtube-ypp-ampliado/descripcion-general-del-programa-de-socios-de-yout_efd40ed67d5e.json",
+            "cita": "Los creadores que formen parte del Programa de socios de YouTube y cumplan con los siguientes criterios de elegibilidad podrán obtener beneficios adicionales, como el reparto de ingresos publicitarios y de YouTube Premium:"
+          },
+          "fecha_revision": "2026-10-17"
+        },
+        {
+          "id": "yt_shorts_horas_no_cuentan",
+          "descripcion": "Las horas vistas en el feed de Shorts NO cuentan para las 4,000 horas.",
+          "umbrales": null,
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-ypp-elegibilidad/descripcion-general-y-elegibilidad-del-programa-de_423cd7358156.json",
+            "cita": "Ten en cuenta que las horas de reproducción calificadas de las vistas de Shorts del feed de Shorts no se registran para el cumplimiento del criterio de 4,000 horas de reproducción calificadas."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_shorts_medicion_mensual_2027",
+          "vigencia": "futuro",
+          "vigencia_desde": "2027-02-01",
+          "descripcion": "CAMBIO FUTURO (texto literal de la fuente): desde el 1-feb-2027, para obtener cada mes la parte del fondo de Shorts y de Premium se pide tener 10 millones de vistas de Shorts calificadas en los 90 días que terminan el día 15 del mes anterior. El umbral de 10 M para ENTRAR al YPP por la vía Shorts ya es actual (yt_ypp_umbrales); lo que la fuente fecha en 2027 es esa medición mensual como condición de cobro.",
+          "umbrales": {
+            "vistas_shorts_90d": 10000000,
+            "medicion": "mensual; ventana de 90 días que termina el día 15 del mes anterior"
+          },
+          "confirmado": true,
+          "nota": "La misma página también dice, sin fecha: «Para poder recibir ingresos por anuncios de Shorts y YouTube Premium cada mes, deberás tener al menos 10 millones de vistas de Shorts calificadas en los últimos 90 días.» No se interpreta más allá del texto.",
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-shorts-monetizacion/politicas-de-monetizacion-de-youtube-shorts-ayuda-_e2ee5f5cfe8c.json",
+            "cita": "A partir del 1 de febrero de 2027, deberás tener al menos 10 millones de vistas de Shorts calificadas en los últimos 90 días para ser elegible y obtener una parte de los ingresos publicitarios de Shorts del fondo para creadores y de los ingresos de YouTube Premium cada mes. Las vistas totales se medirán en función de este umbral durante el período de 90 días que finaliza el día 15 del mes calendario anterior al mes para el que se calculan los ingresos."
+          },
+          "fecha_revision": "2026-10-17"
+        },
+        {
+          "id": "yt_shorts_anuncios_segmentados_2027",
+          "vigencia": "futuro",
+          "vigencia_desde": "2027-02-01",
+          "descripcion": "CAMBIO FUTURO: anuncios de Shorts segmentados a grupos de 5 canales o menos darán ingreso directo (45% del neto del anuncio).",
+          "umbrales": {
+            "porcentaje_creador": 45,
+            "canales_por_grupo_max": 5
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-shorts-monetizacion/politicas-de-monetizacion-de-youtube-shorts-ayuda-_e2ee5f5cfe8c.json",
+            "cita": "A partir del 1 de febrero de 2027, los anuncios de Shorts segmentados para canales específicos en grupos pequeños de 5 canales o menos serán elegibles para generar ingresos directos."
+          },
+          "fecha_revision": "2026-10-17"
+        },
+        {
+          "id": "yt_ypp_condiciones_2027",
+          "vigencia": "futuro",
+          "vigencia_desde": "2027-02-01",
+          "descripcion": "CAMBIO FUTURO: condiciones del YPP actualizadas; aceptarlas en YouTube Studio antes del 31-ene-2027 para seguir monetizando por completo.",
+          "umbrales": null,
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-ypp-elegibilidad/descripcion-general-y-elegibilidad-del-programa-de_423cd7358156.json",
+            "cita": "A partir del 1 de febrero de 2027, presentaremos actualizaciones en el Programa de socios de YouTube (YPP). Para seguir monetizando tu contenido por completo, revisa y acepta las condiciones actualizadas en YouTube Studio antes del 31 de enero de 2027."
+          },
+          "fecha_revision": "2026-10-17"
+        },
+        {
+          "id": "yt_shorts_porcentaje",
+          "descripcion": "El creador se queda con el 45% de lo que se le asigna del fondo de Shorts, use o no música.",
+          "umbrales": {
+            "porcentaje_creador": 45
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-shorts-monetizacion/politicas-de-monetizacion-de-youtube-shorts-ayuda-_e2ee5f5cfe8c.json",
+            "cita": "Los creadores que moneticen contenido se quedarán con el 45% de sus ingresos asignados, independientemente de que hayan usado música."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_shorts_sin_retroactivo",
+          "descripcion": "Las vistas de Shorts acumuladas antes de aceptar el Módulo de Monetización de Shorts no participan en el reparto.",
+          "umbrales": null,
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-shorts-monetizacion/politicas-de-monetizacion-de-youtube-shorts-ayuda-_e2ee5f5cfe8c.json",
+            "cita": "Las vistas de Shorts acumuladas antes de aceptar el Módulo sobre Monetización de Shorts no son elegibles para el reparto de ingresos publicitarios de Shorts."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_requisitos_cuenta",
+          "descripcion": "ACTUAL: país con YPP disponible (México incluido), sin faltas activas, verificación en 2 pasos y cuenta de AdSense para YouTube vinculada.",
+          "umbrales": null,
+          "confirmado": true,
+          "nota": "México SÍ aparece en la lista oficial de países del YPP y del YPP ampliado (procesado/2026-10-17_plataformas-youtube-ypp-paises y procesado/2026-10-17_plataformas-youtube-ypp-ampliado).",
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-ypp-elegibilidad/descripcion-general-y-elegibilidad-del-programa-de_423cd7358156.json",
+            "cita": "Vivir en un país o región donde esté disponible el Programa de socios de YouTube"
+          },
+          "fuentes_adicionales": [
+            {
+              "ruta": "procesado/2026-10-17_politicas-youtube-ypp-elegibilidad/descripcion-general-y-elegibilidad-del-programa-de_423cd7358156.json",
+              "cita": "No tener faltas activas por incumplimiento de los Lineamientos de la Comunidad en tu canal"
+            },
+            {
+              "ruta": "procesado/2026-10-17_politicas-youtube-ypp-elegibilidad/descripcion-general-y-elegibilidad-del-programa-de_423cd7358156.json",
+              "cita": "Asegurarte de que la verificación en 2 pasos esté activada para tu Cuenta de Google"
+            },
+            {
+              "ruta": "procesado/2026-10-17_politicas-youtube-ypp-elegibilidad/descripcion-general-y-elegibilidad-del-programa-de_423cd7358156.json",
+              "cita": "Tener una cuenta de AdSense para YouTube activa vinculada a tu canal"
+            },
+            {
+              "ruta": "procesado/2026-10-17_plataformas-youtube-ypp-paises/disponibilidad-del-programa-de-socios-de-youtube-a_36f09320041d.json",
+              "cita": "Puedes registrarte en el Programa de socios de YouTube en las siguientes áreas:"
+            },
+            {
+              "ruta": "procesado/2026-10-17_plataformas-youtube-ypp-paises/disponibilidad-del-programa-de-socios-de-youtube-a_36f09320041d.json",
+              "cita": "México"
+            },
+            {
+              "ruta": "procesado/2026-10-17_plataformas-youtube-ypp-ampliado/descripcion-general-del-programa-de-socios-de-yout_efd40ed67d5e.json",
+              "cita": "El Programa de socios de YouTube ampliado está disponible para los creadores que cumplan con los requisitos en los siguientes países y regiones:"
+            }
+          ],
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        }
+      ],
+      "reglas": [
+        {
+          "id": "yt_contenido_repetitivo",
+          "descripcion": "No monetizan canales cuyo contenido parece hecho con plantilla y siempre igual; cada video debe aportar valor distinto.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "manual",
+            "pregunta": "¿Este video se distingue claramente de los anteriores (tema, ejemplo, explicación) o solo cambia el texto dentro de la misma plantilla?"
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-monetizacion-canal/politicas-de-monetizacion-de-canales-de-youtube-ay_a0977d2ab130.json",
+            "cita": "no se pueden monetizar los canales cuyo contenido parece ser siempre el mismo en cada video"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_ia_plantilla_masiva",
+          "descripcion": "Contenido de IA con plantillas genéricas que parece producción en masa sin aporte propio no monetiza.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "manual",
+            "pregunta": "¿El video incluye la perspectiva/explicación propia del creador (no solo texto generado y narrado)?"
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-monetizacion-canal/politicas-de-monetizacion-de-canales-de-youtube-ay_a0977d2ab130.json",
+            "cita": "Contenido generado por IA con plantillas genéricas o poco originales que dan la impresión de producción en masa sin agregar las observaciones o perspectivas originales y auténticas del creador"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_texto_en_movimiento",
+          "descripcion": "Texto en movimiento o diapositivas con poca narración o valor educativo es contenido repetitivo; hace falta narración con valor.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "requiere_si",
+            "si": {},
+            "entonces": {
+              "tiene_audio": true
+            },
+            "nota": "Automático: el mp4 debe tener pista de audio (narración). El valor educativo se revisa a mano."
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-monetizacion-canal/politicas-de-monetizacion-de-canales-de-youtube-ay_a0977d2ab130.json",
+            "cita": "Presentaciones de diapositivas con imágenes, historias basadas en plantillas o texto en movimiento que tienen poca narración, comentarios o valor educativo, o bien no los tienen"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_contenido_reutilizado",
+          "descripcion": "Contenido de terceros sin transformación significativa desmonetiza TODO el canal.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "condicion_incumple",
+            "si": {
+              "contenido_terceros": true
+            },
+            "nota": "Si usa material de terceros, debe transformarse (comentario, edición sustancial); revisar a mano."
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-monetizacion-canal/politicas-de-monetizacion-de-canales-de-youtube-ay_a0977d2ab130.json",
+            "cita": "Nuestra política de contenido reutilizado se aplica a todo el canal."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_ia_personaje_experto",
+          "descripcion": "Personajes de IA que se hacen pasar por experto humano dando consejo de salud, legal o finanzas no monetizan (cuidado con «Haz la cuenta» de dinero).",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "manual",
+            "pregunta": "¿La voz IA se presenta como experto humano que da asesoría financiera/legal/médica? Debe ser explicación de datos con fuente, no consejo personal."
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-monetizacion-canal/politicas-de-monetizacion-de-canales-de-youtube-ay_a0977d2ab130.json",
+            "cita": "Incluye todo el contenido en el que un personaje se haga pasar por un experto humano que brinda asesoramiento a los usuarios sobre temas como salud, problemas legales, finanzas o política."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_divulgacion_ia_realista",
+          "descripcion": "Divulgar «Uso de IA» SOLO si hay contenido sintético realista que puede inducir a error: persona real diciendo/haciendo algo que no hizo, eventos o lugares reales alterados, escenas realistas que no ocurrieron. Una voz narradora sintética sobre una terminal de código no entra en esos supuestos; clonar la propia voz para narrar está entre los ejemplos sin divulgación.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "requiere_si",
+            "si_alguno": {
+              "escena_realista_ia": true,
+              "voz_clonada_tercero": true
+            },
+            "entonces": {
+              "etiqueta_ia": true
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-contenido-alterado-ia/divulgacion-del-uso-de-contenido-creado-con-ia-gen_cb5434c3dc7e.json",
+            "cita": "Hace que una persona real parezca decir o hacer algo que no dijo o hizo."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "fuente_secundaria": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-contenido-alterado-ia/divulgacion-del-uso-de-contenido-creado-con-ia-gen_cb5434c3dc7e.json",
+            "cita": "El contenido realista generado por IA y los cambios significativos requieren divulgación, pero las ediciones poco realistas o menores no."
+          },
+          "fuentes_adicionales": [
+            {
+              "ruta": "procesado/2026-10-17_politicas-youtube-contenido-alterado-ia/divulgacion-del-uso-de-contenido-creado-con-ia-gen_cb5434c3dc7e.json",
+              "cita": "Ejemplos en los que no se requiere divulgación por parte de los creadores de contenido"
+            },
+            {
+              "ruta": "procesado/2026-10-17_politicas-youtube-contenido-alterado-ia/divulgacion-del-uso-de-contenido-creado-con-ia-gen_cb5434c3dc7e.json",
+              "cita": "Clonación de la propia voz para crear voces en off o doblajes"
+            }
+          ]
+        },
+        {
+          "id": "yt_divulgacion_musica_ia",
+          "descripcion": "La música generada por IA requiere divulgación.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "requiere_si",
+            "si": {
+              "musica_ia": true
+            },
+            "entonces": {
+              "etiqueta_ia": true
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-contenido-alterado-ia/divulgacion-del-uso-de-contenido-creado-con-ia-gen_cb5434c3dc7e.json",
+            "cita": "Música generada por IA"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_ia_asistencia_no_requiere",
+          "descripcion": "No requiere etiqueta: IA para guion/título/miniatura, subtítulos, o clonar la PROPIA voz para voz en off.",
+          "nivel": "recomendacion",
+          "verificacion": {
+            "tipo": "informativa"
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-contenido-alterado-ia/divulgacion-del-uso-de-contenido-creado-con-ia-gen_cb5434c3dc7e.json",
+            "cita": "Clonación de la propia voz para crear voces en off o doblajes"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_ia_sanciones",
+          "descripcion": "No divulgar sistemáticamente puede llevar a etiqueta manual, eliminación o suspensión del YPP.",
+          "nivel": "recomendacion",
+          "verificacion": {
+            "tipo": "informativa"
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-contenido-alterado-ia/divulgacion-del-uso-de-contenido-creado-con-ia-gen_cb5434c3dc7e.json",
+            "cita": "Los creadores que decidan sistemáticamente no divulgar esta información podrían estar sujetos a la aplicación manual de una etiqueta o a sanciones de parte de YouTube, como la eliminación del contenido o la suspensión del Programa de socios de YouTube."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_musica_biblioteca_audio",
+          "descripcion": "En YouTube, la música de la Biblioteca de audio se puede monetizar sin reclamos de Content ID.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "musica_fuente",
+            "permitidas": [
+              "ninguna",
+              "youtube_audio_library",
+              "youtube_audio_library_cc",
+              "otra_con_licencia"
+            ],
+            "riesgo": [
+              "meta_sound_collection",
+              "tiktok_cml",
+              "desconocida"
+            ],
+            "prohibidas": [
+              "otra_sin_licencia"
+            ]
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-biblioteca-audio/usa-musica-y-efectos-de-sonido-de-la-biblioteca-de_1523166fdbfa.json",
+            "cita": "Si formas parte del Programa de socios de YouTube, puedes monetizar los videos en los que uses música y efectos de sonido de la Biblioteca de audio."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_musica_cc_atribucion",
+          "descripcion": "Pistas Creative Commons de la Biblioteca de audio exigen dar crédito al artista en la descripción.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "requiere_si",
+            "si": {
+              "musica": "youtube_audio_library_cc"
+            },
+            "entonces": {
+              "atribucion_en_descripcion": true
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-biblioteca-audio/usa-musica-y-efectos-de-sonido-de-la-biblioteca-de_1523166fdbfa.json",
+            "cita": "debes dar crédito al artista en la descripción de tu video"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_musica_meta_en_youtube",
+          "descripcion": "La música de Meta Sound Collection se anuncia para videos en Facebook e Instagram; usarla en YouTube no está cubierto por esa fuente.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "condicion_incumple",
+            "si": {
+              "musica": "meta_sound_collection"
+            }
+          },
+          "confirmado": false,
+          "nota": "Las condiciones de la colección (facebook.com/legal/sound_collection_terms) quedaron PENDIENTES: la página no cargó.",
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-sound-collection/coleccion-de-sonidos-de-facebook_c89c17c7407e.json",
+            "cita": "en cualquier video que crees y compartas en Facebook e Instagram."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_shorts_contenido_reclamado",
+          "descripcion": "Shorts de más de 1 minuto con contenido reclamado (Content ID) se bloquean y no monetizan.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "condicion_incumple",
+            "si": {
+              "duracion_mayor_a": 60,
+              "musica_en": [
+                "otra_sin_licencia",
+                "desconocida"
+              ]
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-shorts-monetizacion/politicas-de-monetizacion-de-youtube-shorts-ayuda-_e2ee5f5cfe8c.json",
+            "cita": "Los Shorts de más de un minuto que incluyan contenido reclamado están bloqueados y no son aptos para la monetización."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "yt_apto_anunciantes",
+          "descripcion": "Solo las vistas de Shorts aptos para anunciantes entran al reparto; evitar groserías, violencia gráfica, contenido impactante.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "manual",
+            "pregunta": "¿Título, miniatura y guion están libres de groserías y descripciones gráficas de tragedias?"
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-shorts-monetizacion/politicas-de-monetizacion-de-youtube-shorts-ayuda-_e2ee5f5cfe8c.json",
+            "cita": "En Shorts, solo las vistas del contenido que cumplan con los lineamientos del contenido apto para anunciantes serán aptas para el reparto de ingresos."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        }
+      ]
+    },
+    "tiktok": {
+      "programa": "Creator Rewards Program (CRP)",
+      "elegibilidad": [
+        {
+          "id": "tt_crp_umbrales",
+          "descripcion": "Entrar al CRP: 18+ años, cuenta personal, 10,000 seguidores y 100,000 vistas en los últimos 30 días.",
+          "umbrales": {
+            "edad_min": 18,
+            "seguidores": 10000,
+            "vistas_30d": 100000
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Have at least 100,000 video views in the last 30 days."
+          },
+          "fuente_secundaria": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Be at least 18 years old (or 19 in South Korea)."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        },
+        {
+          "id": "tt_crp_seguidores",
+          "descripcion": "Mínimo 10,000 seguidores.",
+          "umbrales": {
+            "seguidores": 10000
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Have at least 10,000 followers."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        },
+        {
+          "id": "tt_crp_pais",
+          "descripcion": "Debe residir en un país donde exista el CRP. La fuente NO lista países: México sin confirmar (revisar TikTok Studio > Monetización).",
+          "umbrales": null,
+          "confirmado": false,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Be based in one of the countries where the Creator Rewards Program is available."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "nota": "Inclusión de México NO CONFIRMADA hasta que el operador revise TikTok Studio > Monetización.",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        },
+        {
+          "id": "tt_crp_cuenta_personal",
+          "descripcion": "Solo cuentas personales; las cuentas de empresa no son elegibles.",
+          "umbrales": null,
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Have a Personal Account. Business Accounts and accounts belonging to political or government organizations aren't eligible."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        },
+        {
+          "id": "tt_crp_sin_retroactivo",
+          "descripcion": "Solo pagan los videos subidos DESPUÉS de entrar al programa; lo publicado antes nunca genera recompensas.",
+          "umbrales": null,
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Be uploaded after joining the Creator Rewards Program."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        },
+        {
+          "id": "tt_crp_vistas_calificadas",
+          "descripcion": "Un video empieza a pagar al llegar a 1,000 vistas calificadas del feed Para ti (vistas de más de 5 s, sin pagadas ni falsas).",
+          "umbrales": {
+            "vistas_calificadas_por_video": 1000,
+            "segundos_min_por_vista": 5
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Videos must reach 1,000 For You feed views to start generating earnings."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        }
+      ],
+      "reglas": [
+        {
+          "id": "tt_duracion_minima",
+          "descripcion": "Solo pagan videos de al menos 1 minuto. Creator Academy dice «más de 1 minuto»: usar 61 s o más para no quedar en el límite.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "duracion_minima",
+            "seg": 60,
+            "seg_recomendado": 61
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Post videos that are at least one minute long."
+          },
+          "fuente_secundaria": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-academy-rewards/creator-academy-empowering-creators-to-grow-and-su_c2da7b6e9c68.json",
+            "cita": "original video content over 1 minute long"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "tt_contenido_original",
+          "descripcion": "Contenido original y de calidad, filmado, diseñado y producido por uno mismo.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "condicion_incumple",
+            "si": {
+              "contenido_terceros": true
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Post original and high-quality content that is filmed, designed, and produced entirely by yourself."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "tt_solo_texto",
+          "descripcion": "No cuenta como original: videos en bucle, fotos o SOLO texto sobrepuesto (riesgo para reels de código si no hay narración).",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "estatico",
+            "max_fraccion": 0.5,
+            "nota": "Automático: fracción del video sin cambio de imagen (ffmpeg freezedetect) y presencia de audio. El resto es manual."
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Content that contains looping videos, single or multiple photos, or only text overlays."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "tt_musica_con_derechos_1min",
+          "descripcion": "Música con derechos de autor que suena más de 1 minuto hace al video no original y puede silenciarse.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "condicion_incumple",
+            "si": {
+              "duracion_mayor_a": 60,
+              "musica_en": [
+                "meta_sound_collection",
+                "youtube_audio_library",
+                "youtube_audio_library_cc",
+                "otra_con_licencia",
+                "otra_sin_licencia",
+                "desconocida"
+              ]
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Content that contains lip syncs or copyrighted music that plays for over one minute."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "tt_musica_otra_plataforma",
+          "descripcion": "Solo publicar lo que uno creó o tiene derecho a compartir: las licencias de YouTube Audio Library y Meta Sound Collection no confirman uso en TikTok.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "musica_fuente",
+            "permitidas": [
+              "ninguna",
+              "tiktok_cml",
+              "otra_con_licencia"
+            ],
+            "riesgo": [
+              "meta_sound_collection",
+              "youtube_audio_library",
+              "youtube_audio_library_cc",
+              "desconocida"
+            ],
+            "prohibidas": [
+              "otra_sin_licencia"
+            ]
+          },
+          "confirmado": false,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-normas-integridad/integridad-y-autenticidad-normas-de-la-comunidad_d8317f58756e.json",
+            "cita": "Usted solo debe publicar contenido que haya creado o que tenga derecho a compartir."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "tt_etiqueta_ia_persona_o_escena_realista",
+          "vigencia": "actual",
+          "descripcion": "Etiquetar «AI-generated content» si hay imagen/video realista de IA, música IA o una persona real (voz clonada de tercero) diciendo algo que no dijo.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "requiere_si",
+            "si_alguno": {
+              "escena_realista_ia": true,
+              "voz_clonada_tercero": true,
+              "musica_ia": true
+            },
+            "entonces": {
+              "etiqueta_ia": true
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-contenido-ia/about-aigenerated-content_97fa93a5ae4c.json",
+            "cita": "We also require creators to label all AI-generated content that contains realistic images, audio, and video, as explained in our Community Guidelines."
+          },
+          "fecha_revision": "2026-10-17"
+        },
+        {
+          "id": "tt_etiqueta_ia_voz_narradora",
+          "vigencia": "actual",
+          "descripcion": "Voz narradora sintética que suena humana sobre contenido no realista (p. ej. terminal de código): TikTok exige etiqueta para audio de IA «realista», pero la fuente no aclara si una voz narradora entra. Revisar caso por caso; etiquetar no reduce el alcance. Etiquetar NO resuelve la licencia musical (regla aparte).",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "requiere_si",
+            "si": {
+              "voz_ia_realista": true
+            },
+            "entonces": {
+              "etiqueta_ia": true
+            },
+            "nota": "Riesgo: nunca bloquea."
+          },
+          "confirmado": false,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-contenido-ia/about-aigenerated-content_97fa93a5ae4c.json",
+            "cita": "AI-generated content (AIGC) includes images, video and/or audio that is generated or modified by artificial intelligence, such as artificial visuals, videos, or sounds that may portray realistic human likenesses or depictions created in a particular artistic style (e.g. painting, cartoons, and anime)."
+          },
+          "fuente_secundaria": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-contenido-ia/about-aigenerated-content_97fa93a5ae4c.json",
+            "cita": "Turning on the AI-generated content setting won't affect the distribution of your video as long as it doesn't violate our Community Guidelines."
+          },
+          "fecha_revision": "2026-10-17"
+        },
+        {
+          "id": "tt_etiqueta_ia_no_castiga",
+          "descripcion": "Activar la etiqueta de IA no reduce la distribución si el video cumple las normas.",
+          "nivel": "recomendacion",
+          "verificacion": {
+            "tipo": "informativa"
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-contenido-ia/about-aigenerated-content_97fa93a5ae4c.json",
+            "cita": "Turning on the AI-generated content setting won't affect the distribution of your video as long as it doesn't violate our Community Guidelines."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "tt_fyf_no_original",
+          "descripcion": "Material no original o reutilizado sin aportar nada nuevo queda fuera del feed Para ti (y sin vistas calificadas no hay pago).",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "manual",
+            "pregunta": "¿El video aporta algo nuevo frente a lo que ya publicamos (no es el mismo reel de FB/YT re-subido sin cambios)?"
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-normas-integridad/integridad-y-autenticidad-normas-de-la-comunidad_d8317f58756e.json",
+            "cita": "También se excluye del feed “Para ti” el contenido que incluya material no original o reutilizado sin aportar nada nuevo."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "tt_crp_sin_publicidad",
+          "descripcion": "Videos con publicidad, promoción pagada o patrocinio no generan recompensas del CRP.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "condicion_incumple",
+            "si": {
+              "contenido_marca": true
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-creator-rewards/creator-rewards-program_6685a5f1cd5d.json",
+            "cita": "Advertisements, paid promotions, sponsored content, or videos linked to a Series."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "tt_aviso_contenido_marca",
+          "descripcion": "Si el video promociona una marca a cambio de algo, hay que activar el aviso de contenido comercial.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "requiere_si",
+            "si": {
+              "contenido_marca": true
+            },
+            "entonces": {
+              "aviso_comercial": true
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-contenido-marca/politica-de-contenido-de-marca-tiktok_afcf87dd7fa1.json",
+            "cita": "Cuando publique Contenido de marca, debe activar el aviso sobre contenido comercial."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "tt_musica_comercial_cml",
+          "descripcion": "En contenido que promociona marca, usar solo música de la Commercial Music Library (CML).",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "condicion_incumple",
+            "si": {
+              "contenido_marca": true,
+              "musica_no_en": [
+                "ninguna",
+                "tiktok_cml"
+              ]
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-tiktok-uso-comercial-musica/commercial-use-of-music-on-tiktok_7227320a87a5.json",
+            "cita": "When you post content that promotes a brand, product, or service, we recommend that you only use music from our Commercial Music Library (CML), as it's pre-cleared for commercial use."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        }
+      ]
+    },
+    "facebook": {
+      "programa": "Monetización de contenido de Facebook (Políticas de monetización para socios + de contenido)",
+      "elegibilidad": [
+        {
+          "id": "fb_superficie_profesional",
+          "descripcion": "Solo páginas o perfiles en modo profesional pueden monetizar.",
+          "umbrales": null,
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-monetizacion-socios/politicas-de-monetizacion-para-socios-servicio-de-_0ae1237465d0.json",
+            "cita": "Los perfiles de Facebook que no están en modo profesional no reúnen los requisitos para acceder a los productos y las funciones de monetización."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        },
+        {
+          "id": "fb_presencia_30_dias",
+          "descripcion": "Presencia consolidada de al menos 30 días; anuncios in-stream piden además cierta base de seguidores y número mínimo de videos (cifras no publicadas en la fuente).",
+          "umbrales": {
+            "dias_presencia": 30,
+            "seguidores_instream": null,
+            "videos_min_instream": null
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-monetizacion-socios/politicas-de-monetizacion-para-socios-servicio-de-_0ae1237465d0.json",
+            "cita": "Para acceder a todas las funciones de monetización, es necesario tener una presencia consolidada durante al menos 30 días."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        },
+        {
+          "id": "fb_pais_admitido",
+          "descripcion": "Residir (y tener la cuenta bancaria) en un país admitido. La fuente no lista países: inclusión de México NO CONFIRMADA.",
+          "umbrales": null,
+          "confirmado": false,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-monetizacion-socios/politicas-de-monetizacion-para-socios-servicio-de-_0ae1237465d0.json",
+            "cita": "Para monetizar contenido, debes residir en un país admitido donde esté disponible el producto o la función."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "nota": "NO CONFIRMADO hasta que el operador revise el panel profesional > Monetización.",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        },
+        {
+          "id": "fb_umbrales_por_programa",
+          "descripcion": "Los umbrales numéricos de cada programa NO están publicados en las fuentes extraídas: se ven en el panel profesional > Monetización.",
+          "umbrales": null,
+          "confirmado": false,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-elegibilidad/como-verificar-la-elegibilidad-para-monetizacion-d_9229211cf3b9.json",
+            "cita": "Toca un programa específico a fin de ver los requisitos que debes cumplir para usarlo."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual",
+          "estado_cuenta": "NO CONFIRMADO — el operador revisa su panel"
+        }
+      ],
+      "reglas": [
+        {
+          "id": "fb_contenido_original",
+          "descripcion": "Solo se monetiza contenido creado (total o parcialmente) por uno mismo; lo ajeno sin mejoras significativas no.",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "condicion_incumple",
+            "si": {
+              "contenido_terceros": true
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-monetizacion-socios/politicas-de-monetizacion-para-socios-servicio-de-_0ae1237465d0.json",
+            "cita": "El contenido que no sea original o que se reproduzca sin mejoras significativas (comentarios, parodias, edición creativa, etc.) no se podrá monetizar."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "fb_etiqueta_ia_persona_o_escena_realista",
+          "vigencia": "actual",
+          "descripcion": "Etiquetar «Información de IA» si hay video fotorrealista de IA, música IA o audio que imita a una persona real (voz clonada de tercero).",
+          "nivel": "bloqueante",
+          "verificacion": {
+            "tipo": "requiere_si",
+            "si_alguno": {
+              "escena_realista_ia": true,
+              "voz_clonada_tercero": true,
+              "musica_ia": true
+            },
+            "entonces": {
+              "etiqueta_ia": true
+            }
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-etiqueta-ia/como-identificar-contenido-de-ia-en-los-productos-_c6f7fe28fd35.json",
+            "cita": "En Facebook, Instagram y Threads, Meta puede requerir una etiqueta de IA cuando el contenido incluye video fotorrealista o audio con sonido realista creado, modificado o alterado digitalmente, incluso con IA."
+          },
+          "fecha_revision": "2026-10-17"
+        },
+        {
+          "id": "fb_etiqueta_ia_voz_narradora",
+          "vigencia": "actual",
+          "descripcion": "Reel con voz en off de IA que suena real: Meta lo da como ejemplo de contenido que requiere etiqueta («puede requerir»). Para una voz narradora sobre código se trata como riesgo, no como bloqueo automático; recomendado etiquetar. Etiquetar NO resuelve la licencia musical (regla aparte).",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "requiere_si",
+            "si": {
+              "voz_ia_realista": true
+            },
+            "entonces": {
+              "etiqueta_ia": true
+            },
+            "nota": "Riesgo: nunca bloquea."
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-etiqueta-ia/como-identificar-contenido-de-ia-en-los-productos-_c6f7fe28fd35.json",
+            "cita": "Un reel narrado con una voz en off generada con IA que parece real"
+          },
+          "fuente_secundaria": {
+            "ruta": "procesado/2026-10-17_politicas-meta-etiqueta-ia/como-identificar-contenido-de-ia-en-los-productos-_c6f7fe28fd35.json",
+            "cita": "Nota: pueden aplicarse sanciones debido al contenido compartido sin una etiqueta cuando esta sea necesaria."
+          },
+          "fecha_revision": "2026-10-17"
+        },
+        {
+          "id": "fb_formato_montaje_texto",
+          "descripcion": "Formatos que no se monetizan: videos estáticos, en bucle, presentaciones de imágenes y montajes de texto.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "estatico",
+            "max_fraccion": 0.5,
+            "nota": "Automático: fracción del video sin cambio de imagen. Si el reel es casi solo texto, revisar a mano."
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-monetizacion-contenido/politicas-de-monetizacion-de-contenido-servicio-de_c7d94237ac91.json",
+            "cita": "Montajes de texto"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "fb_solicitud_interaccion",
+          "descripcion": "No se monetiza el «engagement bait» ni la solicitud de interacción (cuidado con cierres tipo «comenta/comparte»).",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "manual",
+            "pregunta": "¿El cierre pide explícitamente me gusta/comentarios/compartir a cambio de algo? «Sígueme» sin condicionar es menor riesgo (no confirmado)."
+          },
+          "confirmado": false,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-monetizacion-contenido/politicas-de-monetizacion-de-contenido-servicio-de_c7d94237ac91.json",
+            "cita": "Solicitud de interacción"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "fb_categorias_restringidas",
+          "descripcion": "Fraude, hackeo, procedimientos judiciales, muertes o daños (temas de expedientes) pueden reducir la monetización.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "manual",
+            "pregunta": "¿El expediente trata fraude, hackeo, juicios o tragedias? Enfocar en la lección técnica, sin sensacionalismo."
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-monetizacion-contenido/politicas-de-monetizacion-de-contenido-servicio-de_c7d94237ac91.json",
+            "cita": "Las representaciones o los análisis de estos temas, ya sean reales o ficticios, pueden afectar la monetización del contenido."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "fb_publicacion_cruzada_masiva",
+          "descripcion": "No monetiza la distribución coordinada/artificial ni las publicaciones cruzadas en grandes cantidades.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "manual",
+            "pregunta": "¿El mismo video se publica en varias páginas propias o en grupos de forma masiva? (Publicarlo una vez en la página está bien; la fuente no detalla el umbral).",
+            "nota": "Interpretación de «publicaciones cruzadas» no confirmada."
+          },
+          "confirmado": false,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-monetizacion-socios/politicas-de-monetizacion-para-socios-servicio-de-_0ae1237465d0.json",
+            "cita": "las publicaciones cruzadas en grandes cantidades"
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "fb_musica_sound_collection",
+          "descripcion": "Meta Sound Collection: gratis para videos que se crean y comparten en Facebook e Instagram.",
+          "nivel": "riesgo",
+          "verificacion": {
+            "tipo": "musica_fuente",
+            "permitidas": [
+              "ninguna",
+              "meta_sound_collection",
+              "otra_con_licencia"
+            ],
+            "riesgo": [
+              "youtube_audio_library",
+              "youtube_audio_library_cc",
+              "tiktok_cml",
+              "desconocida"
+            ],
+            "prohibidas": [
+              "otra_sin_licencia"
+            ]
+          },
+          "confirmado": false,
+          "nota": "Las condiciones de la colección quedaron PENDIENTES; el uso en FB de música de YouTube Audio Library no está confirmado por la fuente de YouTube («en la plataforma»).",
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-sound-collection/coleccion-de-sonidos-de-facebook_c89c17c7407e.json",
+            "cita": "en cualquier video que crees y compartas en Facebook e Instagram."
+          },
+          "fuente_secundaria": {
+            "ruta": "procesado/2026-10-17_politicas-youtube-biblioteca-audio/usa-musica-y-efectos-de-sonido-de-la-biblioteca-de_1523166fdbfa.json",
+            "cita": "Solo la música y los efectos de sonido de la Biblioteca de audio son aptos para el uso sin permiso del titular de los derechos de autor en la plataforma."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        },
+        {
+          "id": "fb_originalidad_reduce_alcance",
+          "descripcion": "Quien publique sobre todo contenido no original puede quedar no recomendable y desmonetizado.",
+          "nivel": "recomendacion",
+          "verificacion": {
+            "tipo": "informativa"
+          },
+          "confirmado": true,
+          "fuente": {
+            "ruta": "procesado/2026-10-17_politicas-meta-originales-2026/rewarding-original-creators-on-facebook_a922ef00dd6c.json",
+            "cita": "Creators who are not adding substantial creative value will see their content deprioritized, and they may see their account deemed non-recommendable and demonetized, if they continue to post primarily unoriginal content."
+          },
+          "fecha_revision": "2026-10-17",
+          "vigencia": "actual"
+        }
+      ]
+    }
+  },
+  "fuentes_pendientes": [
+    {
+      "carpeta": "procesado/2026-10-17_politicas-tiktok-creator-rewards-terminos",
+      "url": "https://support.tiktok.com/en/business-and-creator/creator-rewards-program/creator-rewards-program-terms",
+      "motivo": "La URL responde 200 pero solo entrega el menú del centro de ayuda; el texto de los términos no se obtuvo."
+    },
+    {
+      "carpeta": "procesado/2026-10-17_politicas-tiktok-musica-comercial",
+      "url": "https://support.tiktok.com/en/business-and-creator/creator-and-business-accounts/commercial-music-library",
+      "motivo": "Solo menú; se sustituyó por «Commercial use of music on TikTok» (EXTRAÍDO)."
+    },
+    {
+      "carpeta": "procesado/2026-10-17_politicas-meta-sound-collection-terminos",
+      "url": "https://www.facebook.com/legal/sound_collection_terms",
+      "motivo": "«Este contenido no está disponible en este momento»; el Internet Archive estaba fuera de línea."
+    },
+    {
+      "carpeta": "procesado/2026-10-17_politicas-meta-sound-collection-intro",
+      "url": "https://www.facebook.com/creators/discover/introducing-sound-collection",
+      "motivo": "Redirige al blog general de creadores; el artículo no existe."
+    }
+  ],
+  "vigencia_valores": {
+    "actual": "requisito vigente al 2026-10-17",
+    "futuro": "cambio anunciado en la fuente; aplica desde 'vigencia_desde'"
+  },
+  "regla_bloqueo": "Solo una regla con nivel 'bloqueante' Y confirmado=true puede producir INCUMPLE con código de salida 1. Toda regla o dato con confirmado=false se reporta como REVISAR."
+}

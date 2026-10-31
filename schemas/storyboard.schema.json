@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://videos-txt.local/schemas/storyboard.schema.json",
+  "title": "Storyboard",
+  "description": "Esquema para storyboards estructurados (N3) — descomposición del guion editorial en escenas con instrucciones de producción audiovisual.",
+  "type": "object",
+  "required": [
+    "storyboard_version",
+    "metadata",
+    "scenes"
+  ],
+  "properties": {
+    "storyboard_version": {
+      "type": "string",
+      "description": "Versión del formato del storyboard (semver)",
+      "enum": ["1.0"]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_script",
+        "title",
+        "total_duration_seconds",
+        "scene_count",
+        "generated_at"
+      ],
+      "properties": {
+        "source_script": {
+          "type": "string",
+          "description": "Hash o path del guion editorial (N2) del que deriva"
+        },
+        "title": {
+          "type": "string",
+          "description": "Título del video"
+        },
+        "total_duration_seconds": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Duración total estimada en segundos"
+        },
+        "scene_count": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Número de escenas"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp ISO 8601 de generación"
+        },
+        "generator": {
+          "type": "string",
+          "description": "Identificador del generador del storyboard"
+        }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "title",
+          "start_seconds",
+          "end_seconds",
+          "narration",
+          "visual"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^scene-\\d{3,}$",
+            "description": "Identificador único de la escena (scene-001, scene-002, ...)"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "hook",
+              "narrative",
+              "explanatory",
+              "transitional",
+              "tension",
+              "summary",
+              "closing"
+            ],
+            "description": "Tipo de escena"
+          },
+          "title": {
+            "type": "string",
+            "description": "Título legible de la escena"
+          },
+          "start_seconds": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Timestamp de inicio en segundos"
+          },
+          "end_seconds": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Timestamp de fin en segundos (debe ser > start_seconds)"
+          },
+          "narration": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Texto narrado en esta escena"
+          },
+          "visual": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["components"],
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "Descripción textual de la escena visual"
+              },
+              "overlay_text": {
+                "type": "string",
+                "description": "Texto superpuesto opcional"
+              },
+              "components": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["type"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["image", "text", "video_clip", "code", "slide", "solid_color", "animation"],
+                      "description": "Tipo de componente visual"
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "Path o URI del recurso (obligatorio para image, video_clip)"
+                    },
+                    "content": {
+                      "type": "string",
+                      "description": "Texto o contenido inline (obligatorio para text, code)"
+                    },
+                    "duration_seconds": {
+                      "type": "number",
+                      "minimum": 0.1,
+                      "description": "Duración de este componente si difiere de la escena"
+                    },
+                    "position": {
+                      "type": "string",
+                      "enum": ["center", "top", "bottom", "left", "right", "top-left", "top-right", "bottom-left", "bottom-right"],
+                      "description": "Posición del componente en pantalla"
+                    },
+                    "color": {
+                      "type": "string",
+                      "pattern": "^#[0-9A-Fa-f]{6}$",
+                      "description": "Color hex (obligatorio para solid_color)"
+                    }
+                  },
+                  "allOf": [
+                    {
+                      "if": {"properties": {"type": {"const": "image"}}},
+                      "then": {"required": ["source"]}
+                    },
+                    {
+                      "if": {"properties": {"type": {"const": "video_clip"}}},
+                      "then": {"required": ["source"]}
+                    },
+                    {
+                      "if": {"properties": {"type": {"const": "solid_color"}}},
+                      "then": {"required": ["color"]}
+                    },
+                    {
+                      "if": {"properties": {"type": {"const": "text"}}},
+                      "then": {"required": ["content"]}
+                    },
+                    {
+                      "if": {"properties": {"type": {"const": "code"}}},
+                      "then": {"required": ["content"]}
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notas de producción para esta escena (tono, ritmo, pausas)"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Referencias a fuentes N1 (hashes) relevantes para esta escena"
+          }
+        }
+      }
+    }
+  }
+}

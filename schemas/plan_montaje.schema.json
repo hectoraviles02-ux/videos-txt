@@ -1,0 +1,463 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://videos-txt.local/schemas/plan_montaje.schema.json",
+  "title": "Plan de Montaje (EDL de dos pistas)",
+  "description": "Lista de decisiones de edicion independiente del motor de render. DOS pistas sincronizadas por timecode: AUDIO (narracion TTS o audio original de una fuente) y VISUAL (planos con in/out, varios bajo una misma narracion). Derechos POR USO en cada plano. No contiene instrucciones de React/Remotion. Version 1.0.",
+  "type": "object",
+  "properties": {
+    "caso_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string"
+    },
+    "entregable_id": {
+      "type": "string",
+      "description": "nombra a cual entregables[].id del encargo pertenece (p.ej. apertura, completo). Requerido para documentales gobernados por encargo."
+    },
+    "formato": {
+      "type": "string",
+      "enum": [
+        "documental_16x9",
+        "reel_9x16",
+        "reportaje_16x9",
+        "podcast_audio"
+      ]
+    },
+    "resolucion": {
+      "type": "string",
+      "pattern": "^[0-9]{2,5}x[0-9]{2,5}$"
+    },
+    "fps": {
+      "type": "integer",
+      "enum": [
+        24,
+        30,
+        60
+      ]
+    },
+    "cobertura_total": {
+      "type": "boolean",
+      "description": "si true, el plan DEBE narrar todos los beats del guion (entregable completo); los EDL parciales/demo lo omiten"
+    },
+    "pista_audio": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "narracion_tts",
+              "audio_original",
+              "silencio"
+            ]
+          },
+          "beat_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "para narracion_tts: beat del guion"
+          },
+          "recurso_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "para audio_original: recurso AV del manifiesto"
+          },
+          "voz": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "chatterbox",
+              "kokoro",
+              "voz_clonada",
+              null
+            ]
+          },
+          "src_in": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "src_out": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "in": {
+            "type": "number",
+            "minimum": 0
+          },
+          "out": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "tipo",
+          "in",
+          "out"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "tipo": {
+                  "const": "narracion_tts"
+                }
+              },
+              "required": [
+                "tipo"
+              ]
+            },
+            "then": {
+              "required": [
+                "beat_id"
+              ],
+              "properties": {
+                "beat_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tipo": {
+                  "const": "audio_original"
+                }
+              },
+              "required": [
+                "tipo"
+              ]
+            },
+            "then": {
+              "required": [
+                "recurso_id"
+              ],
+              "properties": {
+                "recurso_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "pista_visual": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "plano": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "recurso",
+              "tarjeta",
+              "infografia"
+            ],
+            "description": "recurso (material catalogado), tarjeta (texto), infografia (datos propios)"
+          },
+          "tratamiento": {
+            "type": "string",
+            "enum": [
+              "paneo",
+              "ficha",
+              "banda",
+              "clip",
+              "infografia",
+              "recreacion",
+              "rotulo_pleno"
+            ],
+            "description": "direccion audiovisual de la escena"
+          },
+          "recurso_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "src": {
+            "type": "string",
+            "description": "para recreacion: ruta del asset propio (SD) bajo public/"
+          },
+          "rotulo": {
+            "type": "string",
+            "description": "para recreacion: rotulo obligatorio (RECREACION)"
+          },
+          "justificacion": {
+            "type": "string",
+            "description": "para recreacion: por que se recrea (obligatoria si el encargo lo exige)"
+          },
+          "subtitulos_literales": {
+            "type": "array",
+            "description": "subtitulos literales explicitos (transcripcion de la fuente), relativos al inicio del plano",
+            "items": {
+              "type": "object",
+              "properties": {
+                "texto": {
+                  "type": "string"
+                },
+                "desde_local_f": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "hasta_local_f": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "texto",
+                "desde_local_f",
+                "hasta_local_f"
+              ]
+            }
+          },
+          "datos": {
+            "type": "object",
+            "description": "para infografia: tipo + items"
+          },
+          "texto": {
+            "type": "string",
+            "description": "para tarjeta: texto principal a pantalla"
+          },
+          "kicker": {
+            "type": "string",
+            "description": "para tarjeta: antetitulo corto opcional"
+          },
+          "efecto": {
+            "type": "string",
+            "description": "ken_burns, paneo_v, video, push, anim, etc. (lo interpreta el motor)"
+          },
+          "in": {
+            "type": "number",
+            "minimum": 0
+          },
+          "out": {
+            "type": "number",
+            "minimum": 0
+          },
+          "clase": {
+            "type": "string",
+            "enum": [
+              "EVIDENCIA-REAL-DEL-CASO",
+              "CONTEXTO",
+              "ILUSTRATIVO",
+              "PROPIO",
+              "INFOGRAFIA",
+              "RECREACION"
+            ]
+          },
+          "derechos_uso": {
+            "type": "string",
+            "description": "Evaluacion de derechos para ESTE uso concreto (objeto citado, b-roll, etc.)"
+          },
+          "credito": {
+            "type": "string"
+          },
+          "subtitulo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "'literal_sincronizado' o texto; null si no lleva"
+          },
+          "src_in": {
+            "type": [
+              "string",
+              "number"
+            ],
+            "description": "para recurso VIDEO: inicio de la ventana del archivo fuente (hh:mm:ss o seg) a cortar para este plano"
+          },
+          "src_out": {
+            "type": [
+              "string",
+              "number"
+            ],
+            "description": "para recurso VIDEO: fin de la ventana del archivo fuente; (src_out-src_in) debe cubrir la duracion del plano"
+          },
+          "cubrir": {
+            "type": "array",
+            "description": "rectangulos [x,y,w,h] en px de lienzo (resolucion del plan) para tapar nombres de menores quemados en el footage",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 4,
+              "maxItems": 4
+            }
+          },
+          "hablante": {
+            "type": "object",
+            "description": "lower-third de identificacion de voz (identidad v2): nombre + rol",
+            "properties": {
+              "nombre": {
+                "type": "string"
+              },
+              "rol": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "nombre"
+            ]
+          },
+          "recorte": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 4,
+            "maxItems": 4,
+            "description": "para recurso VIDEO con ventana: encuadre [x,y,w,h] en px de la fuente (p.ej. dejar fuera sellos/reloj del medio); se escala al lienzo"
+          }
+        },
+        "required": [
+          "plano",
+          "efecto",
+          "in",
+          "out",
+          "clase"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "tratamiento": {
+                  "const": "recreacion"
+                }
+              },
+              "required": [
+                "tratamiento"
+              ]
+            },
+            "then": {
+              "required": [
+                "src",
+                "rotulo"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tipo": {
+                  "const": "tarjeta"
+                }
+              },
+              "required": [
+                "tipo"
+              ]
+            },
+            "then": {
+              "required": [
+                "texto"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "tipo": {
+                  "const": "infografia"
+                }
+              },
+              "required": [
+                "tipo"
+              ]
+            },
+            "then": {
+              "required": [
+                "datos"
+              ]
+            }
+          },
+          {
+            "if": {
+              "not": {
+                "anyOf": [
+                  {
+                    "properties": {
+                      "tipo": {
+                        "enum": [
+                          "tarjeta",
+                          "infografia"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "tipo"
+                    ]
+                  },
+                  {
+                    "properties": {
+                      "tratamiento": {
+                        "enum": [
+                          "recreacion",
+                          "rotulo_pleno"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "tratamiento"
+                    ]
+                  }
+                ]
+              }
+            },
+            "then": {
+              "required": [
+                "recurso_id",
+                "credito",
+                "derechos_uso"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "normalizar_declaraciones_lufs": {
+      "type": "number",
+      "description": "opcional: sonoridad integrada (LUFS) a la que se normalizan las pistas audio_original (loudnorm)"
+    },
+    "transiciones": {
+      "type": "string",
+      "enum": [
+        "capitulos"
+      ],
+      "description": "opcional (D2): corte directo dentro del capitulo; fundido solo al cambiar de capitulo/inicio/fin. Sin el campo: fundido en todo plano (compat)."
+    },
+    "subtitulos_narracion": {
+      "type": "string",
+      "enum": [
+        "voz"
+      ],
+      "description": "opcional (D1): tiempos de los subtitulos de narracion tomados de la voz (whisper por palabra, cache por SHA). Sin el campo: reparto por conteo de palabras dentro de la ventana."
+    }
+  },
+  "required": [
+    "caso_id",
+    "version",
+    "formato",
+    "resolucion",
+    "fps",
+    "pista_audio",
+    "pista_visual"
+  ]
+}

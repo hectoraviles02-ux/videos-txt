@@ -1,0 +1,50 @@
+{
+ "descripcion": "Registro de motores de video para scripts/producir_pieza.py. El selector solo invoca el comando registrado; no modifica motores. Reversa: poner \"activo\": false (se conservan entregas, guiones y logs). Creado 19-oct-2026 (integración del motor pizarra, plan PLAN_INTEGRACION_MOTOR_PIZARRA_20261019.md).",
+ "motores": {
+  "pizarra": {
+   "activo": true,
+   "comando": [
+    "{python}",
+    "scripts/pizarra/producir_pizarra.py",
+    "{pieza}"
+   ],
+   "serie": "guiones/pizarra",
+   "contrato": "scripts/pizarra/CONTRATO.md"
+  },
+  "expediente3d": {
+   "activo": true,
+   "comando": [
+    "{python}",
+    "scripts/expediente3d/producir_expediente.py",
+    "{pieza}"
+   ],
+   "serie": "guiones/expedientes"
+  },
+  "documental_edl": {
+   "activo": false,
+   "motivo": "producir_documental_edl.py requiere argumentos (--formato, --out) que el guion aún no declara; se invoca a mano como hoy",
+   "comando": [
+    "{python}",
+    "scripts/producir_documental_edl.py",
+    "{pieza}"
+   ]
+  },
+  "reels_python": {
+   "activo": false,
+   "motivo": "lo produce el bot/ciclo diario con telegram_bot/producir_reel.py; no se despacha por guion",
+   "comando": []
+  },
+  "foto_real": {
+   "activo": true,
+   "comando": [
+    "{python}",
+    "scripts/foto_real/entregar.py",
+    "{pieza}",
+    "--sin-enviar"
+   ],
+   "serie": "guiones/reels_revision",
+   "contrato": "scripts/foto_real/motor.py (docstring: planos, cierre) + entregar.py",
+   "nota": "Fotos y videos reales con licencia libre de biblioteca_audiovisual/_manifiesto.json (scripts/foto_real/medios.py). Agregado 31-oct-2026. Para mandar a Telegram: correr entregar.py sin --sin-enviar."
+  }
+ }
+}

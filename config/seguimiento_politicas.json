@@ -1,0 +1,21 @@
+{
+  "intervalo_horas": 168,
+  "timeout_segundos": 25,
+  "minimo_caracteres": 500,
+  "transporte": "jina_reader_sin_clave",
+  "fuentes": [
+    {"id": "youtube_shorts_duracion", "url": "https://support.google.com/youtube/answer/15424877?hl=en", "anclas": ["three", "Shorts"]},
+    {"id": "facebook_reels_formatos", "url": "https://about.fb.com/news/2025/06/making-it-easier-create-videos-facebook/", "anclas": ["length", "reels"]},
+    {"id": "youtube_ypp", "url": "https://support.google.com/youtube/answer/72851?hl=en", "anclas": ["Partner Program", "1,000"]},
+    {"id": "youtube_originalidad", "url": "https://support.google.com/youtube/answer/1311392?hl=en", "anclas": ["monetization", "content"]},
+    {"id": "youtube_ia", "url": "https://support.google.com/youtube/answer/14328491?hl=en", "anclas": ["altered", "realistic"]},
+    {"id": "youtube_musica", "url": "https://support.google.com/youtube/answer/3376882?hl=en", "anclas": ["Audio Library", "attribution"]},
+    {"id": "tiktok_rewards", "url": "https://support.tiktok.com/en/business-and-creator/creator-rewards-program/creator-rewards-program", "anclas": ["Creator Rewards", "minute"]},
+    {"id": "tiktok_mexico", "url": "https://newsroom.tiktok.com/programa-recompensas-creadores-tiktok-mexico?lang=es-419", "anclas": ["México", "2025", "10,000"]},
+    {"id": "tiktok_ia", "url": "https://support.tiktok.com/en/using-tiktok/creating-videos/ai-generated-content", "anclas": ["AI-generated", "label"]},
+    {"id": "meta_originalidad", "url": "https://about.fb.com/news/2026/03/rewarding-original-creators-on-facebook/", "anclas": ["original", "Facebook"]},
+    {"id": "meta_ia", "url": "https://about.fb.com/news/2024/04/metas-approach-to-labeling-ai-generated-content-and-manipulated-media/", "anclas": ["label", "AI"]},
+    {"id": "meta_monetizacion", "url": "https://www.facebook.com/business/help/1348682518563619", "anclas": ["monetization", "content"]},
+    {"id": "kwai", "url": "https://www.kwai.com/creators/earn", "anclas": ["creator", "revenue"]}
+  ]
+}

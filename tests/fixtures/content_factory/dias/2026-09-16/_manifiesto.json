@@ -1,0 +1,212 @@
+[
+  {
+    "detalle": "",
+    "fuente": "github:SYSTRAN/faster-whisper",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_SYSTRAN_faster-whisper.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:astral-sh/uv",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_astral-sh_uv.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:comfyanonymous/ComfyUI",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_comfyanonymous_ComfyUI.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:finalburnneo/FBNeo",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_finalburnneo_FBNeo.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:ggml-org/llama.cpp",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_ggml-org_llama.cpp.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:gopher64/gopher64",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_gopher64_gopher64.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:mgba-emu/mgba",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_mgba-emu_mgba.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:microsoft/playwright",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_microsoft_playwright.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:nesdev-org/MesenCE",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_nesdev-org_MesenCE.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:ollama/ollama",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_ollama_ollama.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:openai/whisper",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_openai_whisper.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "github:pandas-dev/pandas",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/github_pandas-dev_pandas.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "hackernews:frontpage",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/hackernews_frontpage.json",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/LocalLLaMA",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_LocalLLaMA.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/MachineLearning",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_MachineLearning.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/MexicoFinanciero",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_MexicoFinanciero.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/PowerShell",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_PowerShell.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/Python",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_Python.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/emulation",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_emulation.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/excel",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_excel.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/mexico",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_mexico.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/ollama",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_ollama.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/podcasting",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_podcasting.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "reddit:r/retrogaming",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/reddit_r_retrogaming.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "rss:eleconomista-tecnologia",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/rss_eleconomista-tecnologia.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "rss:xataka-mexico",
+    "n_senales": 2,
+    "raw_path": "2026-09-16/rss_xataka-mexico.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "trends:mx",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/trends_mx.xml",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "youtube:automatizacion python",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/youtube_automatizacion python.txt",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "youtube:emuladores retro",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/youtube_emuladores retro.txt",
+    "resultado": "desde_raw"
+  },
+  {
+    "detalle": "",
+    "fuente": "youtube:ia local",
+    "n_senales": 3,
+    "raw_path": "2026-09-16/youtube_ia local.txt",
+    "resultado": "desde_raw"
+  }
+]

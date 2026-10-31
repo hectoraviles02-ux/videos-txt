@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://videos-txt.local/schemas/investigacion.schema.json",
+  "title": "Investigacion Maestra",
+  "description": "Expediente de investigacion por caso: cronologia, afirmaciones (claims) con fuentes y nivel de certeza, contradicciones e incertidumbres. Fuente unica de verdad factual de la que depende el guion. Version 1.0.",
+  "type": "object",
+  "properties": {
+    "caso_id": { "type": "string", "minLength": 1 },
+    "version": { "type": "string" },
+    "cronologia": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fecha": { "type": "string" },
+          "hecho": { "type": "string", "minLength": 1 },
+          "claim_ids": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["fecha", "hecho"]
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "afirmacion": { "type": "string", "minLength": 1 },
+          "nivel_certeza": {
+            "type": "string",
+            "enum": ["HECHO_DOCUMENTAL", "DECLARACION_ATRIBUIDA", "HECHO_REPORTADO_PRENSA", "INFERENCIA_PERIODISTICA", "PREGUNTA_ABIERTA"]
+          },
+          "afirma_causalidad": {
+            "type": "boolean",
+            "default": false,
+            "description": "true solo si la afirmacion sostiene una relacion causa->efecto. Un beat con relacion 'causal' en el guion exige un claim con esto en true."
+          },
+          "fuentes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": { "type": "string" },
+                "medio": { "type": "string" },
+                "fecha": { "type": "string" },
+                "tipo_fuente": { "type": "string", "enum": ["oficial", "prensa", "estenografica", "documento", "otro"] },
+                "cita_textual": { "type": "string" }
+              },
+              "required": ["medio", "tipo_fuente"]
+            }
+          },
+          "contradicciones": { "type": "array", "items": { "type": "string" } },
+          "incertidumbre": { "type": "string" }
+        },
+        "required": ["id", "afirmacion", "nivel_certeza", "fuentes"]
+      }
+    }
+  },
+  "required": ["caso_id", "version", "claims"]
+}

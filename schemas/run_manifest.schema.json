@@ -1,0 +1,259 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://videos-txt.local/schemas/run_manifest.schema.json",
+  "title": "Manifest de Ejecución",
+  "description": "Registro de una corrida del pipeline audiovisual. Versión 1.0.",
+  "type": "object",
+  "properties": {
+    "manifest_version": {
+      "description": "Versión del contrato del manifest",
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "run_id": {
+      "description": "Identificador único de la corrida (ISO8601 básico T Z _ hex)",
+      "type": "string",
+      "pattern": "^\\d{8}T\\d{6}Z_[a-f0-9]{6}$"
+    },
+    "pipeline": {
+      "description": "Nombre del pipeline ejecutado",
+      "type": "string",
+      "examples": ["extract", "synthesize", "full_production"]
+    },
+    "status": {
+      "description": "Estado final de la corrida",
+      "type": "string",
+      "enum": [
+        "SOURCE_RECEIVED",
+        "SOURCE_EXTRACTED",
+        "CONTENT_NORMALIZED",
+        "SCRIPT_READY",
+        "STORYBOARD_READY",
+        "AUDIO_READY",
+        "VIDEO_RENDERED",
+        "TECHNICAL_PASS",
+        "EDITORIAL_APPROVED",
+        "PUBLISHED",
+        "FAILED",
+        "REJECTED"
+      ]
+    },
+    "started_at": {
+      "description": "Timestamp ISO 8601 de inicio",
+      "type": "string",
+      "format": "date-time"
+    },
+    "finished_at": {
+      "description": "Timestamp ISO 8601 de fin",
+      "type": "string",
+      "format": "date-time"
+    },
+    "config": {
+      "description": "Referencia a la configuración usada",
+      "type": "object",
+      "properties": {
+        "file": {
+          "description": "Ruta al archivo de configuración (relativa al repo)",
+          "type": "string"
+        },
+        "profile": {
+          "description": "Perfil de configuración (ej: 'hd1080', 'audio-only')",
+          "type": "string"
+        },
+        "hash": {
+          "description": "SHA256 del archivo de configuración al momento de ejecución",
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": ["file", "hash"]
+    },
+    "code_version": {
+      "description": "Versión del código al momento de la ejecución",
+      "type": "object",
+      "properties": {
+        "commit": {
+          "description": "SHA del commit (o 'dirty' si working tree sucio)",
+          "type": "string"
+        },
+        "branch": {
+          "description": "Rama actual",
+          "type": "string"
+        },
+        "dirty": {
+          "description": "True si el working tree tenía cambios al ejecutar",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": ["commit", "branch"]
+    },
+    "inputs": {
+      "description": "Fuentes de entrada de la corrida",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Tipo de entrada: url, file, manual",
+            "type": "string",
+            "enum": ["url", "file", "manual"]
+          },
+          "uri": {
+            "description": "URI de la fuente (URL, ruta, o identificador)",
+            "type": "string"
+          },
+          "hash": {
+            "description": "SHA256 del contenido de la fuente",
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "metadata": {
+            "description": "Metadatos adicionales (título, duración, etc.)",
+            "type": "object"
+          }
+        },
+        "required": ["type", "uri", "hash"]
+      },
+      "minItems": 1
+    },
+    "outputs": {
+      "description": "Artefactos producidos por la corrida",
+      "type": "object",
+      "properties": {
+        "source": { "$ref": "#/$defs/artifact" },
+        "normalized": { "$ref": "#/$defs/artifact" },
+        "script": { "$ref": "#/$defs/artifact" },
+        "storyboard": { "$ref": "#/$defs/artifact" },
+        "audio": { "$ref": "#/$defs/artifact" },
+        "render": { "$ref": "#/$defs/artifact" },
+        "subtitles": { "$ref": "#/$defs/artifact" },
+        "thumbnail": { "$ref": "#/$defs/artifact" }
+      },
+      "minProperties": 1
+    },
+    "tools": {
+      "description": "Herramientas externas utilizadas con sus versiones",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "examples": [{"ffmpeg": "7.0", "scholium": "0.5.2"}]
+    },
+    "errors": {
+      "description": "Errores ocurridos durante la ejecución. Vacío si éxito.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "phase": { "type": "string" },
+          "code": { "type": "string" },
+          "message": { "type": "string" },
+          "details": { "type": "string" }
+        },
+        "required": ["phase", "code", "message"]
+      }
+    },
+    "warnings": {
+      "description": "Advertencias de la ejecución",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "phase": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "required": ["phase", "message"]
+      }
+    },
+    "transitions": {
+      "description": "Registro de transiciones de estado atravesadas",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evidence": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["from", "to", "at"]
+      }
+    },
+    "evidence_files": {
+      "description": "Archivos de evidencia/validación producidos",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["validation_report", "human_review", "log", "test_result", "review_package_sent"]
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": ["path", "type"]
+      }
+    },
+    "authorization": {
+      "description": "Autorización para la ejecución",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["auto", "manual_approval", "explicit_flag"]
+        },
+        "approved_by": { "type": "string" },
+        "paid_api_allowed": { "type": "boolean", "default": false }
+      }
+    }
+  },
+  "required": [
+    "manifest_version",
+    "run_id",
+    "pipeline",
+    "status",
+    "started_at",
+    "finished_at",
+    "config",
+    "inputs",
+    "errors",
+    "transitions"
+  ],
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "Ruta relativa al archivo producido",
+          "type": "string"
+        },
+        "hash": {
+          "description": "SHA256 del archivo",
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "size_bytes": {
+          "description": "Tamaño del archivo en bytes",
+          "type": "integer",
+          "minimum": 0
+        },
+        "mime_type": {
+          "description": "Tipo MIME del archivo",
+          "type": "string"
+        }
+      },
+      "required": ["path", "hash"]
+    }
+  }
+}

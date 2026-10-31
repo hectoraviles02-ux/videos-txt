@@ -1,0 +1,9 @@
+{
+  "estado_corrida": "incompleta",
+  "fecha_corte": "2026-09-15",
+  "fuentes_json": "[\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\",\"desde_raw\"]",
+  "hash_entradas": "8ddf70d09a5046ccea95f57b71e71d355762660e01e32486c67ae3b7871b3eeb",
+  "sin_llm": 1,
+  "top10_json": "{\"avisos\":[\"1 de 10, compuerta de diversidad: faltan pilares con candidatos\"],\"fecha_corte\":\"2026-09-15\",\"hash_entradas\":\"8ddf70d09a5046ccea95f57b71e71d355762660e01e32486c67ae3b7871b3eeb\",\"sin_llm\":true,\"temas\":[{\"angulo_metodo\":\"plantilla\",\"angulo_propuesto\":\"Lo probe y esto fue lo que salio: IA local vs nube: la prueba honesta en una laptop, con el detalle completo.\",\"demanda\":0.5,\"dificultad\":0.0,\"evidencia\":[{\"fuente\":\"youtube:automatizacion python\",\"publicada_en\":null,\"url\":\"https://www.youtube.com/watch?v=LQqv4M_NtNc\"}],\"formato\":\"largo\",\"hash_titulo\":\"dcf7cf47a888d712a786a2e4b5e1b8bbb564aa2b1aaf85ae1830e087e2eb8788\",\"intent\":\"experimento\",\"novedad\":0.966667,\"penalizaciones\":{\"pen_repeticion\":0.516632,\"pen_saturacion\":0.233333},\"pilar\":\"P4\",\"posicion\":1,\"potencial\":0.333333,\"score\":-0.216632,\"titulo\":\"IA local vs nube: la prueba honesta en una laptop\"}],\"version_reglas\":\"v0.1+e0d47457118c\"}",
+  "version_reglas": "v0.1+e0d47457118c"
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:ht="https://trends.google.com/trending/rss">
+<channel>
+  <title>Busquedas en tendencia diarias</title>
+  <link>https://trends.google.com/trending?geo=MX</link>
+  <description>Busquedas en tendencia diarias RSS</description>
+  <language>es-419</language>
+  <item>
+    <title>Ollama Windows</title>
+    <ht:approx_traffic>2000+</ht:approx_traffic>
+    <description>Ollama Windows</description>
+    <link>https://trends.google.com/trending?geo=MX&amp;hours=24</link>
+    <pubDate>Tue, 16 Sep 2026 02:20:00 -0700</pubDate>
+    <ht:picture>https://t0.gstatic.com/images?q=ollama</ht:picture>
+    <ht:picture_source>El Economista</ht:picture_source>
+    <ht:news_item>
+      <ht:news_item_title>Ollama llega a Windows con soporte de GPU</ht:news_item_title>
+      <ht:news_item_url>https://www.eleconomista.com.mx/tecnologia/ollama-windows</ht:news_item_url>
+      <ht:news_item_picture>https://t0.gstatic.com/images?q=a</ht:news_item_picture>
+      <ht:news_item_source>El Economista</ht:news_item_source>
+    </ht:news_item>
+  </item>
+  <item>
+    <title>Cruz Azul vs America</title>
+    <ht:approx_traffic>100000+</ht:approx_traffic>
+    <description>Cruz Azul vs America</description>
+    <link>https://trends.google.com/trending?geo=MX&amp;hours=24</link>
+    <pubDate>Tue, 16 Sep 2026 01:00:00 -0700</pubDate>
+    <ht:news_item>
+      <ht:news_item_title>Cruz Azul vence al America</ht:news_item_title>
+      <ht:news_item_url>https://ejemplo.mx/deportes/cruz-azul</ht:news_item_url>
+      <ht:news_item_source>Ejemplo Deportes</ht:news_item_source>
+    </ht:news_item>
+  </item>
+  <item>
+    <title>Loteria Nacional resultados</title>
+    <ht:approx_traffic>50000+</ht:approx_traffic>
+    <description>Loteria Nacional resultados</description>
+    <link>https://trends.google.com/trending?geo=MX&amp;hours=24</link>
+    <pubDate>Tue, 16 Sep 2026 00:10:00 -0700</pubDate>
+  </item>
+</channel>
+</rss>
