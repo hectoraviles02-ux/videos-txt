@@ -9,7 +9,6 @@ metodo = extractor_articulo.
 import sys
 from pathlib import Path
 
-import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from comun import (utf8_stdout, crear_directorios, escribir_salida,
@@ -43,7 +42,8 @@ def procesar(url: str, raw_dir: Path, proc_dir: Path) -> dict:
     from readability import Document
     from lxml import html as lxml_html
 
-    resp = requests.get(url, headers=UA, timeout=30)
+    from comun import obtener_seguro   # 31-oct-2026: sin destinos internos ni redirecciones hacia ellos
+    resp = obtener_seguro(url, headers=UA, timeout=30)
     import procesar_pdf
     if procesar_pdf.es_pdf(resp.content, resp.headers.get("Content-Type", "")):
         return procesar_pdf.procesar_contenido(url, resp.content, raw_dir, proc_dir)   # nunca el binario como texto
@@ -78,8 +78,8 @@ def main():
     
     # Obtener titulo para slug
     from readability import Document
-    import requests
-    resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
+    from comun import obtener_seguro
+    resp = obtener_seguro(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
     import procesar_pdf
     if procesar_pdf.es_pdf(resp.content, resp.headers.get("Content-Type", "")):
         titulo = url.rstrip("/").rsplit("/", 1)[-1] or "sin-titulo"

@@ -54,31 +54,80 @@ def url_ya_procesada(url_hash: str) -> bool:
     return url_hash in INDICE_FILE.read_text(encoding="utf-8")
 
 
+class DestinoNoPermitido(ValueError):
+    """La URL apunta a un destino que no se descarga (esquema raro o red interna)."""
+
+
+def destino_seguro(url: str) -> tuple:
+    """31-oct-2026 (auditoría P1-SSRF): solo http/https hacia direcciones PÚBLICAS de internet.
+
+    Resuelve el host y rechaza si CUALQUIERA de sus direcciones no es global (localhost, red privada
+    10/172.16/192.168, enlace local 169.254, CGNAT, ::1...). El motivo nunca lleva la IP resuelta.
+    """
+    import ipaddress
+    import socket
+    p = urlparse(url)
+    if p.scheme not in ("http", "https"):
+        return False, "esquema no permitido: %s" % (p.scheme or "(vacío)")
+    host = p.hostname
+    if not host:
+        return False, "URL sin host"
+    try:
+        infos = socket.getaddrinfo(host, p.port or (443 if p.scheme == "https" else 80), proto=socket.IPPROTO_TCP)
+    except (socket.gaierror, UnicodeError) as e:
+        return False, "el host no resuelve (%s)" % e
+    for info in infos:
+        ip = ipaddress.ip_address(info[4][0].split("%")[0])
+        if not ip.is_global:
+            return False, "destino interno no permitido (%s)" % host
+    return True, "ok"
+
+
+def obtener_seguro(url: str, metodo: str = "GET", headers: dict = None, timeout: int = 30,
+                   max_saltos: int = 5, **kw):
+    """Petición HTTP que revisa el destino ANTES de cada salto: las redirecciones se siguen a mano y
+    cada una pasa otra vez por destino_seguro (un 302 hacia la red interna se rechaza).
+    Devuelve la respuesta final con el atributo `url_final`. Lanza DestinoNoPermitido."""
+    import requests
+    from urllib.parse import urljoin
+    actual = url
+    for _ in range(max_saltos + 1):
+        ok, motivo = destino_seguro(actual)
+        if not ok:
+            raise DestinoNoPermitido(motivo)
+        r = requests.request(metodo, actual, headers=headers, timeout=timeout, allow_redirects=False, **kw)
+        if r.status_code in (301, 302, 303, 307, 308) and r.headers.get("location"):
+            actual = urljoin(actual, r.headers["location"])
+            if r.status_code == 303:
+                metodo = "GET"
+            continue
+        r.url_final = actual
+        return r
+    raise DestinoNoPermitido("demasiadas redirecciones (más de %d)" % max_saltos)
+
+
 def verificar_url(url: str) -> dict:
-    """Compuerta: ¿la URL resuelve? HEAD y si rebota, GET."""
-    import urllib.request
-    import urllib.error
+    """Compuerta: ¿la URL resuelve? HEAD y si rebota, GET. Solo destinos públicos (ver destino_seguro)."""
     hdr = {"User-Agent": "Mozilla/5.0"}
     try:
-        req = urllib.request.Request(url, method="HEAD", headers=hdr)
-        r = urllib.request.urlopen(req, timeout=15)
-        return {"resuelve": True, "status": r.status, "razon": "OK"}
-    except urllib.error.HTTPError as e:
-        if e.code in (403, 405, 501):  # muchos server no aceptan HEAD
-            try:
-                req = urllib.request.Request(url, headers=hdr)
-                r = urllib.request.urlopen(req, timeout=15)
-                return {"resuelve": True, "status": r.status, "razon": "OK (GET)"}
-            except Exception as e2:
-                return {"resuelve": False, "status": e.code, "razon": str(e2)}
-        return {"resuelve": False, "status": e.code, "razon": str(e)}
+        r = obtener_seguro(url, "HEAD", headers=hdr, timeout=15)
+        if r.status_code in (403, 405, 501):  # muchos server no aceptan HEAD
+            r = obtener_seguro(url, "GET", headers=hdr, timeout=15, stream=True)
+            r.close()
+            ok = r.status_code < 400
+            return {"resuelve": ok, "status": r.status_code, "razon": "OK (GET)" if ok else "HTTP %d" % r.status_code}
+        ok = r.status_code < 400
+        return {"resuelve": ok, "status": r.status_code, "razon": "OK" if ok else "HTTP %d" % r.status_code}
+    except DestinoNoPermitido as e:
+        return {"resuelve": False, "status": 0, "razon": "bloqueada: %s" % e}
     except Exception as e:
         return {"resuelve": False, "status": 0, "razon": str(e)}
 
 
 def slugify(texto: str) -> str:
     """Convierte texto a slug: minusculas, sin acentos, guiones."""
-    import re, unicodedata
+    import re
+    import unicodedata
     texto = unicodedata.normalize("NFKD", texto)
     texto = texto.encode("ascii", "ignore").decode("ascii")
     texto = re.sub(r"[^a-zA-Z0-9\s]", "", texto)

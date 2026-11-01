@@ -58,13 +58,24 @@ def main():
 
     # 4. despachar
     # Obtener titulo para slug
-    try:
-        import yt_dlp
-        with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True, "skip_download": True}) as ydl:
-            info = ydl.extract_info(url, download=False)
-        titulo = info.get("title") or "sin-titulo"
-    except:
-        titulo = "sin-titulo"
+    titulo = "sin-titulo"
+    if tipo == "video":   # 31-oct-2026 (SSRF): yt-dlp solo para dominios de video; antes leía CUALQUIER URL
+        try:
+            import yt_dlp
+            with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True, "skip_download": True}) as ydl:
+                info = ydl.extract_info(url, download=False)
+            titulo = info.get("title") or "sin-titulo"
+        except Exception:
+            titulo = "sin-titulo"
+    else:   # artículo: el título sale de la página, pedida por el descargador seguro
+        try:
+            import re as _re
+            from comun import obtener_seguro
+            m = _re.search(r"<title[^>]*>(.*?)</title>", obtener_seguro(url, headers={"User-Agent": "Mozilla/5.0"},
+                                                                       timeout=20).text, _re.I | _re.S)
+            titulo = (m.group(1).strip() if m else "") or "sin-titulo"
+        except Exception:
+            titulo = "sin-titulo"
     if titulo == "sin-titulo" and tipo == "texto":   # p. ej. un PDF: se nombra por su archivo
         titulo = urlparse(url).path.rstrip("/").rsplit("/", 1)[-1] or "sin-titulo"
     

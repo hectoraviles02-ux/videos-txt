@@ -194,6 +194,10 @@ def descargar_video(url: str, raw_dir: Path) -> dict:
 
 
 def procesar(url: str, raw_dir: Path, proc_dir: Path) -> dict:
+    from comun import DestinoNoPermitido, destino_seguro   # 31-oct-2026 (SSRF): yt-dlp no va a la red interna
+    ok, motivo = destino_seguro(url)
+    if not ok:
+        raise DestinoNoPermitido(motivo)
     import yt_dlp
     with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True, "skip_download": True}) as ydl:
         info = ydl.extract_info(url, download=False)
@@ -213,7 +217,12 @@ def main():
     url = sys.argv[1]
     con_video = "--con-video" in sys.argv
     url_hash = calcular_hash(url)
-    
+    from comun import destino_seguro   # 31-oct-2026 (SSRF)
+    ok, motivo = destino_seguro(url)
+    if not ok:
+        print("PENDIENTE: bloqueada — %s" % motivo)
+        sys.exit(1)
+
     # Obtener titulo para slug (silenciado)
     import yt_dlp
     import contextlib

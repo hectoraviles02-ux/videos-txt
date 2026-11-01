@@ -40,8 +40,18 @@ LIBRES = re.compile(r"^(public domain|pd|cc0|cc[ -]by(-sa)?[ -]\d(\.\d)?|cc[ -]b
 NO_LIBRES = re.compile(r"\b(nc|nd)\b", re.I)
 
 
+def _destino_publico(url):
+    """31-oct-2026 (SSRF): nada de red interna, aunque la URL venga de la API o de la línea de comandos."""
+    sys.path.insert(0, str(REPO / "scripts")) if str(REPO / "scripts") not in sys.path else None
+    from comun import DestinoNoPermitido, destino_seguro
+    ok, motivo = destino_seguro(url)
+    if not ok:
+        raise DestinoNoPermitido(motivo)
+
+
 def _get(url, **kw):
     """GET con respeto al límite de Wikimedia: ante 429/503 espera (Retry-After) y reintenta."""
+    _destino_publico(url)
     for intento in range(5):
         r = requests.get(url, headers=UA, timeout=kw.pop("timeout", 60), **kw)
         if r.status_code not in (429, 503):
@@ -231,6 +241,7 @@ def video(caso, url, autor, licencia, fuente, pagina, titulo, rid=None):
     rid = rid or "video-" + re.sub(r"[^a-z0-9]+", "-", titulo.lower())[:40].strip("-")
     arch = d / f"{rid}{Path(url.split('?')[0]).suffix or '.mp4'}"
     if not arch.is_file():
+        _destino_publico(url)
         r = requests.get(url, headers={**UA, "User-Agent": "Mozilla/5.0 " + UA["User-Agent"]}, timeout=180)
         r.raise_for_status()
         arch.write_bytes(r.content)

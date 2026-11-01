@@ -114,6 +114,23 @@ def main():
                       "clave_legado": f"foto_real:{slug}:{c}", **({"modo": "studio"} if c == "tiktok" else {})}
                      for c in ("facebook", "youtube", "tiktok")]
     (carpeta / "publicacion.json").write_text(json.dumps(pub, ensure_ascii=False, indent=2), encoding="utf-8")
+    # 31-oct-2026: manifiesto de medios POR PIEZA (origen, autor, licencia, cómo se usó y qué se modificó)
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import medios
+    usados = []
+    for pl in g.get("planos", []):
+        for k in ("medio", "medio_b"):
+            if pl.get(k) and pl[k] not in [u["id"] for u in usados]:
+                r = medios.recurso(pl[k])
+                usados.append({"id": r["id"], "tipo": r["tipo"], "url_origen": r.get("url_origen"),
+                               "autor": r.get("autor"), "licencia": r.get("licencia"),
+                               "credito_en_pantalla": r.get("atribucion_en_pantalla"),
+                               "archivo": r.get("archivo_local"), "sha256": r.get("hash_archivo"),
+                               "nota_en_pantalla": pl.get("nota"),
+                               "modificaciones": "recorte y acercamiento a 9:16, texto y crédito superpuestos"
+                                                 + ("; fragmento desde %ss" % pl["clip_ini"] if pl.get("clip_ini") else "")})
+    (carpeta / "manifiesto_medios.json").write_text(json.dumps(usados, ensure_ascii=False, indent=1), encoding="utf-8")
+    print("manifiesto de medios:", len(usados), "recursos")
     print("entrega:", carpeta / arch)
     if "--sin-enviar" in sys.argv:
         return 0

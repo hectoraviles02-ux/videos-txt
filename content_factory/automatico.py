@@ -1,8 +1,8 @@
 """Ruta automatica creada por Codex el 21-oct-2026 (evidencia en
 docs/operations/evidencia/codex_autopublicacion_20261021/).
 
-Etapa 1 (21-oct-2026): YA NO aprueba en nombre de operador. Antes, `publicar` creaba una
-aprobacion con la frase guardada en `palabras_operador`; ahora solo envia lo que operador
+Etapa 1 (21-oct-2026): YA NO aprueba en nombre de Hector. Antes, `publicar` creaba una
+aprobacion con la frase guardada en `palabras_operador`; ahora solo envia lo que Hector
 ya aprobo con el boton de Telegram, y la compuerta de `distribucion` rechaza lo demas.
 La politica (`activa`) sigue apagada."""
 from __future__ import annotations
@@ -56,7 +56,7 @@ def publicar(conn, pid, publicador, *, canal, fecha, evidencia, ledger, config=C
         raise ValueError("video distinto del verificado")
     if evidencia.get("tecnica", {}).get("audio") is not True:
         raise ValueError("falta verificacion tecnica")
-    # Etapa 1: aqui NO se crea ninguna aprobacion. Sin la de operador (boton de Telegram),
+    # Etapa 1: aqui NO se crea ninguna aprobacion. Sin la de Hector (boton de Telegram),
     # `publicar_pieza` lanza SinAprobacionValida antes de llamar a la plataforma.
     return distribucion.publicar_pieza(conn, pid, publicador=publicador, canal=canal,
                                        fecha=fecha, ledger=ledger)
@@ -105,6 +105,14 @@ def facebook(conn, pid, *, ruta, texto, eid, fecha, config=CONFIG, _fb=None, _ht
         reservado = db.registrar_publicacion(conn, pieza_id=pid, canal="facebook",
                                              publicada_en=fecha, estado_pub=db.PUB_PENDIENTE,
                                              detalle_error="intento reservado antes de red; no reintentar")
+        if not reservado:
+            # 31-oct-2026: distribucion.publicar_pieza ya reservó la fila para ESTE intento (reserva entre
+            # procesos); se adopta con el mismo texto de siempre. Cualquier otra fila sí es un intento ajeno.
+            with conn:
+                reservado = conn.execute(
+                    "UPDATE publicaciones SET detalle_error=? WHERE pieza_id=? AND canal='facebook' AND estado=? "
+                    "AND detalle_error=?", ("intento reservado antes de red; no reintentar", pid,
+                                            db.PUB_PENDIENTE, distribucion.RESERVA)).rowcount == 1
         if not reservado:
             raise RuntimeError("intento ya reservado")
         try:

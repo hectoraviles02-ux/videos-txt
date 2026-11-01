@@ -92,7 +92,7 @@ class _Resp:
 
 def test_procesar_texto_desvia_pdf_al_extractor_pdf(tmp_path, monkeypatch):
     datos = _pdf([TEXTO_P1])
-    monkeypatch.setattr(procesar_texto.requests, "get", lambda *a, **k: _Resp(datos, "application/octet-stream"))
+    monkeypatch.setattr(comun, "obtener_seguro", lambda *a, **k: _Resp(datos, "application/octet-stream"))
     raw, proc = tmp_path / "raw", tmp_path / "proc"
     raw.mkdir()
     proc.mkdir()
@@ -105,7 +105,7 @@ def test_procesar_texto_desvia_pdf_al_extractor_pdf(tmp_path, monkeypatch):
 def test_html_sigue_igual(tmp_path, monkeypatch):
     html = ("<html><head><title>Nota</title></head><body><article><p>" + "Primer parrafo con contenido real. " * 8
             + "</p><p>" + "Segundo parrafo con mas contenido. " * 8 + "</p></article></body></html>").encode()
-    monkeypatch.setattr(procesar_texto.requests, "get", lambda *a, **k: _Resp(html, "text/html"))
+    monkeypatch.setattr(comun, "obtener_seguro", lambda *a, **k: _Resp(html, "text/html"))
     raw, proc = tmp_path / "raw", tmp_path / "proc"
     raw.mkdir()
     proc.mkdir()

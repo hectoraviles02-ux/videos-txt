@@ -22,7 +22,7 @@ no se republica.
 
 v5 (Fase A de la fabrica editorial):
   - COMPUERTA DE APROBACION: antes de llamar al canal se exige una aprobacion VIGENTE
-    de operador que cubra el archivo, el texto, el canal y el horario QUE EL PUBLICADOR
+    de Hector que cubra el archivo, el texto, el canal y el horario QUE EL PUBLICADOR
     DECLARA (atributos `ruta_mp4`, `texto`, `programada_para` del callable). Un
     publicador que no los declara se rechaza: no se puede verificar que sube.
   - PROGRAMADA != PUBLICADA: si el publicador programa, la fila queda PROGRAMADA y la
@@ -37,6 +37,7 @@ modulo NO importa el publicador real ni publica nada por si mismo.
 from __future__ import annotations
 
 import json
+import sqlite3
 import time
 from pathlib import Path
 
@@ -50,7 +51,7 @@ class PublicacionError(RuntimeError):
 
 
 class SinAprobacionValida(PublicacionError):
-    """No hay aprobacion vigente de operador que cubra lo que el publicador va a subir."""
+    """No hay aprobacion vigente de Hector que cubra lo que el publicador va a subir."""
 
 
 class RechazoDelCanal(RuntimeError):
@@ -218,7 +219,7 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
 
     `publicador`: callable sin argumentos que publica y devuelve {'video_id': ...}
     (o lanza). DEBE declarar `ruta_mp4` y `texto` (y `programada_para` si programa):
-    contra eso se verifica la aprobacion de operador. Resultado: `ya_publicada |
+    contra eso se verifica la aprobacion de Hector. Resultado: `ya_publicada |
     ya_programada | intento_sin_confirmar | reconciliada | programada_reconciliada |
     error_api | resultado_incierto | publicada | programada | publicado_pendiente_bd |
     en_bandeja | ya_en_bandeja` (los dos últimos: publicador con `destino = "bandeja"`).
@@ -258,7 +259,7 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
                            url=reg.get("url"), programada_para=reg.get("programada_para"),
                            destino=reg.get("destino"))
 
-    # 2) COMPUERTA: aprobacion vigente de operador para lo que el publicador va a subir.
+    # 2) COMPUERTA: aprobacion vigente de Hector para lo que el publicador va a subir.
     _exigir_aprobacion(conn, pieza_id, publicador, canal, fecha)
 
     # 3) estado publicable (PUBLICADA: ya salio en otro canal; este es uno mas)
@@ -268,11 +269,19 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
             "la pieza %d esta en %s; solo se publica desde PRODUCIDA, LISTA o PUBLICADA"
             % (pieza_id, estado))
 
-    # 4) API del canal. Un RECHAZO seguro no deja fila (se puede reintentar). Cualquier
-    #    otro fallo es INCIERTO: queda fila PENDIENTE que bloquea el reintento.
+    # 4a) RESERVA entre PROCESOS (31-oct-2026, auditoría P1): antes se comprobaba y luego se subía, y dos
+    #     procesos (dos instancias del bot, un script) podían subir la misma pieza. Ahora la fila se reserva
+    #     con BEGIN IMMEDIATE; la PRIMARY KEY (pieza_id, canal) deja un solo ganador. El perdedor vuelve al
+    #     paso 1, que ve la reserva (PENDIENTE) o el ledger y NO llama al canal.
+    if not _reservar(conn, pieza_id, canal, fecha, ledger):
+        return publicar_pieza(conn, pieza_id, publicador=publicador, ledger=ledger, canal=canal, fecha=fecha)
+
+    # 4) API del canal. Un RECHAZO seguro no deja fila (se suelta la reserva: se puede reintentar).
+    #    Cualquier otro fallo es INCIERTO: la reserva queda PENDIENTE y bloquea el reintento.
     try:
         resp = publicador()
     except RechazoDelCanal as e:
+        _soltar(conn, pieza_id, canal)
         db.registrar_evento(
             conn, fecha, "fallo al publicar pieza %d en %s: %s" % (pieza_id, canal, str(e)[:160]))
         return {"resultado": "error_api", "pieza_id": pieza_id, "error": str(e)[:200]}
@@ -286,6 +295,9 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
 
     # 5) EVIDENCIA REMOTA DURABLE antes de tocar la BD (sobrevive a un fallo de BD).
     ledger.anota(pieza_id, canal, vid, url, programada_para, destino=getattr(publicador, "destino", None))
+    # con el ledger ya escrito, otro proceso reconcilia en vez de subir: se suelta la reserva y los
+    # registros de abajo insertan la fila definitiva como siempre.
+    _soltar(conn, pieza_id, canal)
 
     if programada_para:
         try:
@@ -336,10 +348,43 @@ def publicar_pieza(conn, pieza_id: int, *, publicador, ledger: Ledger,
     return {"resultado": "publicada", "pieza_id": pieza_id, "identificador_remoto": vid}
 
 
+RESERVA = "RESERVA: subida en curso"
+
+
+def _reservar(conn, pieza_id: int, canal: str, fecha: str, ledger: "Ledger") -> bool:
+    """Reserva (pieza, canal) entre procesos. False = otro ya la tiene (o ya hay evidencia remota)."""
+    if conn.in_transaction:
+        conn.commit()
+    conn.execute("BEGIN IMMEDIATE")      # bloqueo de escritura de SQLite: serializa a los procesos
+    try:
+        if db.obtener_publicacion(conn, pieza_id, canal) is not None or ledger.obtener(pieza_id, canal):
+            conn.rollback()
+            return False
+        conn.execute("INSERT INTO publicaciones (pieza_id, canal, publicada_en, estado, detalle_error)"
+                     " VALUES (?,?,?,?,?)", (pieza_id, canal, fecha, db.PUB_PENDIENTE, RESERVA))
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        conn.rollback()
+        return False
+
+
+def _soltar(conn, pieza_id: int, canal: str) -> None:
+    """Quita SOLO la reserva propia (PENDIENTE con el texto de reserva), nunca otra fila."""
+    with conn:
+        conn.execute("DELETE FROM publicaciones WHERE pieza_id=? AND canal=? AND estado=? AND detalle_error=?",
+                     (pieza_id, canal, db.PUB_PENDIENTE, RESERVA))
+
+
 def _incierto(conn, pieza_id: int, canal: str, fecha: str, motivo: str) -> dict:
     """Deja fila PENDIENTE: el canal pudo haber publicado. Bloquea el reintento."""
-    db.registrar_publicacion(conn, pieza_id=pieza_id, canal=canal, publicada_en=fecha,
-                             estado_pub=db.PUB_PENDIENTE, detalle_error=motivo[:200])
+    with conn:   # si hay reserva, se convierte en el intento PENDIENTE con su motivo (no se inserta otra fila)
+        convertida = conn.execute(
+            "UPDATE publicaciones SET detalle_error=? WHERE pieza_id=? AND canal=? AND estado=? AND detalle_error=?",
+            (motivo[:200], pieza_id, canal, db.PUB_PENDIENTE, RESERVA)).rowcount
+    if not convertida:
+        db.registrar_publicacion(conn, pieza_id=pieza_id, canal=canal, publicada_en=fecha,
+                                 estado_pub=db.PUB_PENDIENTE, detalle_error=motivo[:200])
     db.registrar_evento(conn, fecha, "resultado INCIERTO al publicar pieza %d en %s: %s. "
                         "No se reintenta sin revisar el canal (liberar_intento)" % (pieza_id, canal, motivo))
     return {"resultado": "resultado_incierto", "pieza_id": pieza_id, "error": motivo[:200]}

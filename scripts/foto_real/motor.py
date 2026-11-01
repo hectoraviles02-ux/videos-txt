@@ -11,7 +11,8 @@ Todo sale de <pieza>/guion.json. Además de lo que ya pide la voz (fuentes, tram
                 "clip_ini": 12.0,            # solo video: segundo del original donde arranca el fragmento
                 "vel": 1.0,                  # solo video: velocidad
                 "texto": "...", "estilo": "sello|banner|cifra|pregunta",
-                "circulo": [0.62, 0.35, 0.12] # círculo rojo que se dibuja solo (x, y, radio) sobre la foto
+                "circulo": [0.62, 0.35, 0.12], # círculo rojo que se dibuja solo (x, y, radio) sobre la foto
+                "nota": "FOTO DE ARCHIVO"     # rótulo fijo junto al crédito mientras dura el plano (archivo/ilustrativa)
               } , ... ]
   "cierre": {"pregunta": "...", "fuentes": "..."}
 Cada plano dura hasta que empieza el siguiente. El crédito de la foto o video en pantalla sale del manifiesto
@@ -334,9 +335,9 @@ class Motor:
         # viñeta para que el texto se lea
         d.rectangle((0, 0, W, 260), fill=(0, 0, 0, 70))
         d.rectangle((0, H - 760, W, H), fill=(0, 0, 0, 60))
-        # destello en el corte (alterna blanco y negro)
+        # destello en el corte (alterna blanco y negro); más suave desde el 31-oct (revisión: «muy iluminado»)
         if i > 0 and tr < 0.12:
-            a = int(200 * (1 - tr / 0.12))
+            a = int(110 * (1 - tr / 0.12))
             d.rectangle((0, 0, W, H), fill=(255, 255, 255, a) if i % 2 else (0, 0, 0, a))
         # círculo rojo que se dibuja solo
         if pl.get("circulo") and tr > 0.25:
@@ -396,9 +397,18 @@ class Motor:
         cred = reg.get("atribucion_en_pantalla") or ""
         if pl.get("medio_b"):
             cred += "  |  " + (self.regs[pl["medio_b"]].get("atribucion_en_pantalla") or "")
-        f = fuente("arial.ttf", 24)
-        for j, ln in enumerate(envolver(cred, f, 1000)[:2]):
-            texto(d, (W // 2, 1790 + j * 28), ln, f, (240, 240, 240), "mm", borde=2)
+        # crédito más grande (31-oct: a 24 px no se leía en celular) y rótulo fijo del plano («nota»: FOTO DE
+        # ARCHIVO / ILUSTRATIVA) mientras dura el plano, para que nunca se tome como evidencia del hecho
+        f = fuente("arialbd.ttf", 30)
+        lineas_cred = envolver(cred, f, 1010)[:2]
+        for j, ln in enumerate(lineas_cred):
+            texto(d, (W // 2, 1782 + j * 34), ln, f, (245, 245, 245), "mm", borde=3)
+        if pl.get("nota"):
+            fn = fuente("ariblk.ttf", 32)
+            ancho = fn.getlength(pl["nota"]) + 36
+            y0 = 1782 - 30 - 46
+            d.rounded_rectangle((W / 2 - ancho / 2, y0, W / 2 + ancho / 2, y0 + 46), 10, fill=(0, 0, 0, 190))
+            texto(d, (W // 2, y0 + 23), pl["nota"], fn, AMARILLO, "mm")
         # barra de avance y firma
         d.rectangle((0, 0, int(W * t / p.dur), 12), fill=AMARILLO)
         texto(d, (W // 2, 1880), "AVIL·ES  ·  @avil.es", fuente("bahnschrift.ttf", 30), (255, 255, 255, 220), borde=2)
@@ -463,7 +473,10 @@ def render(m: Motor, salida: Path):
     ff = subprocess.Popen(
         ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
          "-i", "-", "-i", str(p.dir / "mezcla.wav"), "-i", str(fx),
-         "-filter_complex", "[1:a]apad[v];[2:a]volume=0.8[e];[v][e]amix=inputs=2:duration=longest:normalize=0[a]",
+         # limitador (31-oct-2026): los efectos sumados a la voz pasaban de 0 dBTP (+2.4 medido en ovnis);
+         # 0.79 lineal ≈ −2 dBFS de muestra deja el pico verdadero bajo −1 dBTP
+         "-filter_complex", "[1:a]apad[v];[2:a]volume=0.8[e];[v][e]amix=inputs=2:duration=longest:normalize=0,"
+                            "alimiter=limit=0.63:attack=1:release=60:level=disabled[a]",
          "-map", "0:v", "-map", "[a]", "-t", f"{p.dur:.3f}",
          "-c:v", "libx264", "-preset", "slow", "-crf", "24", "-maxrate", os.environ.get("MAXRATE", tasa),
          "-bufsize", tasa, "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart",
