@@ -333,12 +333,13 @@ def test_tb_07_unauthorized_chat():
     assert authorization_filter(update, config) is False
 
 
-def test_tb_07_empty_allowed_list_allows_all():
+def test_tb_07_empty_allowed_list_rejects_all():
+    # 31-oct-2026 (auditoría de seguridad): lista vacía = nadie, no todos.
     config = TelegramBotConfig(token="t", allowed_chat_ids=[])
 
     update = MagicMock()
     update.effective_chat.id = 999
-    assert authorization_filter(update, config) is True
+    assert authorization_filter(update, config) is False
 
 
 # ── TB-08: error handler ─────────────────────────────────────────────

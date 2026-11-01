@@ -235,3 +235,31 @@ def validate_and_load(config_path: str | None = None) -> TelegramBotConfig:
         logger.warning("allowed_chat_ids is empty — any chat will be rejected")
 
     return cfg
+
+
+# ── Autorización (31-oct-2026, auditoría de seguridad) ─────────────────────
+# Denegación por defecto. Pasa SOLO si: (1) el chat está en allowed_chat_ids y (2) quien escribe
+# (effective_user, no el chat) es el operador: el mismo VIDEOS_TXT_TELEGRAM_CHAT_ID que usa el botón
+# APROBAR (aprobacion_botones.on_callback). Lista vacía, operador sin configurar o chat/usuario
+# distinto = rechazo. El motivo se registra sin identificadores ni credenciales.
+def autorizar(update: Any, config: Any) -> tuple[bool, str]:
+    permitidos = list(getattr(config, "allowed_chat_ids", None) or [])
+    if not permitidos:
+        return False, "allowed_chat_ids vacío o mal configurado"
+    operador = os.environ.get("VIDEOS_TXT_TELEGRAM_CHAT_ID", "").strip()
+    if not operador:
+        return False, "operador no configurado (VIDEOS_TXT_TELEGRAM_CHAT_ID)"
+    chat = getattr(update, "effective_chat", None)
+    usuario = getattr(update, "effective_user", None)
+    if chat is None or chat.id not in permitidos:
+        return False, "chat no permitido"
+    if usuario is None or str(usuario.id) != operador:
+        return False, "usuario no es el operador"
+    return True, "ok"
+
+
+def autorizado(update: Any, config: Any, donde: str = "") -> bool:
+    ok, motivo = autorizar(update, config)
+    if not ok:
+        logger.warning("acceso rechazado%s: %s", (" en " + donde) if donde else "", motivo)
+    return ok

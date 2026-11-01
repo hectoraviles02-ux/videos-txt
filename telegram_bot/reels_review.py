@@ -185,8 +185,8 @@ async def on_callback(update, context) -> None:
     q = update.callback_query
     chat_id = update.effective_chat.id if update.effective_chat else None
     cfg = context.bot_data.get("config")
-    allowed = list(getattr(cfg, "allowed_chat_ids", []) or [])
-    if allowed and chat_id not in allowed:
+    from telegram_bot.config import autorizado   # 31-oct-2026: denegación por defecto (antes lista vacía = todos)
+    if not autorizado(update, cfg, "reels_review"):
         await q.answer("No autorizado", show_alert=True)
         return
     await q.answer()

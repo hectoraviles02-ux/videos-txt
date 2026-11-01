@@ -27,6 +27,12 @@ for _p in (str(POC),):
         sys.path.insert(0, _p)
 
 BANCO = POC / "_banco.json"
+# 31-oct-2026 (auditoría de seguridad, P0 abierto): el código que genera Ollama corre SIN aislamiento real
+# (el filtro PELIGRO se evade). Bloqueado por defecto: solo se ejecuta si existe este archivo, que se crea
+# a mano cuando haya sandbox (WASI/AppContainer) probado. Afecta al bot, la fábrica, ciclo_diario y lote_python.
+PERMISO_CODIGO_IA = REPO / "logs" / "PERMITIR_CODIGO_IA"
+BLOQUEADO = ("la ejecución de código generado por IA está bloqueada temporalmente (auditoría de seguridad, "
+             "P0 abierto). Los reels ya hechos no se afectan.")
 OLLAMA = "http://localhost:11434/api/chat"
 MODELO = "qwen2.5:14b-instruct-q4_K_M"
 
@@ -72,6 +78,8 @@ def _ollama(tema: str) -> dict | None:
 
 def _ejecutar(code: str) -> tuple[bool, str]:
     """Corre el código aislado y devuelve (ok, output_real). Nunca inventa la salida."""
+    if not PERMISO_CODIGO_IA.is_file():   # segunda barrera: aunque alguien llame directo a _ejecutar
+        return False, BLOQUEADO
     if PELIGRO.search(code):
         return False, "codigo con operaciones no permitidas"
     with tempfile.TemporaryDirectory() as td:
@@ -158,6 +166,8 @@ def producir(tema: str) -> dict:
     tema = (tema or "").strip()
     if not tema:
         return {"error": "sin tema"}
+    if not PERMISO_CODIGO_IA.is_file():   # ni siquiera se le pide código a Ollama
+        return {"error": BLOQUEADO}
     # 1) generar + 2) ejecutar (hasta 3 intentos: el output debe ser REAL)
     ej_gen = None
     for _ in range(3):

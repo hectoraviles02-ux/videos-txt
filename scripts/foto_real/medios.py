@@ -162,7 +162,11 @@ def bajar(caso: str, titulos: list[str], permitir_personalidad=False) -> list[di
     d = carpeta_raw(caso)
     regs = []
     for t in titulos:
-        c = info(t)
+        try:
+            c = info(t)
+        except SystemExit as e:   # un título inexistente no detiene el lote
+            print(f"OMITIDA: {e}")
+            continue
         if not c["libre"]:
             print(f"RECHAZADA (licencia «{c['licencia']}»): {t}")
             continue
